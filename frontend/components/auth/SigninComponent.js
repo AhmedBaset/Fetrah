@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { signup, isAuth} from "../../actions/auth";
+import { signin, authenticate, isAuth } from "../../actions/auth";
 
-const SignupComponent = () => {
+const SigninComponent = () => {
   const router = useRouter();
   
   useEffect(() => {
@@ -12,7 +12,6 @@ const SignupComponent = () => {
   } ,[])
 
   const [values, setValues] = useState({
-    name: "Ahmed",
     email: "ahmed@gmail.com",
     password: "ahmed1998",
     error: "",
@@ -24,19 +23,21 @@ const SignupComponent = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, loading: true, error: false });
-    const user = { name, email, password };
-    signup(user).then((data) => {
+    const user = { email, password };
+    signin(user).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error, loading: false });
       } else {
-        setValues({
-          ...values,
-          name: "",
-          email: "",
-          password: "",
-          loading: false,
-          message: data.message,
-          showForm: false,
+        // save user token to cookie
+        // save user info to local storage
+        // authenticate user
+        console.log("");
+        authenticate(data, () => {
+          if(isAuth() && isAuth.role === 1){
+            router.replace('/admin');
+          }else{
+            router.replace('/user');
+          }
         });
       }
     });
@@ -46,7 +47,7 @@ const SignupComponent = () => {
     setValues({ ...values, error: false, [name]: event.target.value });
   };
 
-  const { name, email, password, error, loading, message, showForm } = values;
+  const { email, password, error, loading, message, showForm } = values;
 
   const showLoading = () =>
     loading ? (
@@ -73,20 +74,9 @@ const SignupComponent = () => {
       ""
     );
 
-  const SignupForm = () => {
+  const SigninForm = () => {
     return (
       <form onSubmit={handleSubmit}>
-        <div className="form-group m-3">
-          <label htmlFor="Name">Name</label>
-          <input
-            onChange={handleChange("name")}
-            type="text"
-            className="form-control"
-            id="Name"
-            value={name}
-            placeholder="Type your Name"
-          />
-        </div>
         <div className="form-group m-3">
           <label htmlFor="Email">Email</label>
           <input
@@ -111,19 +101,20 @@ const SignupComponent = () => {
         </div>
 
         <button className="btn btn-primary m-3" type="submit">
-          Signup
+          Signin
         </button>
       </form>
     );
   };
 
-  return <>
-  {showError()}
-  {showLoading()}
-  {showMessage()}
-  {showForm && SignupForm()}
-  
-  </>;
+  return (
+    <>
+      {showError()}
+      {showLoading()}
+      {showMessage()}
+      {showForm && SigninForm()}
+    </>
+  );
 };
 
-export default SignupComponent;
+export default SigninComponent;
