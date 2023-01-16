@@ -1,6 +1,15 @@
 import Head from "next/head";
 import Script from "next/script";
 
+import Router from "next/router";
+import NProgress from "nprogress"; //nprogress module
+import '../styles/nprogress.css';
+
+//Binding events.
+Router.events.on("routeChangeStart", () => NProgress.start());
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
+
 function MyApp({ Component, pageProps }) {
   return (
     <>
@@ -8,7 +17,6 @@ function MyApp({ Component, pageProps }) {
         <link
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.rtl.min.css"
           rel="stylesheet"
-
           crossOrigin="anonymous"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

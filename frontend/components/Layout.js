@@ -6,7 +6,6 @@ const Layout = ({ children }) => {
     <>
       <Header expand="md" color="light" light={true}/>
       {children}
-      <p>Footer</p>
     </>
   );
 };
