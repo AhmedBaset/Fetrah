@@ -35,7 +35,6 @@ const userSchema = mongoose.Schema({
     },
 
     salt: String,
-
     
     about: {
         type: String,
@@ -52,7 +51,8 @@ const userSchema = mongoose.Schema({
         data: String,
         default: ''
     }
-}, { timestamp: true });
+}, { timestamp: true , collection: 'usersinfo' });
+
 
 userSchema.virtual('password')
     .set(function(password){

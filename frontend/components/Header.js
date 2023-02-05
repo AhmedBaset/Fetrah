@@ -19,8 +19,6 @@ import {
 } from "reactstrap";
 import { useRouter } from "next/router";
 
-
-
 const Header = (props) => {
   const router = useRouter();
 
@@ -43,16 +41,11 @@ const Header = (props) => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="me-auto" navbar>
-            {!isAuthenticated && (
-              <>
-                <NavItem>
-                  <NavLink href="/signup/">Signup</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="/signin">Signin</NavLink>
-                </NavItem>
-              </>
-            )}
+            <>
+              <NavItem>
+                <NavLink href="/blogs/">Blogs</NavLink>
+              </NavItem>
+            </>
 
             {isAuthenticated && (
               <NavItem>
