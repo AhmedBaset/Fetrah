@@ -35,9 +35,7 @@ export const singleTag = (slug) => {
   return fetch(`${API}/api/tag/${slug}`, {
     method: "GET",
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Accept: "application/json"
     }
   })
     .then((response) => {

@@ -118,7 +118,7 @@ exports.list = (req, res)=>{
 
 exports.listAllBlogsCategoriesTags = (req, res)=>{
   let limit = req.body.limit ? parseInt(req.body.limit) : 10 
-  let skip = req.body.skip ? parseIn(req.body.skip) : 0 
+  let skip = req.body.skip ? parseInt(req.body.skip) : 0 
 
   let blogs
   let categories
@@ -128,7 +128,7 @@ exports.listAllBlogsCategoriesTags = (req, res)=>{
   .populate('categories', '_id name slug')
   .populate('tags', '_id name slug')
   .populate('postedBy', '_id name username profile')
-  .sort({createAt: -1})
+  .sort({createdAt: -1})
   .skip(skip)
   .limit(limit)
   .select('_id title slug excerpt categories tags postedBy createdAt updatedAt')
@@ -260,4 +260,24 @@ exports.photo = (req, res) => {
     res.set('Content-Type', data.photo.contentType);
     return res.send(data.photo.data);
   });
+};
+
+exports.listRelatedBlogs = (req, res) => {
+  let limit = req.body.limit ? parseInt(req.body.limit) : 3;
+
+  const {_id, categories} = req.body.blog;
+  
+  Blog.find({_id: {$ne: _id}, categories: {$in: categories}})
+  .limit(limit)
+  .populate('postedBy', '_id name profile')
+  .select('title slug excerpt postedBy createdAt updatedAt')
+  .exec((err, blogs)=> {
+    if(err){
+      return res.status(400).json({
+        error: 'Blogs not found'
+      })
+    }
+    return res.json(blogs);
+  })
+
 };

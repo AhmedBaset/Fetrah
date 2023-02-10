@@ -20,9 +20,11 @@
     "formidable": "^2.1.1",
     "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
+    "moment": "^2.29.4",
     "mongoose": "^6.8.3",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.20",
+    "react-render-html": "^0.6.0",
     "short-id": "^0.1.0-1",
     "slugify": "^1.6.5",
     "string-strip-html": "^8.3.0"

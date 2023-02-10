@@ -45,6 +45,11 @@ const Header = (props) => {
               <NavItem>
                 <NavLink href="/blogs/">Blogs</NavLink>
               </NavItem>
+              {!isAuthenticated && (
+                <NavItem>
+                  <NavLink href="/signin/">Signin</NavLink>
+                </NavItem>
+              )}
             </>
 
             {isAuthenticated && (

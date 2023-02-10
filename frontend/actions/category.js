@@ -35,9 +35,7 @@ export const singleCategory = (slug) => {
   return fetch(`${API}/api/category/${slug}`, {
     method: "GET",
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Accept: "application/json"
     },
   })
     .then((response) => {

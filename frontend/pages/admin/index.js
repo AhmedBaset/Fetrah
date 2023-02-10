@@ -13,13 +13,16 @@ const AdminIndex = () => {
           <div className="col-md-4">
             <ul className="list-group">
               <li className="list-group-item">
-                <Link href="/admin/crud/category-tag">Create Ctegory</Link>
+                <Link style={{textDecoration: "none"}} href="/admin/crud/category-tag">Create Ctegory</Link>
               </li>
               <li className="list-group-item">
-                <Link href="/admin/crud/category-tag">Create Tag</Link>
+                <Link style={{textDecoration: "none"}} href="/admin/crud/category-tag">Create Tag</Link>
               </li>
               <li className="list-group-item">
-                <Link href="/admin/crud/blog">Create Blog</Link>
+                <Link style={{textDecoration: "none"}} href="/admin/crud/blog">Create Blog</Link>
+              </li>
+              <li className="list-group-item">
+                <Link style={{textDecoration: "none"}} href="/admin/crud/blogs">Update/Delete Blog</Link>
               </li>
               {/* <li className="list-group-item">Item two </li>
               <li className="list-group-item">Item three </li>

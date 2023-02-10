@@ -51,7 +51,7 @@ const userSchema = mongoose.Schema({
         data: String,
         default: ''
     }
-}, { timestamp: true , collection: 'usersinfo' });
+}, { timestamps: true , collection: 'usersinfo' });
 
 
 userSchema.virtual('password')

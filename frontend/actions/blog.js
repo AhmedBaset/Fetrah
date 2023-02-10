@@ -8,7 +8,7 @@ export const createBlog = (blog, token) => {
       Accept: "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: blog
+    body: blog,
   })
     .then((response) => {
       return response.json();
@@ -16,13 +16,86 @@ export const createBlog = (blog, token) => {
     .catch((err) => console.log(err));
 };
 
-export const listBlogsWithCategoriesAndTags = () => fetch(`${API}/api/blogs-categories-tags`, {
-  method: "POST",
-  headers: {
-    Accept: "application/json"
-  }
-})
-  .then((response) => {
-    return response.json();
+export const listBlogsWithCategoriesAndTags = (skip, limit) => {
+  const data = {
+    limit,
+    skip,
+  };
+  return fetch(`${API}/api/blogs-categories-tags`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
   })
-  .catch((err) => console.log(err));
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const getSingleBlog = (slug = undefined) => {
+  return fetch(`${API}/api/blog/${slug}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const listRelatedBlogs = (blog) => {
+  return fetch(`${API}/api/blogs/related`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(blog),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const list = (slug = undefined) => {
+  return fetch(`${API}/api/blogs`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const removeBlog = (slug, token) => {
+  return fetch(`${API}/api/blog/${slug}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const updateBlog = (blog, token, slug) => {
+  return fetch(`${API}/api/blog/${slug}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: blog,
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
