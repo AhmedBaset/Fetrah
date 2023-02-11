@@ -24,10 +24,9 @@ const AdminIndex = () => {
               <li className="list-group-item">
                 <Link style={{textDecoration: "none"}} href="/admin/crud/blogs">Update/Delete Blog</Link>
               </li>
-              {/* <li className="list-group-item">Item two </li>
-              <li className="list-group-item">Item three </li>
-              <li className="list-group-item">Item four </li>
-              <li className="list-group-item">Item five </li> */}
+              <li className="list-group-item">
+                <Link style={{textDecoration: "none"}} href="/user/update">Update profile</Link>
+              </li>
             </ul>
           </div>
           <div className="col-md-8">Right</div>

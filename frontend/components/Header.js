@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { APP_NAME } from "../config";
 
 import { isAuth, signout } from "../actions/auth";
+import Search from "./blog/Search";
 
 import {
   Collapse,
@@ -33,7 +34,7 @@ const Header = (props) => {
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <div>
+    <>
       <Navbar {...props}>
         <NavbarBrand className="font-weight-bold" href="/">
           {APP_NAME}
@@ -85,7 +86,8 @@ const Header = (props) => {
           </Nav>
         </Collapse>
       </Navbar>
-    </div>
+      <Search/>
+    </>
   );
 };
 

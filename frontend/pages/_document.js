@@ -11,7 +11,6 @@ class MyDocument extends Document {
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.rtl.min.css"
           />
-
         </Head>
         <body>
           <Main />

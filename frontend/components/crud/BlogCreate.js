@@ -15,7 +15,6 @@ const ReactQuill = dynamic(import("react-quill"), {
 import "../../node_modules/react-quill/dist/quill.snow.css";
 import {QuillFormats, QuillModules} from '../../helpers/quill';
 
-
 const BlogCreate = ({ router }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const onCategoryChecked = (selected) => {

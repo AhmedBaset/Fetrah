@@ -16,8 +16,6 @@ const Card = ({ blog, parser }) => {
     })
   };
 
-  
-
   const showBlogTags= (tag) => {
     return blog.tags.map((tag, i)=>{
         return (
@@ -37,7 +35,7 @@ const Card = ({ blog, parser }) => {
       </header>
       <section>
         <p className="mark ms-1 pt-2 pb-2">
-          Written by {blog.postedBy.name} | Published{" "}
+          Written by <Link href={`/profile/${blog.postedBy.username}`}>{blog.postedBy.username}</Link> | Published{" "}
           {moment(blog.updatedAt).fromNow()}
         </p>
       </section>

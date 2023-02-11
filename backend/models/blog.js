@@ -30,19 +30,19 @@ const blogSchema = mongoose.Schema(
       type: String,
     },
     mDescription: {
-        type: String,
-      },
+      type: String,
+    },
 
     photo: {
       data: Buffer,
       contentType: String,
     },
-    categories: [{type: mongoose.ObjectId, ref: 'Category', required: true}],
-    tags: [{type: mongoose.ObjectId, ref: 'Tag', required: true}],
+    categories: [{ type: mongoose.ObjectId, ref: "Category", required: true }],
+    tags: [{ type: mongoose.ObjectId, ref: "Tag", required: true }],
     postedBy: {
-        type: mongoose.ObjectId,
-        ref: 'User'
-    }
+      type: mongoose.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );
