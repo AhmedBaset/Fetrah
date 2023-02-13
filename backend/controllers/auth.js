@@ -4,10 +4,10 @@ const shortId = require("short-id");
 
 const jwt = require("jsonwebtoken");
 
+const { errorHandler } = require("../helpers/dbErrorHandler");
+
 const { expressjwt: expressJwt } = require("express-jwt");
-
-
-
+const Blog = require("../models/blog");
 
 exports.signup = (req, res) => {
   User.findOne({ email: req.body.email }).exec((err, user) => {
@@ -78,7 +78,7 @@ exports.signout = (req, res) => {
 exports.requireSignIn = expressJwt({
   secret: process.env.JWT_SECRET,
   algorithms: ["HS256"],
-//   userProperty: "auth",
+  //   userProperty: "auth",
 });
 
 exports.authMiddleware = (req, res, next) => {
@@ -104,12 +104,31 @@ exports.adminMiddleware = (req, res, next) => {
     }
 
     if (user.role !== 1) {
-        return res.status(400).json({
-            error: "Admin resource. Access denied",
-          });
+      return res.status(400).json({
+        error: "Admin resource. Access denied",
+      });
     }
 
     req.profile = user;
+    next();
+  });
+};
+
+exports.canUpdateAndDelete = (req, res, next) => {
+  const slug = req.params.slug.toLowerCase();
+  Blog.findOne({ slug }).exec((err, data) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler(err),
+      });
+    }
+    let isAuthorizedUser = data.postedBy._id.toString() === req.profile._id.toString();
+
+    if(!isAuthorizedUser){
+      return res.status(400).json({
+        error: 'You are not authorized',
+      });
+    }
     next();
   });
 };

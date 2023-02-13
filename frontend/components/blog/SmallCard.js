@@ -15,6 +15,7 @@ const SmallCard = ({ blog, parser }) => {
               height="400"
               width="300"
               style={{
+                height: "200px",
                 maxHeight: "200px",
                 width: "100%",
                 objectFit: "contain",

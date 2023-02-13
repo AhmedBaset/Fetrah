@@ -1,7 +1,7 @@
 const Blog = require("../models/blog");
 const Category = require("../models/category");
 const Tag = require("../models/tag");
-
+const User = require("../models/user");
 const fs = require("fs");
 const formidable = require("formidable");
 const slugify = require("slugify");
@@ -194,61 +194,61 @@ exports.update = (req, res) => {
   const slug = req.params.slug.toLowerCase();
 
   Blog.findOne({ slug }).exec((err, oldBlog) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler(err),
+      });
+    }
+
+    let form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+
+    form.parse(req, (err, fields, files) => {
       if (err) {
-          return res.status(400).json({
-              error: errorHandler(err)
-          });
+        return res.status(400).json({
+          error: "Image could not upload",
+        });
       }
 
-      let form = new formidable.IncomingForm();
-      form.keepExtensions = true;
+      let slugBeforeMerge = oldBlog.slug;
+      oldBlog = _.merge(oldBlog, fields);
+      oldBlog.slug = slugBeforeMerge;
 
-      form.parse(req, (err, fields, files) => {
-          if (err) {
-              return res.status(400).json({
-                  error: 'Image could not upload'
-              });
-          }
+      const { body, mDescription, categories, tags } = fields;
 
-          let slugBeforeMerge = oldBlog.slug;
-          oldBlog = _.merge(oldBlog, fields);
-          oldBlog.slug = slugBeforeMerge;
+      if (body) {
+        oldBlog.excerpt = smartTrim(body, 320, " ", " ...");
+        oldBlog.mDescription = stripHtml(body.substring(0, 160)).result;
+      }
 
-          const { body, mDescription, categories, tags } = fields;
+      if (categories) {
+        oldBlog.categories = categories.split(",");
+      }
 
-          if (body) {
-              oldBlog.excerpt = smartTrim(body, 320, ' ', ' ...');
-              oldBlog.mDescription = stripHtml(body.substring(0, 160)).result;
-          }
+      if (tags) {
+        oldBlog.tags = tags.split(",");
+      }
 
-          if (categories) {
-              oldBlog.categories = categories.split(',');
-          }
-
-          if (tags) {
-              oldBlog.tags = tags.split(',');
-          }
-
-          if (files.photo) {
-              if (files.photo.size > 10000000) {
-                  return res.status(400).json({
-                      error: 'Image should be less then 1mb in size'
-                  });
-              }
-              oldBlog.photo.data = fs.readFileSync(files.photo.filepath);
-              oldBlog.photo.contentType = files.photo.type;
-          }
-
-          oldBlog.save((err, result) => {
-              if (err) {
-                  return res.status(400).json({
-                      error: err
-                  });
-              }
-              // result.photo = undefined;
-              res.json(result);
+      if (files.photo) {
+        if (files.photo.size > 10000000) {
+          return res.status(400).json({
+            error: "Image should be less then 1mb in size",
           });
+        }
+        oldBlog.photo.data = fs.readFileSync(files.photo.filepath);
+        oldBlog.photo.contentType = files.photo.type;
+      }
+
+      oldBlog.save((err, result) => {
+        if (err) {
+          return res.status(400).json({
+            error: err,
+          });
+        }
+        // result.photo = undefined;
+        res.json(result);
       });
+    });
   });
 };
 
@@ -305,7 +305,31 @@ exports.listSearch = (req, res) => {
         }
         return res.json(blogs);
       }
-    )
-    .select("-photo -body");
+    ).select("-photo -body");
   }
+};
+
+exports.listByUser = (req, res) => {
+  User.findOne({ username: req.params.username }).exec((err, user) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler(err),
+      });
+    }
+    
+    let userId = user._id;
+    Blog.find({ postedBy: userId })
+      .populate("categories", "_id name slug")
+      .populate("tags", "_id name slug")
+      .populate("postedBy", "_id name username")
+      .select("_id title slug postedBy createdAt updatedAt")
+      .exec((err, data) => {
+        if (err) {
+          return res.status(400).json({
+            error: errorHandler(err),
+          });
+        }
+        res.json(data);
+      });
+  });
 };

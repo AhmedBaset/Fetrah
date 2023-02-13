@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { getCookie, isAuth } from "../../actions/auth";
 import { list, removeBlog } from "../../actions/blog";
 
-const ReadBlogs = (props) => {
+const ReadBlogs = ({ username }) => {
   const [blogs, setBlogs] = useState([]);
   const [message, setMessage] = useState("");
   const token = getCookie("token");
@@ -14,7 +14,7 @@ const ReadBlogs = (props) => {
   }, []);
 
   const loadBlogs = () => {
-    list().then((data) => {
+    list(username).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
@@ -46,14 +46,18 @@ const ReadBlogs = (props) => {
 
     if (isAuth() && isAuth().role === 0) {
       //path for normal user
-      path = `/user/crud/blog/${blog.slug}`;
+      path = `/user/crud/${blog.slug}`;
     } else if (isAuth() && isAuth().role === 1) {
       //path for admin user
       path = `/admin/crud/${blog.slug}`;
     }
     console.log(isAuth());
     return (
-      <Link className="me-2 btn btn-sm btn-warning" style={{ textDecoration: "none" }} href={`${path}`}>
+      <Link
+        className="me-2 btn btn-sm btn-warning"
+        style={{ textDecoration: "none" }}
+        href={`${path}`}
+      >
         Update
       </Link>
     );

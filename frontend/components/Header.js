@@ -83,10 +83,16 @@ const Header = (props) => {
                 </NavLink>
               </NavItem>
             )}
+
+            <NavItem>
+              <NavLink className="btn btn-primary text-white pe-3 ps-3 rounded-pill" href="/user/crud/blog">
+                Write a blog
+              </NavLink>
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>
-      <Search/>
+      <Search />
     </>
   );
 };
