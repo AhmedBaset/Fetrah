@@ -1,7 +1,7 @@
 import fetch from "isomorphic-fetch";
 import { API } from "../config";
 import queryStrting from "query-string";
-import { isAuth } from "./auth";
+import { isAuth, handleResponse } from "./auth";
 
 export const createBlog = (blog, token) => {
   let createBlogEndPoint;
@@ -21,6 +21,7 @@ export const createBlog = (blog, token) => {
     body: blog,
   })
     .then((response) => {
+      handleResponse(response);
       return response.json();
     })
     .catch((err) => console.log(err));

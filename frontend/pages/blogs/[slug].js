@@ -10,6 +10,7 @@ import classes from "../../styles/SingleBlog.module.css";
 import moment from "moment/moment";
 import SmallCard from "../../components/blog/SmallCard";
 
+
 const SingleBlog = ({ blog, query }) => {
   const [relatedBlogs, setRelatedBlogs] = useState([]);
 
@@ -89,6 +90,14 @@ const SingleBlog = ({ blog, query }) => {
     });
   };
 
+  const showComments = ()=> {
+    return (
+      <div>
+          Show Comments
+      </div>
+    )
+  };
+
   return (
     <>
       {head()}
@@ -140,7 +149,7 @@ const SingleBlog = ({ blog, query }) => {
             </div>
 
             <div className="container pb-5">
-              <p>Show comments</p>
+              {showComments()}
             </div>
           </article>
         </main>

@@ -4,6 +4,7 @@ import Layout from "../../components/Layout";
 import { userPublicProfile } from "../../actions/user";
 import { API, DOMAIN, APP_NAME, FB_APP_ID } from "../../config";
 import moment from "moment/moment";
+import ContactForm from '../../components/form/ContactForm';
 
 const UserProfile = ({ user, blogs, query }) => {
   const showUserBlogs = () => {
@@ -98,7 +99,7 @@ const UserProfile = ({ user, blogs, query }) => {
                 <div className="card-body">
                   <h5 className="card-title bg-primary pt-4 pb-4 pe-4 ps-4 text-white">{`Message ${user.name}`}</h5>
                   <br />
-                  <p>Contact form</p>
+                  <ContactForm authorEmail={user.email} />
                 </div>
               </div>
             </div>

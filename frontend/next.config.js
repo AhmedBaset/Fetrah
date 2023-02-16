@@ -6,6 +6,7 @@ module.exports = {
         PRODUCTION: false,
         DOMAIN_DEVELOPMENT: "http://localhost:3000",
         DOMAIN_PRODUCTION: "",
-        FB_APP_ID: "6217301571635680"
+        FB_APP_ID: "6217301571635680",
+        DISQUS_SHORTNAME: 'myblog-7ud2avldy6'
     }
 };

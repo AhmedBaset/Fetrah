@@ -9,6 +9,8 @@ const { errorHandler } = require("../helpers/dbErrorHandler");
 const { expressjwt: expressJwt } = require("express-jwt");
 const Blog = require("../models/blog");
 
+
+
 exports.signup = (req, res) => {
   User.findOne({ email: req.body.email }).exec((err, user) => {
     if (user) {

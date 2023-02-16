@@ -31,12 +31,17 @@ const SmallCard = ({ blog, parser }) => {
           <Link style={{ textDecoration: "none" }} href={`/blogs/${blog.slug}`}>
             <h5 className="card-title">{blog.title}</h5>
           </Link>
-          <p className="card-text">{blogExcerpt}</p>
+
+          <div className="card-text">{blogExcerpt}</div>
         </section>
       </div>
       <div className="card-body">
         Posted {moment(blog.updatedAt).fromNow()} by{" "}
-        <Link style={{ textDecoration: "none" }} className="float-start link-primary" href={`/`}>
+        <Link
+          style={{ textDecoration: "none" }}
+          className="float-start link-primary"
+          href={`/`}
+        >
           {blog.postedBy.username}
         </Link>
       </div>
