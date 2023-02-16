@@ -7,9 +7,12 @@ const jwt = require("jsonwebtoken");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
 const { expressjwt: expressJwt } = require("express-jwt");
+
 const Blog = require("../models/blog");
 
+const { sendEmailForgotPassword } = require("../helpers/email");
 
+const _ = require("lodash");
 
 exports.signup = (req, res) => {
   User.findOne({ email: req.body.email }).exec((err, user) => {
@@ -55,7 +58,7 @@ exports.signin = (req, res) => {
       });
     }
 
-    //generate a token and it to client
+    //generate a token and send it to client
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1y",
     });
@@ -124,13 +127,94 @@ exports.canUpdateAndDelete = (req, res, next) => {
         error: errorHandler(err),
       });
     }
-    let isAuthorizedUser = data.postedBy._id.toString() === req.profile._id.toString();
+    let isAuthorizedUser =
+      data.postedBy._id.toString() === req.profile._id.toString();
 
-    if(!isAuthorizedUser){
+    if (!isAuthorizedUser) {
       return res.status(400).json({
-        error: 'You are not authorized',
+        error: "You are not authorized",
       });
     }
     next();
   });
+};
+
+exports.forgotPassword = (req, res) => {
+  const { email } = req.body;
+  User.findOne({ email }, (err, user) => {
+    if (err || !user) {
+      return res
+        .status(401)
+        .json({ error: "User with that email is not found" });
+    }
+
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_RESET_PASSWORD, {
+      expiresIn: "10m",
+    });
+    //email
+    const emailData = {
+      from: process.env.EMAIL_FROM, // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
+      to: email, // WHO SHOULD BE RECEIVING THIS EMAIL? IT SHOULD BE YOUR GMAIL
+      subject: `Password reset link - ${process.env.APP_NAME}`,
+      html: `
+          <h4>Email received from contact form:</h4>
+          <p>Please use the following link to reset your password :</p>
+          <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+          <hr />
+          <p>This email may contain sensitive information</p>
+          <p>https://onemancode.com</p>
+      `,
+    };
+
+    //populate db with user > resetPasswordLink
+    return user.updateOne({ resetPasswordLink: token }, (err, success) => {
+      if (err) {
+        return res.json({ error: errorHandler(err) });
+      } else {
+        sendEmailForgotPassword(req, res, emailData);
+      }
+    });
+  });
+};
+
+exports.resetPassword = (req, res) => {
+  const { resetPasswordLink, newPassword } = req.body;
+
+  if (resetPasswordLink) {
+    jwt.verify(
+      resetPasswordLink,
+      process.env.JWT_RESET_PASSWORD,
+      function (err, decoded) {
+        if (err) {
+          return res.status(401).json({
+            error: "Expired link ... try again",
+          });
+        }
+        User.findOne({ resetPasswordLink }, (error, user) => {
+          if (err || !user) {
+            return res.status(401).json({
+              error: user,
+            });
+          }
+
+          const updatedFields = {
+            password: newPassword,
+            resetPasswordLink: "",
+          };
+          user = _.extend(user, updatedFields);
+
+          user.save((err, result) => {
+            if (err) {
+              return res.status(400).json({
+                error: errorHandler(err)
+              });
+            }
+            res.json({
+              message: "Great! now you can signin with your new password",
+            })
+          });
+        });
+      }
+    );
+  }
 };
