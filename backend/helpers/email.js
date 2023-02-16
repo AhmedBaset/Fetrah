@@ -50,3 +50,28 @@ exports.sendEmailForgotPassword = (req, res, emailData) => {
     })
     .catch((err) => console.log(`Problem sending email: ${err}`));
 };
+
+exports.sendEmailAccountActivation = (req, res, emailData) => {
+  const transporter = nodeMailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    requireTLS: true,
+    auth: {
+      user: "ahmed.fathy1445@gmail.com", // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
+      pass: "skqouwnknnpvgadk", // MAKE SURE THIS PASSWORD IS YOUR GMAIL APP PASSWORD WHICH YOU GENERATED EARLIER
+    },
+    tls: {
+      ciphers: "SSLv3",
+    },
+  });
+
+  return transporter
+    .sendMail(emailData)
+    .then((info) => {
+      return res.json({
+        message: `Activation Email has sent to ${emailData.to}`,
+      });
+    })
+    .catch((err) => console.log(`Problem sending email: ${err}`));
+};

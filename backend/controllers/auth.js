@@ -10,36 +10,112 @@ const { expressjwt: expressJwt } = require("express-jwt");
 
 const Blog = require("../models/blog");
 
-const { sendEmailForgotPassword } = require("../helpers/email");
+const {
+  sendEmailForgotPassword,
+  sendEmailAccountActivation,
+} = require("../helpers/email");
 
 const _ = require("lodash");
 
-exports.signup = (req, res) => {
-  User.findOne({ email: req.body.email }).exec((err, user) => {
+exports.preSignup = (req, res) => {
+  const { name, email, password } = req.body;
+  User.findOne({ email: email.toLowerCase() }, (err, user) => {
     if (user) {
       return res.status(400).json({
         error: "Email is taken",
       });
     }
 
-    const { name, email, password } = req.body;
-    let username = shortId.generate();
+    const token = jwt.sign(
+      { name, email, password },
+      process.env.JWT_ACCOUNT_ACTIVATION,
+      {
+        expiresIn: "10m",
+      }
+    );
 
-    let profile = `${process.env.CLIENT_URL}/profile/${username}`;
+    const emailData = {
+      from: process.env.EMAIL_FROM, // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
+      to: email, // WHO SHOULD BE RECEIVING THIS EMAIL? IT SHOULD BE YOUR GMAIL
+      subject: `Account activation link - ${process.env.APP_NAME}`,
+      html: `
+          <h4>Email received from contact form:</h4>
+          <p>Please use the following link to activate your account :</p>
+          <p>${process.env.CLIENT_URL}/auth/account/activate/${token}</p>
+          <hr />
+          <p>This email may contain sensitive information</p>
+          <p>https://onemancode.com</p>
+      `,
+    };
 
-    let newUser = new User({ name, email, password, profile, username });
+    sendEmailAccountActivation(req, res, emailData);
+  });
+};
 
-    newUser.save((err, success) => {
-      if (err) {
-        return res.status(400).json({
-          error: err,
+// exports.signup = (req, res) => {
+//   User.findOne({ email: req.body.email }).exec((err, user) => {
+//     if (user) {
+//       return res.status(400).json({
+//         error: "Email is taken",
+//       });
+//     }
+
+//     const { name, email, password } = req.body;
+//     let username = shortId.generate();
+
+//     let profile = `${process.env.CLIENT_URL}/profile/${username}`;
+
+//     let newUser = new User({ name, email, password, profile, username });
+
+//     newUser.save((err, success) => {
+//       if (err) {
+//         return res.status(400).json({
+//           error: err,
+//         });
+//       }
+//       res.json({
+//         message: "Signup success! Please signin",
+//       });
+//     });
+//   });
+// };
+
+exports.signup = (req, res) => {
+  const token = req.body.token;
+  if (token) {
+    jwt.verify(
+      token,
+      process.env.JWT_ACCOUNT_ACTIVATION,
+      function (err, decoded) {
+        if (err) {
+          return res.status(401).json({
+            error: "Expired link. Signup again",
+          });
+        }
+
+        const { name, email, password } = jwt.decode(token);
+
+        let username = shortId.generate();
+        let profile = `${process.env.CLIENT_URL}/profile/${username}`;
+
+        const user = new User({ name, email, password, profile, username });
+        user.save((err, user) => {
+          if (err) {
+            return res.status(401).json({
+              error: errorHandler(err),
+            });
+          }
+          return res.json({
+            message: "Singup success! Please signin",
+          });
         });
       }
-      res.json({
-        message: "Signup success! Please signin",
-      });
+    );
+  } else {
+    return res.json({
+      message: "Something went wrong. Try again",
     });
-  });
+  }
 };
 
 exports.signin = (req, res) => {
@@ -206,12 +282,12 @@ exports.resetPassword = (req, res) => {
           user.save((err, result) => {
             if (err) {
               return res.status(400).json({
-                error: errorHandler(err)
+                error: errorHandler(err),
               });
             }
             res.json({
               message: "Great! now you can signin with your new password",
-            })
+            });
           });
         });
       }

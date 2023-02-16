@@ -32,7 +32,6 @@ const SigninComponent = () => {
         // save user token to cookie
         // save user info to local storage
         // authenticate user
-        console.log("");
         authenticate(data, () => {
           if(isAuth() && isAuth.role === 1){
             router.replace('/admin');
