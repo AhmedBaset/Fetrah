@@ -1,19 +1,21 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { preSignup, isAuth} from "../../actions/auth";
-
+import { preSignup, isAuth } from "../../actions/auth";
+import { Button, ButtonGroup } from "reactstrap";
 const SignupComponent = () => {
   const router = useRouter();
-  
+
   useEffect(() => {
-    if(isAuth()){
-      router.replace('/');
+    if (isAuth()) {
+      router.replace("/");
     }
-  } ,[])
+  }, []);
 
   const [values, setValues] = useState({
+    gender: "",
     name: "Ahmed",
-    email: "ahmed@gmail.com",
+    email: "libgdxengine@gmail.com",
+    phone: "01019867911",
     password: "ahmed1998",
     error: "",
     loading: false,
@@ -21,10 +23,22 @@ const SignupComponent = () => {
     showForm: true,
   });
 
+  const {
+    gender,
+    name,
+    email,
+    phone,
+    password,
+    error,
+    loading,
+    message,
+    showForm,
+  } = values;
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, loading: true, error: false });
-    const user = { name, email, password };
+    const user = { gender, name, email, password, phone };
     preSignup(user).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error, loading: false });
@@ -34,6 +48,7 @@ const SignupComponent = () => {
           name: "",
           email: "",
           password: "",
+          phone: "",
           loading: false,
           message: data.message,
           showForm: false,
@@ -45,8 +60,6 @@ const SignupComponent = () => {
   const handleChange = (name) => (event) => {
     setValues({ ...values, error: false, [name]: event.target.value });
   };
-
-  const { name, email, password, error, loading, message, showForm } = values;
 
   const showLoading = () =>
     loading ? (
@@ -76,6 +89,32 @@ const SignupComponent = () => {
   const SignupForm = () => {
     return (
       <form onSubmit={handleSubmit}>
+        <div className="btn-group">
+          <li className="list-unstyled m-2">
+            <ButtonGroup>
+              <Button
+                color="primary"
+                outline
+                onClick={() => setValues({ ...values, gender: "woman" })}
+                active={gender === "woman"}
+              >
+                Woman
+              </Button>
+            </ButtonGroup>
+          </li>
+          <li className="list-unstyled m-2">
+            <ButtonGroup>
+              <Button
+                color="primary"
+                outline
+                onClick={() => setValues({ ...values, gender: "man" })}
+                active={gender === "man"}
+              >
+                Man
+              </Button>
+            </ButtonGroup>
+          </li>
+        </div>
         <div className="form-group m-3">
           <label htmlFor="Name">Name</label>
           <input
@@ -99,6 +138,17 @@ const SignupComponent = () => {
           />
         </div>
         <div className="form-group m-3">
+          <label htmlFor="phone">Phone</label>
+          <input
+            onChange={handleChange("phone")}
+            type="tel"
+            className="form-control"
+            id="phone"
+            value={phone}
+            placeholder="Type your Email"
+          />
+        </div>
+        <div className="form-group m-3">
           <label htmlFor="Password">Password</label>
           <input
             onChange={handleChange("password")}
@@ -117,13 +167,14 @@ const SignupComponent = () => {
     );
   };
 
-  return <>
-  {showError()}
-  {showLoading()}
-  {showMessage()}
-  {showForm && SignupForm()}
-  
-  </>;
+  return (
+    <>
+      {showError()}
+      {showLoading()}
+      {showMessage()}
+      {showForm && SignupForm()}
+    </>
+  );
 };
 
 export default SignupComponent;

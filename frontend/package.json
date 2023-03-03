@@ -15,6 +15,7 @@
   "dependencies": {
     "html-to-react": "^1.5.0",
     "isomorphic-fetch": "^3.0.0",
+    "jquery": "^3.6.3",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
@@ -26,6 +27,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-quill": "^2.0.0",
-    "reactstrap": "^9.1.5"
+    "reactstrap": "^9.1.5",
+    "sass": "^1.58.3"
   }
 }

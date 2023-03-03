@@ -1,0 +1,39 @@
+body {
+    font-family: "Muli-Regular";
+    font-size: 15px;
+    color: #999;
+ 
+    margin: 0; }
+  
+  :focus {
+    outline: none; }
+  
+  textarea {
+    direction: rtl;
+    resize: none; }
+  
+  input, textarea, select, button {
+
+    font-family: "Muli-Regular";
+    font-size: 15px; }
+  
+  p, h1, h2, h3, h4, h5, h6, ul {
+    direction: rtl;
+    margin: 0; }
+  
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none; }
+  
+  a {
+    direction: rtl;
+    text-decoration: none; }
+  
+  textarea {
+    direction: rtl;
+    resize: none; }
+  
+  img {
+    direction: rtl;
+    max-width: 100%; }

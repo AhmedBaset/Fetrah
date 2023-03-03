@@ -3,7 +3,8 @@ import Script from "next/script";
 
 import Router from "next/router";
 import NProgress from "nprogress"; //nprogress module
-import '../styles/nprogress.css';
+import "../styles/nprogress.css";
+import "../styles/style.css";
 
 //Binding events.
 Router.events.on("routeChangeStart", () => NProgress.start());

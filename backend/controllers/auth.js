@@ -18,7 +18,7 @@ const {
 const _ = require("lodash");
 
 exports.preSignup = (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, phone, gender } = req.body;
   User.findOne({ email: email.toLowerCase() }, (err, user) => {
     if (user) {
       return res.status(400).json({
@@ -27,10 +27,10 @@ exports.preSignup = (req, res) => {
     }
 
     const token = jwt.sign(
-      { name, email, password },
+      { name, email, password, phone, gender },
       process.env.JWT_ACCOUNT_ACTIVATION,
       {
-        expiresIn: "10m",
+        expiresIn: "30m",
       }
     );
 
@@ -93,12 +93,12 @@ exports.signup = (req, res) => {
           });
         }
 
-        const { name, email, password } = jwt.decode(token);
+        const { name, email, password, phone, gender } = jwt.decode(token);
 
         let username = shortId.generate();
         let profile = `${process.env.CLIENT_URL}/profile/${username}`;
 
-        const user = new User({ name, email, password, profile, username });
+        const user = new User({ name, email, password, profile, username, phone, gender });
         user.save((err, user) => {
           if (err) {
             return res.status(401).json({
