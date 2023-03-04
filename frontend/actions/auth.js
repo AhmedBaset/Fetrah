@@ -33,14 +33,34 @@ export const preSignup = (user) => {
     .catch((err) => console.log(err));
 };
 
-export const signup = (user) => {
+export const createIDphoto = (token, user) => {
+  return fetch(`${API}/api/user/createIDphoto`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: user,
+  })
+    .then((response) => {
+      // handleResponse(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const signup = (user, questions) => {
+  var object = {};
+  questions.forEach((value, key) => (object[key] = value));
+  var questionsList = object;
+
   return fetch(`${API}/api/signup`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(user),
+    body: JSON.stringify({ user, questionsList: questionsList }),
   })
     .then((response) => {
       return response.json();

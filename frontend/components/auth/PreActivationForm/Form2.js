@@ -50,6 +50,7 @@ const Form1 = (props) => {
   const handleAboutMeBlur = (e) => {
     setAboutMeIsTouched(true);
   };
+  const btnText = userGender === "man" ? "التالي" : "تفعيل الحساب";
 
   const onNextClicked = (e) => {
     e.preventDefault();
@@ -57,15 +58,14 @@ const Form1 = (props) => {
       setError("يجب أن تكتب أكثر عن نفسك");
       return;
     }
-    formData.set("aboutMe", aboutMe);
+    formData.set("10", aboutMe);
     if (aboutYourPartnerIsInValid) {
       setError("يجب أن تكتب مواصفات زوجك");
       return;
     }
-    formData.set("aboutYourPartner", aboutYourPartner);
-    if (userGender === "man") {
-      props.next(3, formData);
-    }
+    formData.set("11", aboutYourPartner);
+
+    props.next(3, formData);
   };
   return (
     <>
@@ -144,7 +144,7 @@ const Form1 = (props) => {
                   onClick={onNextClicked}
                   className="btn btn-secondary pe-4 ps-4"
                 >
-                  التالي
+                  {btnText}
                 </button>
               </div>
             </div>

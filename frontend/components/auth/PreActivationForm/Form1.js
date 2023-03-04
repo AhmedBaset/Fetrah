@@ -129,7 +129,7 @@ const Form1 = (props) => {
       setError("يجب أن تختار حالتك الاجتماعية أولا!");
       return;
     }
-    formData.set("status", generalStatus);
+    formData.set("0", generalStatus);
     if (generalStatus !== "أعزب") {
       if (malesChild === "") {
         setError("يجب أن تختار عدد أولادك الذكور!");
@@ -140,43 +140,43 @@ const Form1 = (props) => {
         return;
       }
     }
-    formData.set("malesChild", malesChild);
-    formData.set("femalesChild", femalesChild);
+    formData.set("2", malesChild);
+    formData.set("3", femalesChild);
     if (country === "") {
       setError("يجب أن تختار بلدك!");
       return;
     }
-    formData.set("country", country);
+    formData.set("1", country);
     if (height === "" || heightIsInValid) {
       setError("يجب أن تحدد طولك!");
       return;
     }
-    formData.set("height", height);
+    formData.set("4", height);
     if (weight === "" || weigthIsInValid) {
       setError("يجب أن تحدد وزنك!");
       return;
     }
-    formData.set("weight", weight);
+    formData.set("5", weight);
     if (skinColor === "") {
       setError("يجب أن تحدد لون بشرتك!");
       return;
     }
-    formData.set("skinColor", skinColor);
+    formData.set("7", skinColor);
     if (age === "" || ageIsInValid) {
       setError("يجب أن تحدد عمرك!");
       return;
     }
-    formData.set("age", age);
+    formData.set("6", age);
     if (job === "" || jobIsInValid) {
       setError("يجب أن تحدد وظيفتك!");
       return;
     }
-    formData.set("job", job);
+    formData.set("8", job);
     if (certificate === "" || certificateIsInValid) {
       setError("يجب أن تحدد مؤهلك التعليمي!");
       return;
     }
-    formData.set("certificate", certificate);
+    formData.set("9", certificate);
 
     // go to next form
     props.next(2, formData);

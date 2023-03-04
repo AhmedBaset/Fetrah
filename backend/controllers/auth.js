@@ -10,6 +10,8 @@ const { expressjwt: expressJwt } = require("express-jwt");
 
 const Blog = require("../models/blog");
 
+const formidable = require('formidable');
+
 const {
   sendEmailForgotPassword,
   sendEmailAccountActivation,
@@ -81,7 +83,13 @@ exports.preSignup = (req, res) => {
 // };
 
 exports.signup = (req, res) => {
-  const token = req.body.token;
+  const token = req.body.user.token;
+  const questionsObject = req.body.questionsList;
+  const questionsMap = new Map(Object.entries(questionsObject));
+  const idPhoto1 = questionsMap.get('idPhoto1');
+  const idPhoto2 = questionsMap.get('idPhoto2');
+  questionsMap.delete('idPhoto1');
+  questionsMap.delete('idPhoto2');
   if (token) {
     jwt.verify(
       token,
@@ -92,13 +100,25 @@ exports.signup = (req, res) => {
             error: "Expired link. Signup again",
           });
         }
-
+  
         const { name, email, password, phone, gender } = jwt.decode(token);
 
         let username = shortId.generate();
         let profile = `${process.env.CLIENT_URL}/profile/${username}`;
-
-        const user = new User({ name, email, password, profile, username, phone, gender });
+        
+        const user = new User({
+          name,
+          email,
+          password,
+          profile,
+          username,
+          phone,
+          gender,
+          idPhoto1,
+          idPhoto2,
+          questions: questionsMap,
+        });
+  
         user.save((err, user) => {
           if (err) {
             return res.status(401).json({

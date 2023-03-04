@@ -77,9 +77,12 @@ const ProfileUpdate = () => {
     e.preventDefault();
 
     setValues({ ...values, loading: true });
+    for (const value of userData.values()) {
+      console.log("ahel");
+      console.log(value);
+    }
     update(token, userData).then((data) => {
       if (data.error) {
-        console.log("data.error", data.error);
         setValues({ ...values, error: data.error, loading: false });
       } else {
         updateUser(data, () => {

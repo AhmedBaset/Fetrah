@@ -29,6 +29,10 @@ export const getProfile = (token) => {
 };
 
 export const update = (token, user) => {
+  for (const pair of user.entries()) {
+    console.log(`${pair[0]}, ${pair[1]}`);
+  }
+  
   return fetch(`${API}/api/user/update`, {
     method: "PUT",
     headers: {

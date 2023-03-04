@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
 
-var Question = new mongoose.Schema({
-  type: Map,
-  of: String,
-});
-
 const userSchema = mongoose.Schema(
   {
     gender: {
@@ -58,15 +53,28 @@ const userSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    idPhoto1: {
+      type: String,
+    },
+    idPhoto2: {
+      type: String,
+    },
     photo: {
       data: Buffer,
       contentType: String,
+    },
+    confirmed: {
+      type: Boolean,
+      default: false
     },
     resetPasswordLink: {
       data: String,
       default: "",
     },
-    questions: [Question],
+    questions: {
+      type: Map,
+      of: String,
+    },
   },
   { timestamps: true, collection: "usersinfo" }
 );

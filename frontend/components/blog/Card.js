@@ -25,6 +25,8 @@ const Card = ({ blog, parser }) => {
         )
     })
   };
+  console.log(blog.postedBy);
+  
   
   return (
     <div className="lead pb-4">
@@ -35,8 +37,8 @@ const Card = ({ blog, parser }) => {
       </header>
       <section>
         <p className="mark ms-1 pt-2 pb-2">
-          Written by <Link href={`/profile/${blog.postedBy.username}`}>{blog.postedBy.username}</Link> | Published{" "}
-          {moment(blog.updatedAt).fromNow()}
+          {/* Written by <Link href={`/profile/${blog.postedBy.username}`}>{blog.postedBy.username}</Link> | Published{" "}
+          {moment(blog.updatedAt).fromNow()} */}
         </p>
       </section>
       <section>
