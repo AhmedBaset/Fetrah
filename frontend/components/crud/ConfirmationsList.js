@@ -1,83 +1,131 @@
 import moment from "moment/moment";
+import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { getCookie, isAuth } from "../../actions/auth";
-import { list, removeBlog } from "../../actions/blog";
+import {
+  getUsersThatNeedConfirmations,
+  confirmUser,
+  rejectUser,
+  getQuestions,
+} from "../../actions/user";
 
-const ConfirmationsList = ({ username }) => {
-  const [blogs, setBlogs] = useState([]);
+const ConfirmationsList = () => {
+  const [users, setUsers] = useState([]);
   const [message, setMessage] = useState("");
+  const [questions, setQuestions] = useState();
   const token = getCookie("token");
 
   useEffect(() => {
-    loadBlogs();
+    loadQuestions();
+    loadUsers();
   }, []);
 
-  const loadBlogs = () => {
-    list(username).then((data) => {
+  const loadQuestions = () => {
+    getQuestions().then((data) => {
+      setQuestions(data);
+    });
+  };
+
+  const loadUsers = () => {
+    getUsersThatNeedConfirmations(token).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
-        setBlogs(data);
+        setUsers(data.users);
       }
     });
   };
 
-  const deleteBlog = (slug) => {
-    removeBlog(slug, token).then((data) => {
+  const confirmUserAction = (username) => {
+    confirmUser(username, token).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
         setMessage(data.message);
-        loadBlogs();
+        loadUsers();
       }
     });
   };
 
-  const deleteConfirm = (slug) => {
-    let answer = window.confirm("Are you sure you want to delete this blog");
+  const rejectUserAction = (username) => {
+    rejectUser(username, token).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setMessage(data.message);
+        loadUsers();
+      }
+    });
+  };
+
+  const Confirm = (username) => {
+    let answer = window.confirm("Are you sure you want to confirm this user ?");
     if (answer) {
-      deleteBlog(slug);
+      confirmUserAction(username);
     }
   };
 
-  const showUpdateButton = (blog) => {
-    let path = "";
-
-    if (isAuth() && isAuth().role === 0) {
-      //path for normal user
-      path = `/user/crud/${blog.slug}`;
-    } else if (isAuth() && isAuth().role === 1) {
-      //path for admin user
-      path = `/admin/crud/${blog.slug}`;
+  const Reject = (username) => {
+    let answer = window.confirm("Are you sure you want to reject this user ?");
+    if (answer) {
+      rejectUserAction(username);
     }
-    console.log(isAuth());
-    return (
-      <Link
-        className="me-2 btn btn-sm btn-warning"
-        style={{ textDecoration: "none" }}
-        href={`${path}`}
-      >
-        Update
-      </Link>
-    );
   };
 
-  const showLoadedBlogs = () => {
-    return blogs.map((blog, i) => {
-      const info = `Written by ${blog.postedBy.name} | Published on ${" "}
-        ${moment(blog.updatedAt).fromNow()}`;
+  const userInfo = (user) => {
+    const infoList = [];
+    for (let x in user.questions) {
+      if (user.questions[x] !== "") {
+        infoList.push(
+          <h4
+            className="container"
+            key={x}
+          >{`${questions[x]}  :  ${user.questions[x]}`}</h4>
+        );
+      }
+    }
+    return infoList;
+  };
+
+  const showLoadedUsers = () => {
+    return users.map((user, i) => {
+      const info = `${moment(user.createdAt).fromNow()}`;
       return (
         <div key={i} className="pb-5">
-          <h3>{blog.title}</h3>
-          <p className="mark">{info}</p>
+          <h3>{user.name}</h3>
+          <div className="row">
+            <div className="col">
+              <Image
+                src={`${user.idPhoto1}`}
+                width={400}
+                height={200}
+                alt={""}
+              />
+              <Image
+              className="mt-2"
+                src={`${user.idPhoto2}`}
+                width={400}
+                height={200}
+                alt={""}
+              />
+            </div>
+            <div className="col">{userInfo(user)}</div>
+          </div>
+
           <button
             className="btn btn-sm btn-danger"
-            onClick={() => deleteConfirm(blog.slug)}
+            onClick={() => Reject(user.username)}
           >
-            Delete
+            Reject
           </button>
-          {showUpdateButton(blog)}
+          <button
+            className="btn btn-sm btn-primary m-4"
+            onClick={() => Confirm(user.username)}
+          >
+            Confirm
+          </button>
+          <hr />
         </div>
       );
     });
@@ -89,7 +137,7 @@ const ConfirmationsList = ({ username }) => {
         <div className="row">
           <div className="col-md-12">
             {message && <div className="alert alert-warning">{message}</div>}
-            {showLoadedBlogs()}
+            {showLoadedUsers()}
           </div>
         </div>
       </div>

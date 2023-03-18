@@ -89,6 +89,10 @@ const Header = (props) => {
             </NavItem>
 
             <NavItem>
+              <NavLink href="/users">Users</NavLink>
+            </NavItem>
+
+            <NavItem>
               <NavLink
                 className="btn btn-primary text-white pe-3 ps-3 rounded-pill"
                 href="/user/crud/blog"

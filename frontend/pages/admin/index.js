@@ -12,6 +12,9 @@ const AdminIndex = () => {
           </div>
           <div className="col-md-4">
             <ul className="list-group">
+            <li className="list-group-item">
+                <Link style={{textDecoration: "none"}} href="/admin/crud/confirmations">Confirmations</Link>
+              </li>
               <li className="list-group-item">
                 <Link style={{textDecoration: "none"}} href="/admin/crud/category-tag">Create Ctegory</Link>
               </li>

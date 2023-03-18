@@ -7,6 +7,7 @@ import moment from "moment/moment";
 import ContactForm from '../../components/form/ContactForm';
 
 const UserProfile = ({ user, blogs, query }) => {
+  
   const showUserBlogs = () => {
     return blogs.map((blog, i) => {
       return (

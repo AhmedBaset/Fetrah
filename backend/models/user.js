@@ -1,6 +1,12 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
 
+const CONFIRMATIONS_STATUS = {
+  PENDING: 0,
+  CONFIRMED: 1,
+  REJECTED: 2,
+};
+
 const userSchema = mongoose.Schema(
   {
     gender: {
@@ -46,35 +52,54 @@ const userSchema = mongoose.Schema(
 
     salt: String,
 
-    about: {
+    idNumber: {
       type: String,
     },
+
     role: {
       type: Number,
       default: 0,
     },
+
     idPhoto1: {
       type: String,
     },
+
     idPhoto2: {
       type: String,
     },
+
     photo: {
       data: Buffer,
       contentType: String,
     },
+
     confirmed: {
-      type: Boolean,
-      default: false
+      type: Number,
+      default: CONFIRMATIONS_STATUS.PENDING,
     },
+
     resetPasswordLink: {
       data: String,
       default: "",
     },
+
     questions: {
       type: Map,
       of: String,
     },
+
+    sentRequests: [
+      { type: mongoose.ObjectId, ref: "Request", required: false },
+    ],
+
+    recievedRequests: [
+      { type: mongoose.ObjectId, ref: "Request", required: false },
+    ],
+
+    favourites: [
+      { type: mongoose.ObjectId, ref: "User", required: false },
+    ],
   },
   { timestamps: true, collection: "usersinfo" }
 );

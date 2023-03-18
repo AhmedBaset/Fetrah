@@ -10,7 +10,9 @@ const { expressjwt: expressJwt } = require("express-jwt");
 
 const Blog = require("../models/blog");
 
-const formidable = require('formidable');
+const formidable = require("formidable");
+
+const UserBehavior = require("../models/userBehavior");
 
 const {
   sendEmailForgotPassword,
@@ -54,42 +56,14 @@ exports.preSignup = (req, res) => {
   });
 };
 
-// exports.signup = (req, res) => {
-//   User.findOne({ email: req.body.email }).exec((err, user) => {
-//     if (user) {
-//       return res.status(400).json({
-//         error: "Email is taken",
-//       });
-//     }
-
-//     const { name, email, password } = req.body;
-//     let username = shortId.generate();
-
-//     let profile = `${process.env.CLIENT_URL}/profile/${username}`;
-
-//     let newUser = new User({ name, email, password, profile, username });
-
-//     newUser.save((err, success) => {
-//       if (err) {
-//         return res.status(400).json({
-//           error: err,
-//         });
-//       }
-//       res.json({
-//         message: "Signup success! Please signin",
-//       });
-//     });
-//   });
-// };
-
 exports.signup = (req, res) => {
   const token = req.body.user.token;
   const questionsObject = req.body.questionsList;
   const questionsMap = new Map(Object.entries(questionsObject));
-  const idPhoto1 = questionsMap.get('idPhoto1');
-  const idPhoto2 = questionsMap.get('idPhoto2');
-  questionsMap.delete('idPhoto1');
-  questionsMap.delete('idPhoto2');
+  const idPhoto1 = questionsMap.get("idPhoto1");
+  const idPhoto2 = questionsMap.get("idPhoto2");
+  questionsMap.delete("idPhoto1");
+  questionsMap.delete("idPhoto2");
   if (token) {
     jwt.verify(
       token,
@@ -100,12 +74,12 @@ exports.signup = (req, res) => {
             error: "Expired link. Signup again",
           });
         }
-  
+
         const { name, email, password, phone, gender } = jwt.decode(token);
 
         let username = shortId.generate();
         let profile = `${process.env.CLIENT_URL}/profile/${username}`;
-        
+
         const user = new User({
           name,
           email,
@@ -118,7 +92,7 @@ exports.signup = (req, res) => {
           idPhoto2,
           questions: questionsMap,
         });
-  
+
         user.save((err, user) => {
           if (err) {
             return res.status(401).json({
@@ -193,6 +167,30 @@ exports.authMiddleware = (req, res, next) => {
     req.profile = user;
     next();
   });
+};
+
+exports.logUserBehavior = (req, res, next) => {
+  const authUserId = req.auth._id; // Assuming you are using session-based authentication
+  const { method, originalUrl, body } = req;
+
+  const userBehavior = new UserBehavior({
+    authUserId,
+    action: `${method} ${originalUrl}`,
+    data: body,
+    timestamp: Date.now(),
+  });
+
+  userBehavior
+    .save()
+    .then(() => {
+      console.log(`User behavior logged: ${userBehavior.action}`);
+      next();
+    })
+    .catch((error) => {
+      return res.status(400).json({
+        error: "Error in saving user behavior",
+      });
+    });
 };
 
 exports.adminMiddleware = (req, res, next) => {

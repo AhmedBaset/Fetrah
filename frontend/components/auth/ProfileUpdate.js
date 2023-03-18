@@ -2,9 +2,9 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import Router from "next/router";
 import { getCookie, isAuth, updateUser } from "../../actions/auth";
-import { getProfile, update } from "../../actions/user";
+import { getProfile, update, getQuestions } from "../../actions/user";
 import { API } from "../../config";
-
+import ProfileUpdateQuestions from "./ProfileUpdateQuestions";
 
 const ProfileUpdate = () => {
   const [values, setValues] = useState({
@@ -32,7 +32,6 @@ const ProfileUpdate = () => {
     error,
     success,
     loading,
-    photo,
     userData,
   } = values;
 
@@ -63,7 +62,7 @@ const ProfileUpdate = () => {
     const value = name === "photo" ? e.target.files[0] : e.target.value;
     // let userData = new FormData();
     userData.set(name, value);
-    console.log(...userData); // SEE THE FORMDATA IN CONSOLE
+    // console.log(...userData); // SEE THE FORMDATA IN CONSOLE
     setValues({
       ...values,
       [name]: value,
@@ -77,10 +76,6 @@ const ProfileUpdate = () => {
     e.preventDefault();
 
     setValues({ ...values, loading: true });
-    for (const value of userData.values()) {
-      console.log("ahel");
-      console.log(value);
-    }
     update(token, userData).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error, loading: false });
@@ -114,6 +109,7 @@ const ProfileUpdate = () => {
           />
         </label>
       </div>
+
       <div className="form-group">
         <label className="text-muted">Username</label>
         <input
@@ -132,10 +128,6 @@ const ProfileUpdate = () => {
           className="form-control"
         />
       </div>
-      {/*<div className="form-group">
-                <label className="text-muted">Email</label>
-                <input onChange={handleChange('email')} type="text" value={email} className="form-control" />
-            </div>*/}
       <div className="form-group">
         <label className="text-muted">About</label>
         <textarea
@@ -209,7 +201,9 @@ const ProfileUpdate = () => {
               alt="user profile"
             />
           </div>
+
           <div className="col-md-8 mb-5">{profileUpdateForm()}</div>
+          <div className="col-md-8 mb-5">{ProfileUpdateQuestions()}</div>
         </div>
       </div>
     </>
