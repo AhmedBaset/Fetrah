@@ -45,7 +45,7 @@ exports.sendEmailForgotPassword = (req, res, emailData) => {
     .sendMail(emailData)
     .then((info) => {
       return res.json({
-        message: `Email has sent to ${emailData.to}`,
+        message: `لقد تم ارسال رسالة جديدة إلى حسابك ${emailData.to}`,
       });
     })
     .catch((err) => console.log(`Problem sending email: ${err}`));
@@ -70,8 +70,8 @@ exports.sendEmailAccountActivation = (req, res, emailData) => {
     .sendMail(emailData)
     .then((info) => {
       return res.json({
-        message: `Activation Email has sent to ${emailData.to}`,
+        message: `لقد تم ارسال رسالة جديدة إلى حسابك ${emailData.to}`,
       });
     })
-    .catch((err) => console.log(`Problem sending email: ${err}`));
+    .catch((err) => console.log(`حدث خطأ أثناء إرسال البريد: ${err}`));
 };

@@ -66,7 +66,7 @@ const SignupComponent = () => {
   const showLoading = () =>
     loading ? (
       <div className="alert alert-info" role="alert">
-        Loading...
+         <div class="text-center">برجاء الانتظار</div>
       </div>
     ) : (
       ""
@@ -74,7 +74,7 @@ const SignupComponent = () => {
   const showError = () =>
     error ? (
       <div className="alert alert-danger" role="alert">
-        {error}
+         <div class="text-center">{error}</div>
       </div>
     ) : (
       ""
@@ -82,7 +82,7 @@ const SignupComponent = () => {
   const showMessage = () =>
     message ? (
       <div className="alert alert-info" role="alert">
-        {message}
+       <div class="text-center">{message}</div>
       </div>
     ) : (
       ""

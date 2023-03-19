@@ -1,82 +1,81 @@
-.container
-{
-    margin-top: 5rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-content: center;
-
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
-.title
-{
+.form-container {
+  width: 18rem;
+  margin: 5rem 2rem 2rem 2rem;
+}
+
+.input-container {
+  width: 18rem;
+}
+
+.title {
+    width: 18rem;
     color: #000;
     font-weight: 700;
-    font-size: 40px;
+    font-size: 32px;
     line-height: 75px;
     text-align: center;
+  }
+
+.input-label {
+  text-align: end;
+  display: block;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 40px;
+  color: #595959;
 }
 
-.image
-{
-
-    text-align: center;
-    width: 100%;
-    height: auto;
-    position: relative;
+.input {
+  border-radius: 8px;
+  border: 1px solid #a7727d;
+  outline: 0;
+  height: 1.8rem;
+  direction: rtl;
+  width: 100%;
+  padding: 8px;
 }
 
-.image::after
-{
-    content: '';
-    position: absolute;
-    bottom: 6.3rem;
-    left: 30px;
-    right: 0;
-    width: 80%;
-    height: 0.8px;
-    background-color: #000;
+.image {
+  text-align: center;
+  width: 100%;
+  height: auto;
+  position: relative;
+  margin-top: 2rem;
 }
 
-.submit
-{
-    border: 0;
-    border-radius: 91px;
-    background: #A7727D;
-    width: 150px;
-    text-align: center;
-    height: 35px;
-    margin-top: 20px;
-    color: #FFF;
-    cursor: pointer;
+.image::after {
+  content: "";
+  position: absolute;
+  bottom: 0rem;
+  left: 30px;
+  right: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #000;
 }
 
-.submit:hover
-{
-    background-color: #ba6d7b;
+.submit {
+  border: 0;
+  border-radius: 91px;
+  background: #a7727d;
+  width: 150px;
+  text-align: center;
+  height: 35px;
+  margin-top: 20px;
+  color: #fff;
+  cursor: pointer;
 }
 
-.input-container
-{
-    text-align: right;
+.submit:hover {
+  background-color: #ba6d7b;
 }
 
-.input-label
-{
-    display: block;
-    font-weight: 600;
-    font-size: 15px;
-    line-height: 40px;
-    margin-top: 22px;
-
-}
-
-.input
-{
-    border-radius: 8px;
-    border: 1px solid #A7727D;
-    outline: 0;
-    height: 1.8rem;
-    direction: rtl;
-    width: 100%;
-    padding: 8px;
+.input-container {
+  text-align: right;
 }

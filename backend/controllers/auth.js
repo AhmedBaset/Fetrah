@@ -26,7 +26,7 @@ exports.preSignup = (req, res) => {
   User.findOne({ email: email.toLowerCase() }, (err, user) => {
     if (user) {
       return res.status(400).json({
-        error: "Email is taken",
+        error: "هذا الحساب مسجل لدينا بالفعل ... جرب تسجيل الدخول",
       });
     }
 
@@ -41,14 +41,14 @@ exports.preSignup = (req, res) => {
     const emailData = {
       from: process.env.EMAIL_FROM, // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
       to: email, // WHO SHOULD BE RECEIVING THIS EMAIL? IT SHOULD BE YOUR GMAIL
-      subject: `Account activation link - ${process.env.APP_NAME}`,
+      subject: `ادخال البيانات لتفعيل الحساب - ${process.env.APP_NAME}`,
       html: `
-          <h4>Email received from contact form:</h4>
-          <p>Please use the following link to activate your account :</p>
+          <h4>لقد تلقيت هذا البريد لانك قمت بالتسجيل في موقع لتسكنوا:</h4>
+          <p>من فضلك قم بالدخول على هذا الرابط لتقوم بملء استمارتك:</p>
           <p>${process.env.CLIENT_URL}/auth/account/activate/${token}</p>
           <hr />
-          <p>This email may contain sensitive information</p>
-          <p>https://onemancode.com</p>
+          <p>هذا الرابط صالح لمدة 30 دقيقة فقط</p>
+          <p>https://letaskono.com</p>
       `,
     };
 
@@ -71,7 +71,7 @@ exports.signup = (req, res) => {
       function (err, decoded) {
         if (err) {
           return res.status(401).json({
-            error: "Expired link. Signup again",
+            error: "هذا الرابط منتهي الصلاحية ... جرب تسجيل حسابك من جديد",
           });
         }
 
@@ -100,14 +100,14 @@ exports.signup = (req, res) => {
             });
           }
           return res.json({
-            message: "Singup success! Please signin",
+            message: "لقد قمت بتسجيل بياناتك بنجاح ... قم بتسجيل الدخول الان",
           });
         });
       }
     );
   } else {
     return res.json({
-      message: "Something went wrong. Try again",
+      message: "حدث خطأ ... جرب مجددا",
     });
   }
 };
@@ -118,13 +118,13 @@ exports.signin = (req, res) => {
   User.findOne({ email }).exec((err, user) => {
     if (err || !user) {
       return res.status(400).json({
-        error: "User with this email doesn't exist. Please sign up first",
+        error: "هذا الحساب غير مسجل لدينا ... جرب تسجيل حسابك أولا",
       });
     }
     //authenticate
     if (!user.authenticate(password)) {
       return res.status(400).json({
-        error: "Email and password do not match ",
+        error: "هناك خطأ في كلمة السر أو في البريد الإلكتروني",
       });
     }
 
@@ -239,24 +239,24 @@ exports.forgotPassword = (req, res) => {
     if (err || !user) {
       return res
         .status(401)
-        .json({ error: "User with that email is not found" });
+        .json({ error: "هذا البريد الالكتروني غير مسجل لدينا" });
     }
 
     const token = jwt.sign({ _id: user._id }, process.env.JWT_RESET_PASSWORD, {
-      expiresIn: "10m",
+      expiresIn: "30m",
     });
     //email
     const emailData = {
       from: process.env.EMAIL_FROM, // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
       to: email, // WHO SHOULD BE RECEIVING THIS EMAIL? IT SHOULD BE YOUR GMAIL
-      subject: `Password reset link - ${process.env.APP_NAME}`,
+      subject: `رابط استعادة كلمة السر - ${process.env.APP_NAME}`,
       html: `
-          <h4>Email received from contact form:</h4>
-          <p>Please use the following link to reset your password :</p>
+          <h4>لقد تلقيت هذا البريد من موقع لتسكنوا:</h4>
+          <p>استعمل هذا الرابط لتعيين كلمة سر جديدة :</p>
           <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
           <hr />
-          <p>This email may contain sensitive information</p>
-          <p>https://onemancode.com</p>
+          <p>هذا الرابط صالح لمدة 30 دقيقة فقط</p>
+          <p>https://letaskono.com</p>
       `,
     };
 

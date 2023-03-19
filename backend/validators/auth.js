@@ -1,28 +1,28 @@
 const { check } = require("express-validator");
 
 exports.userSignupValidator = [
-  check("name").not().isEmpty().withMessage("Name is required"),
-  check("gender").not().isEmpty().withMessage("Gender is required"),
-  check("phone").not().isEmpty().isMobilePhone().withMessage("Phone is not valid"),
-  check("email").isEmail().withMessage("Must be a valid Email address"),
+  check("name").not().isEmpty().withMessage("يجب عليك كتابة اسمك"),
+  check("gender").not().isEmpty().withMessage("يجب عليك اختيار من أنت"),
+  check("phone").not().isEmpty().isMobilePhone().withMessage("رقم الهاتف غير صحيح"),
+  check("email").isEmail().withMessage("البريد الالكتروني غير صالح"),
   check("password")
     .isLength({ min: 6 })
-    .withMessage("Must be at least 6 characters long"),
+    .withMessage("يجب أن تتكون كلمة السر من 6 أحرف على الأقل"),
 ];
 
 exports.userSigninValidator = [
-  check("email").isEmail().withMessage("Must be a valid Email address"),
+  check("email").isEmail().withMessage("البريد الالكتروني غير صالح"),
   check("password")
     .isLength({ min: 6 })
-    .withMessage("Must be at least 6 characters long"),
+    .withMessage("يجب أن تتكون كلمة السر من 6 أحرف على الأقل"),
 ];
 
 exports.forgetPasswordValidator = [
-  check("email").isEmail().withMessage("Must be a valid Email address"),
+  check("email").isEmail().withMessage("البريد الالكتروني غير صحيح"),
 ];
 
 exports.resetPasswordValidator = [
   check("newPassword")
     .isLength({ min: 6 })
-    .withMessage("Must be at least 6 characters long"),
+    .withMessage("يجب أن تتكون كلمة السر من 6 أحرف على الأقل"),
 ];

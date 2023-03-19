@@ -55,7 +55,7 @@ const SigninComponent = () => {
   const showLoading = () =>
     loading ? (
       <div className="alert alert-info" role="alert">
-        Loading...
+        <div className="text-center">برجاء الانتظار</div>
       </div>
     ) : (
       ""
@@ -63,7 +63,7 @@ const SigninComponent = () => {
   const showError = () =>
     error ? (
       <div className="alert alert-danger" role="alert">
-        {error}
+        <div className="text-center">{error}</div>
       </div>
     ) : (
       ""
@@ -71,7 +71,7 @@ const SigninComponent = () => {
   const showMessage = () =>
     message ? (
       <div className="alert alert-info" role="alert">
-        {message}
+        <div className="text-center">{message}</div>
       </div>
     ) : (
       ""
@@ -114,7 +114,7 @@ const SigninComponent = () => {
     return (
       <>
         <div className={classes.container}>
-          <form onSubmit={handleSubmit}>
+          <form className={classes["form-container"]} onSubmit={handleSubmit}>
             <h1 className={classes.title}>تسجيل الدخول</h1>
             <div className={`${classes["input-container"]}`}>
               <label className={`${classes["input-label"]}`}>
@@ -141,37 +141,34 @@ const SigninComponent = () => {
             <div style={{ textAlign: "center" }}>
               <button className={`${classes["submit"]}`}>تسجيل الدخول</button>
             </div>
+            <Link href={`/auth/password/forgot`}>
+              <p
+                style={{
+                  marginTop: "4rem",
+                  textAlign: "center",
+                  color: "#A7727D",
+                  textDecoration: "underline",
+                }}
+                className={`${classes["input-label"]}`}
+              >
+                يمكنك استعادة كلمة السر من هنا
+              </p>
+            </Link>
           </form>
           <div className={`${classes["image"]}`}>
-            <img
-              style={{ width: "20rem", height: "20rem" }}
-              src="/images/muslim.svg"
-              alt="لتسكنوا"
-            />
+            <img src="/images/muslim.svg" alt="لتسكنوا" />
           </div>
         </div>
-        <Link href={`/auth/password/forgot`}>
-          <p
-            style={{
-              textAlign: "center",
-              color: "#A7727D",
-              textDecoration: "underline",
-            }}
-            className={`${classes["input-label"]}`}
-          >
-            يمكنك استعادة كلمة السر من هنا
-          </p>
-        </Link>
       </>
     );
   };
 
   return (
     <>
+      {showForm && newSigninForm()}
       {showError()}
       {showLoading()}
       {showMessage()}
-      {showForm && newSigninForm()}
     </>
   );
 };
