@@ -1,9 +1,10 @@
-import image from "../images/step-three.png";
+import classes from "./StepOne.module.css";
+
 function StepThree() {
   return (
-    <div className="step-three">
-      <div className="container">
-        <div className="text">
+    <div className={classes["step-one"]}>
+      <div className={classes["parent"]}>
+        <div className={classes["child"]}>
           <h1>الخطوة الثالثة </h1>
           <p>أرسل طلب القبول وانتظر رد الطرف الأخر</p>
           <p>
@@ -16,8 +17,8 @@ function StepThree() {
             يجيب كل طرف على أسئلة الأخر.
           </p>
         </div>
-        <div className="image">
-          <img src={image} alt="Step-one" />
+        <div className={classes["image"]}>
+          <img src={`/images/step-three.png`} alt="الخطوة الثانية" />
         </div>
       </div>
     </div>

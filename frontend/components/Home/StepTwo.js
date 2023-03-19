@@ -1,9 +1,10 @@
-import image from "../images/step-two.png";
+import classes from "./StepTwo.module.css";
+
 function StepTwo() {
   return (
-    <div className="step-two">
-      <div className="container">
-        <div className="text">
+    <div className={classes["step-two"]}>
+      <div className={classes["container"]}>
+        <div className={classes["text"]}>
           <h1>الخطوة الثانية </h1>
           <p>ابحث بدقة وتمهل في الاختيار</p>
           <p>
@@ -14,10 +15,10 @@ function StepTwo() {
           <p>
             إذا وجدت المواصفات التي تريدها يمكنك الانتقال للمرحلة التالية وهي
             إرسال القبول المبدئي للطرف الأخر.
-                  </p>
-              </div>
-              <div className="image">
-          <img src={image} alt="Step-one" />
+          </p>
+        </div>
+        <div className={classes["image"]}>
+          <img src={`/images/step-two.png`} alt="الخطوة الثانية" />
         </div>
       </div>
     </div>

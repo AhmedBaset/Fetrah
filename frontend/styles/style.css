@@ -1,14 +1,35 @@
 * {
   font-family: "Noto Kufi Arabic", sans-serif;
   box-sizing: border-box;
-
 }
 
 body {
-  background: #F8EAD8;
-  
+  background: #f8ead8;
 }
 
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+:root {
+  --main-color: #a7727d;
+  --second-color: #eddbc7;
+  --thired-color: #f8ead8;
+  --fourth-color: #f9f5e7;
+  --fifth-color: #0cbc8b;
+  --main-transition: 03s;
+  --main-padding-top: 100px;
+  --main-padding-bottom: 100px;
+  --section-background: #ececec;
+  --facebook-color: #139ef8;
+  --youtube-color: #ff0000;
+  --twitter-color: #1da1f2;
+  --linkedin-color: #1a0dab;
+}
+html {
+  scroll-behavior: smooth;
+}
 
 p,
 h1,
@@ -21,12 +42,6 @@ ul {
   direction: rtl;
 }
 
-
-
-
-
-
-
 .forgetInput {
   border-radius: 8px;
   border: 1px solid #a7727d;
@@ -36,5 +51,3 @@ ul {
   width: 100%;
   padding: 8px;
 }
-
-

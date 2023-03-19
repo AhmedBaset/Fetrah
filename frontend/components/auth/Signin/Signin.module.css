@@ -79,3 +79,25 @@
 .input-container {
   text-align: right;
 }
+
+
+@media (max-width: 767px) {
+  .container{
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+  }
+  .image{
+      display: none;
+  }
+
+  .form-container{
+      width: 18rem;
+   
+  }
+
+  .title {
+      width: 18rem;
+      font-size: 29px;
+  }
+}

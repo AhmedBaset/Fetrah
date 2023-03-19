@@ -77,38 +77,6 @@ const SigninComponent = () => {
       ""
     );
 
-  const SigninForm = () => {
-    return (
-      <form onSubmit={handleSubmit}>
-        <div className="form-group m-3">
-          <label htmlFor="Email">Email</label>
-          <input
-            onChange={handleChange("email")}
-            type="email"
-            className="form-control"
-            id="Email"
-            value={email}
-            placeholder="Type your Email"
-          />
-        </div>
-        <div className="form-group m-3">
-          <label htmlFor="Password">Password</label>
-          <input
-            onChange={handleChange("password")}
-            type="password"
-            className="form-control"
-            id="Password"
-            value={password}
-            placeholder="Type your Password"
-          />
-        </div>
-
-        <button className="btn btn-primary m-3" type="submit">
-          Signin
-        </button>
-      </form>
-    );
-  };
 
   const newSigninForm = () => {
     return (

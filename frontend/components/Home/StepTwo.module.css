@@ -1,0 +1,86 @@
+/* StepTwo code */
+.step-two {
+  padding-top: 100px;
+  padding-bottom: 80px;
+  background-color: var(--second-color);
+  height: 100vh;
+}
+.step-two > h1 {
+  text-align: center;
+}
+.step-two .container {
+  margin-top: 70px;
+  position: relative;
+  padding-top: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.step-two .image {
+  margin: 0rem 8rem 0rem 8rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 461px;
+  width: 400px;
+}
+.step-two .image img {
+  background-size: contain;
+  width: 400px;
+}
+.step-two .image::after {
+  content: "";
+  position: absolute;
+  bottom: 150px;
+  left: 0px;
+  width: 410px;
+  height: 1px;
+  background-color: #333030;
+}
+.step-two .text {
+  margin: 0rem 8rem 0rem 8rem;
+  width: 38rem;
+  text-align: end;
+  position: absolute;
+  top: 0;
+}
+.step-two .text h1 {
+  direction: ltr;
+  color: #333030;
+  font-size: 32px;
+}
+.step-two .text p {
+  direction: ltr;
+  color: #333030;
+  font-size: 24px;
+  padding-bottom: 10px;
+}
+
+@media (max-width: 1285px) {
+  .step-two .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .step-two .image {
+    display: none;
+  }
+  .step-two .image::after {
+    display: none;
+  }
+  .step-two .text {
+    width: 20rem;
+  }
+
+  .step-two .text h1 {
+    text-align: center;
+    color: #333030;
+    font-size: 7vw;
+  }
+  .step-two .text p {
+    text-align: center;
+    color: #333030;
+    font-size: 4vw;
+    padding-bottom: 10px;
+  }
+}
