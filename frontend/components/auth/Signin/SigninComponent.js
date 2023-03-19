@@ -1,16 +1,19 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { signin, authenticate, isAuth } from "../../actions/auth";
+import { signin, authenticate, isAuth } from "../../../actions/auth";
 import Link from "next/link";
+import Image from "next/image";
+
+import classes from "./Signin.module.css";
 
 const SigninComponent = () => {
   const router = useRouter();
-  
+
   useEffect(() => {
-    if(isAuth()){
-      router.replace('/');
+    if (isAuth()) {
+      router.replace("/");
     }
-  } ,[])
+  }, []);
 
   const [values, setValues] = useState({
     email: "ahmed@gmail.com",
@@ -33,10 +36,10 @@ const SigninComponent = () => {
         // save user info to local storage
         // authenticate user
         authenticate(data, () => {
-          if(isAuth() && isAuth.role === 1){
-            router.replace('/admin');
-          }else{
-            router.replace('/user');
+          if (isAuth() && isAuth.role === 1) {
+            router.replace("/admin");
+          } else {
+            router.replace("/user");
           }
         });
       }
@@ -107,16 +110,68 @@ const SigninComponent = () => {
     );
   };
 
+  const newSigninForm = () => {
+    return (
+      <>
+        <div className={classes.container}>
+          <form onSubmit={handleSubmit}>
+            <h1 className={classes.title}>تسجيل الدخول</h1>
+            <div className={`${classes["input-container"]}`}>
+              <label className={`${classes["input-label"]}`}>
+                *بريدك الالكتروني
+              </label>
+              <input
+                type="email"
+                onChange={handleChange("email")}
+                className={`${classes["input"]}`}
+                value={email}
+                required
+              />
+            </div>
+            <div className={`${classes["input-container"]}`}>
+              <label className={`${classes["input-label"]}`}>*كلمة السر</label>
+              <input
+                onChange={handleChange("password")}
+                type="password"
+                value={password}
+                className={`${classes["input"]}`}
+                required
+              />
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <button className={`${classes["submit"]}`}>تسجيل الدخول</button>
+            </div>
+          </form>
+          <div className={`${classes["image"]}`}>
+            <img
+              style={{ width: "20rem", height: "20rem" }}
+              src="/images/muslim.svg"
+              alt="لتسكنوا"
+            />
+          </div>
+        </div>
+        <Link href={`/auth/password/forgot`}>
+          <p
+            style={{
+              textAlign: "center",
+              color: "#A7727D",
+              textDecoration: "underline",
+            }}
+            className={`${classes["input-label"]}`}
+          >
+            يمكنك استعادة كلمة السر من هنا
+          </p>
+        </Link>
+      </>
+    );
+  };
+
   return (
     <>
       {showError()}
       {showLoading()}
       {showMessage()}
-      {showForm && SigninForm()}
-      <br />
-      <Link href={`/auth/password/forgot`}>
-        <p className="btn btn-outline-danger m-3">Reset Password</p>
-      </Link>
+      {showForm && newSigninForm()}
     </>
   );
 };

@@ -19,15 +19,17 @@ const UserDetails = ({ router }) => {
   const token = getCookie("token");
   useEffect(() => {
     if (username) {
-      checkInFavourites(senderUser.username, username, token).then(
-        (data, err) => {
-          if (err) {
-            console.log("Error checking user in favourites");
-          } else {
-            setInFavourites(data.inFavourites);
+      if (senderUser) {
+        checkInFavourites(senderUser.username, username, token).then(
+          (data, err) => {
+            if (err) {
+              console.log("Error checking user in favourites");
+            } else {
+              setInFavourites(data.inFavourites);
+            }
           }
-        }
-      );
+        );
+      }
 
       userPublicProfile(username).then((data) => {
         if (data.error) {
@@ -73,24 +75,57 @@ const UserDetails = ({ router }) => {
     e.preventDefault();
     const senderUser = isAuth();
     if (senderUser) {
-      sendAcceptanceRequest(senderUser.username, username, token).then((err, data) => {
-        if (err) {
-          console.log("Error" + err);
-        } else {
-          console.log(data);
+      sendAcceptanceRequest(senderUser.username, username, token).then(
+        (err, data) => {
+          if (err) {
+            console.log("Error" + err);
+          } else {
+            console.log(data);
+          }
         }
-      });
+      );
     } else {
       console.log("You are not allowed to send request, login first");
     }
   };
 
+  const handleAcceptRequest = () => {
+    console.log("Accepted");
+  };
+
+  const showAcceptanceBtn = () => {
+    if (user.sentRequests.length > 0 && senderUser) {
+      const recieverId =
+        user.sentRequests[user.sentRequests.length - 1].reciever;
+
+      if (recieverId === senderUser._id) {
+        return (
+          <>
+            <button onClick={handleAcceptRequest}>Accept request</button>
+          </>
+        );
+      } else {
+        return (
+          <>
+            <button onClick={handleSendAcceptance}>Send acceptance</button>
+          </>
+        );
+      }
+    }
+  };
+  if (!user) {
+    return (
+      <>
+        <h1>Loading...</h1>
+      </>
+    );
+  }
   return (
     <>
-      <h1>User {user && user.name}</h1>
+      <h1>User {user && user.username}</h1>
       <div>
         <button onClick={handleAddRemoveFromFavourite}>Add to favourite</button>
-        <button onClick={handleSendAcceptance}>send acceptance</button>
+        {showAcceptanceBtn()}
       </div>
     </>
   );

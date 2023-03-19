@@ -464,7 +464,11 @@ exports.publicProfile = (req, res) => {
   let username = req.params.username;
   let user;
   let blogs;
-  User.findOne({ username }).exec((err, userFromDB) => {
+  User.findOne({ username })
+  .select('username _id questions sentRequests')
+  .populate('sentRequests', 'reciever')
+  .populate()
+  .exec((err, userFromDB) => {
     if (err || !userFromDB) {
       return res.status(400).json({
         error: "User not found",
@@ -486,7 +490,6 @@ exports.publicProfile = (req, res) => {
             error: errorHandler(err),
           });
         }
-        user.photo = undefined;
         user.hashed_password = undefined;
         res.json({
           user,

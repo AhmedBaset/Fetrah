@@ -33,27 +33,27 @@ const ForgotPassword = () => {
     const showMessage = () => (message ? <div className="alert alert-success">{message}</div> : '');
 
     const passwordForgotForm = () => (
-        <form onSubmit={handleSubmit}>
-            <div className="form-group pt-5">
+        <form style={{width: "30rem", textAlign: "center"}} onSubmit={handleSubmit}>
+            <div>
                 <input
                     type="email"
                     onChange={handleChange('email')}
-                    className="form-control"
+                    className="forgetInput"
                     value={email}
-                    placeholder="Type your email"
+                    placeholder="اكتب بريدك الالكتروني هنا"
                     required
                 />
             </div>
             <div>
-                <button className="btn btn-primary">Send password reset link</button>
+                <button style={{marginLeft: "1rem", marginRight: "1rem"}} className="submit">استعادة</button>
             </div>
         </form>
     );
 
     return (
         <Layout>
-            <div className="container">
-                <h2>Forgot password</h2>
+            <div className="mt-5">
+                <h2 style={{textAlign: "center"}}>استعادة كلمة السر</h2>
                 <hr />
                 {showError()}
                 {showMessage()}

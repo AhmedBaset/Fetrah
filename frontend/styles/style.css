@@ -1,39 +1,40 @@
-body {
-    font-family: "Muli-Regular";
-    font-size: 15px;
-    color: #999;
- 
-    margin: 0; }
-  
-  :focus {
-    outline: none; }
-  
-  textarea {
-    direction: rtl;
-    resize: none; }
-  
-  input, textarea, select, button {
+* {
+  font-family: "Noto Kufi Arabic", sans-serif;
+  box-sizing: border-box;
 
-    font-family: "Muli-Regular";
-    font-size: 15px; }
+}
+
+body {
+  background: #F8EAD8;
   
-  p, h1, h2, h3, h4, h5, h6, ul {
-    direction: rtl;
-    margin: 0; }
-  
-  ul {
-    padding: 0;
-    margin: 0;
-    list-style: none; }
-  
-  a {
-    direction: rtl;
-    text-decoration: none; }
-  
-  textarea {
-    direction: rtl;
-    resize: none; }
-  
-  img {
-    direction: rtl;
-    max-width: 100%; }
+}
+
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul {
+  direction: rtl;
+}
+
+
+
+
+
+
+
+.forgetInput {
+  border-radius: 8px;
+  border: 1px solid #a7727d;
+  outline: 0;
+  height: 1.8rem;
+  direction: rtl;
+  width: 100%;
+  padding: 8px;
+}
+
+

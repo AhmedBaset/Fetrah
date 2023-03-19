@@ -1,10 +1,17 @@
 import Layout from "../components/Layout";
 import Link from "next/link";
+import LandingPage from "../components/Home/LandingPage";
+import StepOne from "../components/Home/StepOne";
 const Index = () => {
   return (
     <Layout>
-      <h2>Index Page</h2>
-      <Link href={"/signup"}>Signup</Link>
+      <LandingPage/>
+      <StepOne />
+      <StepOne />
+      <StepOne />
+      <StepOne />
+      <StepOne />
+      <StepOne />
       
     </Layout>
   );

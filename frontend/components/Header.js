@@ -35,8 +35,12 @@ const Header = (props) => {
 
   return (
     <>
-      <Navbar {...props}>
-        <NavbarBrand className="font-weight-bold" href="/">
+      <Navbar style={{ backgroundColor: "#a7727d" }} {...props}>
+        <NavbarBrand
+          style={{ color: "white", fontSize: "22px", marginLeft: "2rem" }}
+          className="font-weight-bold"
+          href="/"
+        >
           {APP_NAME}
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
@@ -44,16 +48,65 @@ const Header = (props) => {
           <Nav className="me-auto" navbar>
             <>
               <NavItem>
-                <NavLink href="/blogs/">Blogs</NavLink>
+                <NavLink
+                  style={{
+                    backgroundColor: "white",
+                    color: "red",
+                    // marginLeft: "1rem",
+                    marginRight: "2rem",
+                    borderColor: "#a7727d",
+                  }}
+                  className="btn btn-primary text-dark pe-3 ps-3 rounded-pill"
+                  href="/signup"
+                >
+                  حساب جديد
+                </NavLink>
               </NavItem>
-              {!isAuthenticated && (
+              <NavItem>
+                <NavLink
+                  style={{
+                    backgroundColor: "white",
+                    color: "red",
+                    marginLeft: "1rem",
+                    marginRight: "1rem",
+                    borderColor: "#a7727d",
+                  }}
+                  className="btn btn-primary text-dark pe-3 ps-3 rounded-pill"
+                  href="/signin"
+                >
+                  تسجيل الدخول
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink style={{ color: "white", fontSize: "18px", marginLeft: "1.2rem"  }} href="/blogs/">
+                  الدعم
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink style={{ color: "white", fontSize: "18px", marginLeft:"1.2rem" }} href="/blogs/">
+                  كيف تختار زوجك
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink style={{ color: "white" , fontSize: "18px", marginLeft:"1.2rem" }} href="/blogs/">
+                  التجارب الناجحة
+                </NavLink>
+              </NavItem>
+          
+              <NavItem>
+                <NavLink style={{ color: "white", fontSize: "18px", marginLeft: "1.2rem"  }} href="/blogs/">
+                  {" "}
+                  البحث
+                </NavLink>
+              </NavItem>
+              {/* {!isAuthenticated && (
                 <NavItem>
                   <NavLink href="/signin/">Signin</NavLink>
                 </NavItem>
-              )}
+              )} */}
             </>
 
-            {isAuthenticated && (
+            {/* {isAuthenticated && (
               <NavItem>
                 <NavLink
                   style={{ cursor: "pointer" }}
@@ -66,44 +119,35 @@ const Header = (props) => {
                   Signout
                 </NavLink>
               </NavItem>
-            )}
+            )} */}
 
-            {isAuthenticated && isAuthenticated.role === 0 && (
+            {/* {isAuthenticated && isAuthenticated.role === 0 && (
               <NavItem>
                 <NavLink href="/user">
                   {isAuthenticated.name}'s Dashboard
                 </NavLink>
               </NavItem>
-            )}
+            )} */}
 
-            {isAuthenticated && isAuthenticated.role === 1 && (
+            {/* {isAuthenticated && isAuthenticated.role === 1 && (
               <NavItem>
                 <NavLink href="/admin">
                   {isAuthenticated.name}'s Dashboard
                 </NavLink>
               </NavItem>
-            )}
+            )} */}
 
-            <NavItem>
+            {/* <NavItem>
               <NavLink href="/contact">Contact</NavLink>
-            </NavItem>
+            </NavItem> */}
 
-            <NavItem>
+            {/* <NavItem>
               <NavLink href="/users">Users</NavLink>
-            </NavItem>
-
-            <NavItem>
-              <NavLink
-                className="btn btn-primary text-white pe-3 ps-3 rounded-pill"
-                href="/user/crud/blog"
-              >
-                Write a blog
-              </NavLink>
-            </NavItem>
+            </NavItem> */}
           </Nav>
         </Collapse>
       </Navbar>
-      <Search />
+      {/* <Search /> */}
     </>
   );
 };
