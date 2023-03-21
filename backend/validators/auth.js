@@ -3,7 +3,7 @@ const { check } = require("express-validator");
 exports.userSignupValidator = [
   check("name").not().isEmpty().withMessage("يجب عليك كتابة اسمك"),
   check("gender").not().isEmpty().withMessage("يجب عليك اختيار من أنت"),
-  check("phone").not().isEmpty().isMobilePhone().withMessage("رقم الهاتف غير صحيح"),
+  check("phone").not().isEmpty().isNumeric().withMessage("رقم الهاتف غير صحيح"),
   check("email").isEmail().withMessage("البريد الالكتروني غير صالح"),
   check("password")
     .isLength({ min: 6 })

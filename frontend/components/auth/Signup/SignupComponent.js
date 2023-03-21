@@ -1,11 +1,12 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { preSignup, isAuth } from "../../../actions/auth";
 import { Button, ButtonGroup } from "reactstrap";
 import classes from "./Signup.module.css";
 
 const SignupComponent = () => {
   const router = useRouter();
+  const [countryCode, setCountryCode] = useState("");
 
   useEffect(() => {
     if (isAuth()) {
@@ -40,7 +41,9 @@ const SignupComponent = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, loading: true, error: false });
-    const user = { gender, name, email, password, phone };
+    const finalPhoneNumber = countryCode + phone;
+    const user = { gender, name, email, password, phone: finalPhoneNumber };
+    console.log(user);
     preSignup(user).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error, loading: false });
@@ -59,6 +62,13 @@ const SignupComponent = () => {
     });
   };
 
+  const selectRef = useRef(null);
+
+  const handleDropdownChange = () => {
+    setCountryCode(selectRef.current.value);
+    console.log(selectRef.current.value);
+  };
+
   const handleChange = (name) => (event) => {
     setValues({ ...values, error: false, [name]: event.target.value });
   };
@@ -66,7 +76,7 @@ const SignupComponent = () => {
   const showLoading = () =>
     loading ? (
       <div className="alert alert-info" role="alert">
-         <div class="text-center">برجاء الانتظار</div>
+        <div className="text-center">برجاء الانتظار</div>
       </div>
     ) : (
       ""
@@ -74,7 +84,7 @@ const SignupComponent = () => {
   const showError = () =>
     error ? (
       <div className="alert alert-danger" role="alert">
-         <div class="text-center">{error}</div>
+        <div className="text-center">{error}</div>
       </div>
     ) : (
       ""
@@ -82,7 +92,7 @@ const SignupComponent = () => {
   const showMessage = () =>
     message ? (
       <div className="alert alert-info" role="alert">
-       <div class="text-center">{message}</div>
+        <div className="text-center">{message}</div>
       </div>
     ) : (
       ""
@@ -170,16 +180,43 @@ const SignupComponent = () => {
                 required
               />
             </div>
-
             <div className={`${classes["input-container"]}`}>
               <label className={classes["input-label"]}>*رقم الهاتف</label>
-              <input
-                type="tel"
-                onChange={handleChange("phone")}
-                value={phone}
-                className={classes["input"]}
-                required
-              />
+              <div className={classes["phonInputContainer"]}>
+                <select
+                  ref={selectRef}
+                  onChange={handleDropdownChange}
+                  className={classes["country-codes"]}
+                  required={true}
+                >
+                  <option value="">اختر بلدك</option>
+                  <option value="20">(20+) مصر</option>
+                  <option value="212">(212+) المغرب</option>
+                  <option value="213">(213+) الجزائر</option>
+                  <option value="216">(216+) تونس</option>
+                  <option value="218">(218+) ليبيا</option>
+                  <option value="249">(249+) السودان</option>
+                  <option value="961">(961+) لبنان</option>
+                  <option value="962">(962+) الأردن</option>
+                  <option value="963">(963+) سوريا</option>
+                  <option value="964">(964+) العراق</option>
+                  <option value="965">(965+) الكويت</option>
+                  <option value="966">(966+) الجزيرة العربية</option>
+                  <option value="967">(967+) اليمن</option>
+                  <option value="970">(970+) فلسطين</option>
+                  <option value="971">(971+) الإمارات</option>
+                  <option value="965">(965+) الكويت</option>
+                  <option value="973">(973+) البحرين</option>
+                  <option value="974">(974+) قطر</option>
+                </select>
+                <input
+                  type="tel"
+                  onChange={handleChange("phone")}
+                  value={phone}
+                  className={classes["phonInput"]}
+                  required
+                />
+              </div>
             </div>
 
             <div className={classes["input-container"]}>

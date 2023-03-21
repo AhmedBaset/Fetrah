@@ -35,7 +35,7 @@ const Header = (props) => {
 
   return (
     <>
-      <Navbar style={{ backgroundColor: "#a7727d" }} {...props}>
+      <Navbar style={{ backgroundColor: "#a7727d" }} navbar="true" {...props}>
         <NavbarBrand
           style={{ color: "white", fontSize: "22px", marginLeft: "2rem" }}
           className="font-weight-bold"
@@ -43,7 +43,7 @@ const Header = (props) => {
         >
           {APP_NAME}
         </NavbarBrand>
-        <NavbarToggler onClick={toggle} />
+        <NavbarToggler navbar="true" onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="me-auto" navbar>
             <>
@@ -51,12 +51,9 @@ const Header = (props) => {
                 <NavLink
                   style={{
                     backgroundColor: "white",
-                    color: "red",
-                    // marginLeft: "1rem",
-                    marginRight: "2rem",
                     borderColor: "#a7727d",
                   }}
-                  className="btn btn-primary text-dark pe-3 ps-3 rounded-pill"
+                  className="btn btn-primary text-dark pe-3 ps-3 rounded-pill navLinkItem"
                   href="/signup"
                 >
                   حساب جديد
@@ -66,35 +63,60 @@ const Header = (props) => {
                 <NavLink
                   style={{
                     backgroundColor: "white",
-                    color: "red",
-                    marginLeft: "1rem",
-                    marginRight: "1rem",
                     borderColor: "#a7727d",
                   }}
-                  className="btn btn-primary text-dark pe-3 ps-3 rounded-pill"
+                  className="btn btn-primary text-dark pe-3 ps-3 rounded-pill navLinkItem"
                   href="/signin"
                 >
                   تسجيل الدخول
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink style={{ color: "white", fontSize: "18px", marginLeft: "1.2rem"  }} href="/blogs/">
+                <NavLink
+                  style={{
+                    color: "white",
+                    fontSize: "18px",
+                    marginLeft: "1.2rem",
+                  }}
+                  href="/blogs/"
+                >
                   الدعم
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink style={{ color: "white", fontSize: "18px", marginLeft:"1.2rem" }} href="/blogs/">
+                <NavLink
+                  style={{
+                    color: "white",
+                    fontSize: "18px",
+                    marginLeft: "1.2rem",
+                  }}
+                  href="/blogs/"
+                >
                   كيف تختار زوجك
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink style={{ color: "white" , fontSize: "18px", marginLeft:"1.2rem" }} href="/blogs/">
+                <NavLink
+                  style={{
+                    color: "white",
+                    fontSize: "18px",
+                    marginLeft: "1.2rem",
+                  }}
+                  href="/blogs/"
+                >
                   التجارب الناجحة
                 </NavLink>
               </NavItem>
-          
+
               <NavItem>
-                <NavLink style={{ color: "white", fontSize: "18px", marginLeft: "1.2rem"  }} href="/blogs/">
+                <NavLink
+                  style={{
+                    color: "white",
+                    fontSize: "18px",
+                    marginLeft: "1.2rem",
+                  }}
+                  href="/blogs/"
+                >
                   {" "}
                   البحث
                 </NavLink>
