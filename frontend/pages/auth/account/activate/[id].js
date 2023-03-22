@@ -3,7 +3,8 @@ import jwt from "jsonwebtoken";
 import Layout from "../../../../components/Layout";
 import { withRouter } from "next/router";
 import { signup } from "../../../../actions/auth";
-import QuestionsForm from "../../../../components/auth/PreActivationForm/QuestionsForm";
+import MenQuestionsForm from "../../../../components/auth/PreActivationForm/MenQuestionsForm";
+import WomenQuestionsForm from "../../../../components/auth/PreActivationForm/WomenQuestionsForm";
 
 const ActivateAccount = ({ router }) => {
   const [gender, setGender] = useState("");
@@ -52,9 +53,10 @@ const ActivateAccount = ({ router }) => {
 
   const showPreActivationForm = () => {
     return (
-      <>
-        <QuestionsForm gender={gender} />
-      </>
+      <>{gender === "man" ? <MenQuestionsForm /> : <WomenQuestionsForm />}</>
+      // <>
+      //   <QuestionsForm gender={gender} />
+      // </>
     );
   };
 
@@ -63,6 +65,7 @@ const ActivateAccount = ({ router }) => {
   return (
     <Layout>
       <div className="container">
+        <h1 className="pb-2 mt-5 fw-bold">قم بتسجيل بياناتك</h1>
         <h3 className="pb-4">
           مرحبا يا {name}, قم بادخال بياناتك حتى يتم تفعيل حسابك
         </h3>

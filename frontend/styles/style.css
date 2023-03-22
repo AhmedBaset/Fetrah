@@ -57,8 +57,117 @@ ul {
   border-color: "#a7727d";
 }
 
+.authContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notificationIcon {
+  cursor: pointer;
+}
+
+.accountIcon {
+  border-radius: 50%;
+}
+
+.roundedBtnLabel {
+  margin-left: 1rem;
+  margin-right: 0.5rem;
+}
+
+.accountRoundedBtn {
+  margin: 0 0.8rem 0 0.8rem;
+  border: 0;
+  border-radius: 91px;
+  background: #ffffff;
+  padding: 0rem 8px 0rem 3px;
+  text-align: center;
+  color: #000000;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.roundedBtn {
+  margin: 0 0.8rem 0 0.8rem;
+  border: 0;
+  border-radius: 91px;
+  background: #ffffff;
+  padding: 0.2rem 8px 0.2rem 3px;
+  text-align: center;
+  color: #000000;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.AccountItemContainer {
+  position: relative;
+}
+
+.accountMenu {
+  border: 0;
+  border-radius: 5px;
+  position: absolute;
+  top: 100%;
+  left: -10rem;
+  padding: 0;
+  margin: 0.5rem 0;
+  width: 20rem;
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.accountMenu li {
+  border: 0;
+  border-radius: 5px;
+  padding: 0px 12px;
+  cursor: pointer;
+  margin: 1rem;
+  text-align: center;
+  height: 2rem;
+}
+
+.accountMenu li:hover {
+  background-color: var(--main-color);
+  color: white;
+  padding: 0px 12px;
+  cursor: pointer;
+  margin: 1rem;
+}
+
+.AccountItemContainer:hover .accountMenu {
+  opacity: 1;
+  visibility: visible;
+}
+
 @media (max-width: 945px) {
   .navLinkItem {
     margin: 1rem;
+    text-align: center;
+  }
+
+  .authContainer {
+    display: flex;
+    flex-direction: column;
+    height: 5rem;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+  }
+  .roundedBtn {
+    margin: 0;
+    margin-left: 1.5rem;
   }
 }

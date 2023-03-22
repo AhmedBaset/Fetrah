@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { APP_NAME } from "../config";
 
 import { isAuth, signout } from "../actions/auth";
@@ -12,18 +12,17 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText,
 } from "reactstrap";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import Link from "next/link";
 
 const Header = (props) => {
   const router = useRouter();
 
+  const [showMenu, setShowMenu] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const container = useRef();
 
   useEffect(() => {
     setIsAuthenticated(isAuth());
@@ -45,38 +44,105 @@ const Header = (props) => {
         </NavbarBrand>
         <NavbarToggler navbar="true" onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
-          <Nav className="me-auto" navbar>
+          <Nav style={{ marginRight: "5rem" }} className="me-auto" navbar>
             <>
-              <NavItem>
-                <NavLink
-                  style={{
-                    backgroundColor: "white",
-                    borderColor: "#a7727d",
-                  }}
-                  className="btn btn-primary text-dark pe-3 ps-3 rounded-pill navLinkItem"
-                  href="/signup"
-                >
-                  حساب جديد
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  style={{
-                    backgroundColor: "white",
-                    borderColor: "#a7727d",
-                  }}
-                  className="btn btn-primary text-dark pe-3 ps-3 rounded-pill navLinkItem"
-                  href="/signin"
-                >
-                  تسجيل الدخول
-                </NavLink>
-              </NavItem>
+              {isAuthenticated && isAuthenticated.role === 0 && (
+                <div className="authContainer">
+                  <div className="accountIcon">
+                    <Image
+                      className="notificationIcon"
+                      src={"/images/notificationIcon.svg"}
+                      width={20}
+                      height={20}
+                      alt={""}
+                    />
+                  </div>
+                  <div className="accountRoundedBtn">
+                    <div className="roundedBtnLabel">
+                      {" "}
+                      <Link
+                        style={{ textDecoration: "none", color: "#000" }}
+                        className={"AccountItemContainer"}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setShowMenu(!showMenu);
+                        }}
+                        ref={container}
+                        href={"/"}
+                      >
+                        حسابي
+                        {showMenu && (
+                          <ul className="accountMenu">
+                            <li>
+                              {" معلوماتي الشخصية"}
+                              <Link
+                                style={{
+                                  textDecoration: "none",
+                                  color: "#000",
+                                }}
+                                href={"/user"}
+                              ></Link>
+                            </li>
+                            <li>طلبات القبول</li>
+                            <li
+                              onClick={() => {
+                                signout(() => {
+                                  router.replace("/signin");
+                                });
+                              }}
+                            >
+                              تسجيل الخروج
+                            </li>
+                          </ul>
+                        )}
+                      </Link>
+                    </div>
+                    <div className="accountIcon">
+                      <Image
+                        src={"/images/accountIconMale.png"}
+                        width={35}
+                        height={35}
+                        alt={""}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {!isAuthenticated && (
+                <>
+                  <div className="authContainer">
+                    <div className="roundedBtn">
+                      <div className="roundedBtnLabel">
+                        <Link
+                          style={{ textDecoration: "none", color: "#000" }}
+                          href={"/signup"}
+                        >
+                          حساب جديد
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="roundedBtn">
+                      <div className="roundedBtnLabel">
+                        <Link
+                          style={{ textDecoration: "none", color: "#000" }}
+                          href={"/signin"}
+                        >
+                          تسجيل دخول
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
               <NavItem>
                 <NavLink
                   style={{
                     color: "white",
                     fontSize: "18px",
                     marginLeft: "1.2rem",
+                    textAlign: "center",
                   }}
                   href="/blogs/"
                 >
@@ -89,6 +155,7 @@ const Header = (props) => {
                     color: "white",
                     fontSize: "18px",
                     marginLeft: "1.2rem",
+                    textAlign: "center",
                   }}
                   href="/blogs/"
                 >
@@ -101,6 +168,7 @@ const Header = (props) => {
                     color: "white",
                     fontSize: "18px",
                     marginLeft: "1.2rem",
+                    textAlign: "center",
                   }}
                   href="/blogs/"
                 >
@@ -114,6 +182,7 @@ const Header = (props) => {
                     color: "white",
                     fontSize: "18px",
                     marginLeft: "1.2rem",
+                    textAlign: "center",
                   }}
                   href="/blogs/"
                 >
@@ -121,11 +190,6 @@ const Header = (props) => {
                   البحث
                 </NavLink>
               </NavItem>
-              {/* {!isAuthenticated && (
-                <NavItem>
-                  <NavLink href="/signin/">Signin</NavLink>
-                </NavItem>
-              )} */}
             </>
 
             {/* {isAuthenticated && (
@@ -139,14 +203,6 @@ const Header = (props) => {
                   }}
                 >
                   Signout
-                </NavLink>
-              </NavItem>
-            )} */}
-
-            {/* {isAuthenticated && isAuthenticated.role === 0 && (
-              <NavItem>
-                <NavLink href="/user">
-                  {isAuthenticated.name}'s Dashboard
                 </NavLink>
               </NavItem>
             )} */}

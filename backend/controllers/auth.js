@@ -62,8 +62,10 @@ exports.signup = (req, res) => {
   const questionsMap = new Map(Object.entries(questionsObject));
   const idPhoto1 = questionsMap.get("idPhoto1");
   const idPhoto2 = questionsMap.get("idPhoto2");
+  const idNumber = questionsMap.get("idNumber");
   questionsMap.delete("idPhoto1");
   questionsMap.delete("idPhoto2");
+  questionsMap.delete("idNumber");
   if (token) {
     jwt.verify(
       token,
@@ -90,6 +92,7 @@ exports.signup = (req, res) => {
           gender,
           idPhoto1,
           idPhoto2,
+          idNumber,
           questions: questionsMap,
         });
 

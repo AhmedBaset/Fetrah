@@ -1,0 +1,282 @@
+.formContainer {
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+}
+
+.generalInfoContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.personalInfoContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3rem;
+}
+
+.religionInfoContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3rem;
+}
+
+.marryInfoContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3rem;
+}
+
+.idInfoContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3rem;
+}
+
+.submitBtnContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+}
+
+.girow1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.girow2 {
+  display: flex;
+
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.girow3 {
+  display: flex;
+
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.pirow1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.pirow2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.rirow1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.mirow1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.mirow2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.iirow1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.iirow2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.dropdown {
+  margin-top: 0.4rem;
+  padding: 1px;
+  font-size: 13px;
+  height: 1.8rem;
+  border: none;
+  border: 1px solid #a7727d;
+  border-radius: 8px 8px 8px 8px;
+  color: #000;
+  width: 100%;
+}
+
+.dropdown option {
+  direction: rtl;
+  padding: 10px;
+  font-size: 15px;
+  color: #333;
+}
+
+.inputContainer {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+}
+
+.inputLabel {
+  width: 110%;
+  font-weight: normal;
+}
+
+.idImage {
+  margin-top: 0.4rem;
+  border-radius: 8px;
+  border: 1px solid #a7727d39;
+  cursor: pointer;
+}
+
+.textInput {
+  border-radius: 8px;
+  border: 1px solid #a7727d;
+  outline: 0;
+  margin-top: 0.4rem;
+  height: 1.8rem;
+  direction: rtl;
+  width: 100%;
+  padding: 8px;
+}
+
+.longTextInput {
+  border-radius: 8px;
+  border: 1px solid #a7727d;
+  outline: 0;
+  margin-top: 0.4rem;
+  height: 8rem;
+  direction: rtl;
+  width: 250%;
+  padding: 8px;
+}
+
+.submit {
+  border: 0;
+  border-radius: 91px;
+  background: #a7727d;
+  width: 150px;
+  text-align: center;
+  height: 35px;
+  margin-top: 20px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.submit:hover {
+  background-color: #ba6d7b;
+}
+
+@media (max-width: 945px) {
+  .title {
+    text-align: center;
+    margin-bottom: 0.6rem;
+  }
+  .girow1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .girow2 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .girow3 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pirow1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pirow2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rirow1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mirow1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .mirow2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .iirow1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .iirow2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .submitBtnContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+  }
+
+  .longTextInput {
+    width: 100%;
+  }
+}

@@ -69,6 +69,10 @@ const userSchema = mongoose.Schema(
       type: String,
     },
 
+    idNumber: {
+      type: String,
+    },
+
     photo: {
       data: Buffer,
       contentType: String,
@@ -97,9 +101,7 @@ const userSchema = mongoose.Schema(
       { type: mongoose.ObjectId, ref: "Request", required: false },
     ],
 
-    favourites: [
-      { type: mongoose.ObjectId, ref: "User", required: false },
-    ],
+    favourites: [{ type: mongoose.ObjectId, ref: "User", required: false }],
   },
   { timestamps: true, collection: "usersinfo" }
 );

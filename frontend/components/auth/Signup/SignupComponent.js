@@ -200,7 +200,6 @@ const SignupComponent = () => {
                   <option value="962">(962+) الأردن</option>
                   <option value="963">(963+) سوريا</option>
                   <option value="964">(964+) العراق</option>
-                  <option value="965">(965+) الكويت</option>
                   <option value="966">(966+) الجزيرة العربية</option>
                   <option value="967">(967+) اليمن</option>
                   <option value="970">(970+) فلسطين</option>
