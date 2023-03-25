@@ -54,9 +54,7 @@ const ActivateAccount = ({ router }) => {
   const showPreActivationForm = () => {
     return (
       <>{gender === "man" ? <MenQuestionsForm /> : <WomenQuestionsForm />}</>
-      // <>
-      //   <QuestionsForm gender={gender} />
-      // </>
+
     );
   };
 

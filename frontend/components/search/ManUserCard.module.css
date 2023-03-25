@@ -1,0 +1,243 @@
+/* search page */
+/* ################## */
+/* navbar */
+
+.userCard {
+  cursor: pointer;
+  color: black;
+  margin-left: 5rem;
+  margin-right: 5rem;
+}
+.userCard:hover {
+  cursor: pointer;
+  color: black;
+}
+.bell img {
+  width: 25px;
+}
+.account {
+  padding: 3px 20px;
+  border-radius: 50px;
+  background-color: white;
+  color: black;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  width: 100px;
+}
+.account img {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  left: 5px;
+}
+.account a {
+  position: absolute;
+  right: 10px;
+}
+/* head code */
+.search-head {
+  background-color: var(--main-color);
+  padding-top: 20px;
+  padding-bottom: 5rem;
+  color: white;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-between; */
+  font-family: "Noto Kufi Arabic";
+  text-align: center;
+}
+.search-head p {
+  position: relative;
+  font-family: "Noto Kufi Arabic";
+}
+
+.search-head h3 {
+  text-align: center;
+  font-family: "Noto Kufi Arabic";
+  line-height: 3.5rem;
+}
+.search-divider {
+  text-align: center;
+  height: 1px;
+  background-color: white;
+  margin: 1rem 430px;
+}
+/* search body code */
+
+.container .gender {
+  margin-top: 2rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container .gender .male {
+  margin-left: 10px;
+  color: #00000080;
+  padding: 0px;
+  border: 1px solid var(--main-color);
+  border-radius: 8px;
+  width: 150px;
+  height: 2rem;
+  text-align: center;
+}
+.container .gender .female {
+  margin-right: 10px;
+  color: white;
+  background-color: var(--main-color);
+  border: 3px solid var(--second-color-color);
+  border-radius: 8px;
+  width: 150px;
+  height: 2rem;
+  text-align: center;
+}
+.container .result {
+  padding-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 40px;
+}
+
+.box {
+  background-color: #f9f5e7;
+  width: 268px;
+  height: 300px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  position: relative;
+  transition: transform 0.5s ease;
+}
+.box:hover {
+  transform: translateY(-8px);
+}
+
+.box > img {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+.box .image {
+  padding-top: 25px;
+  padding-bottom: 20px;
+}
+.box span {
+  line-height: 25px;
+  font-family: "Noto Kufi Arabic";
+}
+
+/* search body code */
+.search-result {
+  background-color: var(--second-color);
+  padding-top: 2rem;
+  position: relative;
+}
+
+.search-result ul {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  background-color: #eddbc7;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 43rem;
+  padding-left:2rem;
+  padding-right: 1rem;
+  box-shadow: -8px 8px 4px rgba(167, 114, 125, 0.5);
+}
+/* .search-result ul li:not(:last-child) {
+  border-right: 1px solid var(--main-color);
+} */
+.search-result ul li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2.5rem;
+  width: 8.5rem;
+  text-align: center;
+  list-style: none;
+  padding-left: 1rem;
+}
+
+.dropdown {
+  padding: 1px;
+  font-size: 13px;
+  height: 1.8rem;
+  border: none;
+  /* border: 1px solid #a7727d; */
+  border-radius: 0px 0px 0px 0px;
+  background-color: #eddbc7;
+  color: #000;
+  outline: none;
+  width: 100%;
+
+  appearance: none; /* remove default appearance */
+  background-image: url('/images/dropdown_icon.svg'); /* set new icon */
+  background-repeat: no-repeat;
+  background-position: left center; /* position icon */
+  padding-left: 20px; /* add padding to prevent text from overlapping with icon */
+
+}
+
+.dropdown option {
+  color: #00000080;
+  direction: rtl;
+  text-align: center;
+  border: none;
+  padding: 10px;
+  outline: none;
+  font-size: 15px;
+  color: #333;
+}
+
+.searchImg{
+  /* background-color: red; */
+  width: 6rem;
+  cursor: pointer;
+}
+
+
+@media (max-width: 768px) {
+  .container .result {
+    padding-top: 50px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search-result ul li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2.5rem;
+    width: 7rem;
+    text-align: center;
+    list-style: none;
+    /* padding-left: 1rem; */
+  }
+
+  .searchImg{
+    /* background-color: red; */
+    width: 3rem;
+    cursor: pointer;
+  }
+
+  .search-result ul {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    background-color: #eddbc7;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 23rem;
+    padding: 0;
+    margin: 0;
+    box-shadow: -8px 8px 4px rgba(167, 114, 125, 0.5);
+  }
+}

@@ -57,6 +57,16 @@ ul {
   border-color: "#a7727d";
 }
 
+.logo{
+  color: white;
+  font-size: 22px;
+  margin-left: 5rem;
+}
+
+.logo:hover{
+  color: white;
+}
+
 .authContainer {
   display: flex;
   justify-content: center;
@@ -158,6 +168,10 @@ ul {
     text-align: center;
   }
 
+  .logo{
+    margin-left: 1rem;
+  }
+
   .authContainer {
     display: flex;
     flex-direction: column;
@@ -167,6 +181,11 @@ ul {
     text-align: center;
   }
   .roundedBtn {
+    margin: 0;
+    margin-left: 1.5rem;
+  }
+
+  .accountRoundedBtn {
     margin: 0;
     margin-left: 1.5rem;
   }

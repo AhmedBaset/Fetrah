@@ -15,11 +15,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.rtl.min.css"
-          rel="stylesheet"
-          crossOrigin="anonymous"
-        />
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
 

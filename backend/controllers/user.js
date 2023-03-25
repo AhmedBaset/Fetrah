@@ -72,7 +72,6 @@ exports.removeFavourite = (req, res) => {
         error: errorHandler(err),
       });
     } else {
-
       User.findOneAndUpdate(
         { username: senderUsername },
         {
@@ -371,13 +370,13 @@ exports.getUsers = (req, res) => {
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
+    .select('username gender questions')
     .exec((err, data) => {
       if (err) {
         return res.json({ error: errorHandler(err) });
       }
 
       users = data;
-
       return res.json({ users, size: users.length });
     });
 };
@@ -465,38 +464,38 @@ exports.publicProfile = (req, res) => {
   let user;
   let blogs;
   User.findOne({ username })
-  .select('username _id questions sentRequests')
-  .populate('sentRequests', 'reciever')
-  .populate()
-  .exec((err, userFromDB) => {
-    if (err || !userFromDB) {
-      return res.status(400).json({
-        error: "User not found",
-      });
-    }
-    user = userFromDB;
-    let userId = user._id;
-    Blog.find({ postedBy: userId })
-      .populate("categories", "_id name slug")
-      .populate("tags", "_id name slug")
-      .populate("postedBy", "_id name")
-      .limit(10)
-      .select(
-        "_id title slug excerpt categories tags postedBy createdAt updatedAt"
-      )
-      .exec((err, data) => {
-        if (err) {
-          return res.status(400).json({
-            error: errorHandler(err),
-          });
-        }
-        user.hashed_password = undefined;
-        res.json({
-          user,
-          blogs: data,
+    .select("username _id questions sentRequests")
+    .populate("sentRequests", "reciever")
+    .populate()
+    .exec((err, userFromDB) => {
+      if (err || !userFromDB) {
+        return res.status(400).json({
+          error: "User not found",
         });
-      });
-  });
+      }
+      user = userFromDB;
+      let userId = user._id;
+      Blog.find({ postedBy: userId })
+        .populate("categories", "_id name slug")
+        .populate("tags", "_id name slug")
+        .populate("postedBy", "_id name")
+        .limit(10)
+        .select(
+          "_id title slug excerpt categories tags postedBy createdAt updatedAt"
+        )
+        .exec((err, data) => {
+          if (err) {
+            return res.status(400).json({
+              error: errorHandler(err),
+            });
+          }
+          user.hashed_password = undefined;
+          res.json({
+            user,
+            blogs: data,
+          });
+        });
+    });
 };
 
 exports.update = (req, res) => {

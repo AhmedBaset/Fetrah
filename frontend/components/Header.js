@@ -36,8 +36,7 @@ const Header = (props) => {
     <>
       <Navbar style={{ backgroundColor: "#a7727d" }} navbar="true" {...props}>
         <NavbarBrand
-          style={{ color: "white", fontSize: "22px", marginLeft: "2rem" }}
-          className="font-weight-bold"
+          className="font-weight-bold logo"
           href="/"
         >
           {APP_NAME}
@@ -73,17 +72,20 @@ const Header = (props) => {
                         حسابي
                         {showMenu && (
                           <ul className="accountMenu">
-                            <li>
+                            <li
+                              onClick={(e) => {
+                                e.preventDefault();
+                                router.push("/user");
+                              }}
+                            >
                               {" معلوماتي الشخصية"}
-                              <Link
-                                style={{
-                                  textDecoration: "none",
-                                  color: "#000",
-                                }}
-                                href={"/user"}
-                              ></Link>
                             </li>
                             <li>طلبات القبول</li>
+                            <li
+                              onClick={null}
+                            >
+                              قائمة المحفوظات
+                            </li>
                             <li
                               onClick={() => {
                                 signout(() => {
@@ -184,7 +186,7 @@ const Header = (props) => {
                     marginLeft: "1.2rem",
                     textAlign: "center",
                   }}
-                  href="/blogs/"
+                  href="/users/"
                 >
                   {" "}
                   البحث

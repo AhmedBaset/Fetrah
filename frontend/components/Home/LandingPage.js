@@ -1,6 +1,8 @@
 import classes from "./Landingpage.module.css";
+import {useRouter} from "next/router";
 
 function LandingPage() {
+  const router = useRouter();
   return (
     <div className={classes["header"]}>
       <div className={classes["container"]}>
@@ -17,7 +19,7 @@ function LandingPage() {
           </h3>
           <div className={classes["divider"]} />
           <p>الموقع الأول للزواج الإسلامي الذي يرضي الله عز وجل</p>
-          <button className={classes["submit"]}>إبحث عن زوجك</button>
+          <button onClick={()=> {router.push('/users')}} className={classes["submit"]}>ابحث عن زوجك</button>
         </div>
         <div className={classes["image"]}>
           <img src="/images/muslim.svg" alt="لتسكنوا" />

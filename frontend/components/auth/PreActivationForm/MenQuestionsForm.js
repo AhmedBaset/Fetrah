@@ -34,6 +34,7 @@ const MenQuestionsForm = (props) => {
     generalStatus: "",
     country: "",
     nationality: "",
+    state: "",
     certificate: "",
     job: "",
     maleChilds: "",
@@ -56,7 +57,9 @@ const MenQuestionsForm = (props) => {
 
   const certificateIsValid = formData.certificate.trim() !== "";
 
-  const showChildQuestions = formData.generalStatus !== "أعزب";
+  const showChildQuestions = formData.generalStatus !== "أعزب" && formData.generalStatus !== "";
+  console.log(showChildQuestions);
+  const showStateQuestion = formData.country !== "";
 
   const ageIsValid =
     formData.age.trim() !== "" &&
@@ -147,6 +150,21 @@ const MenQuestionsForm = (props) => {
       return;
     }
     newFormData.set("1", formData.country);
+
+    if (formData.nationality === "") {
+      setError("يجب أن تحدد جنسيتك");
+      handleScrollToEnd();
+      return;
+    }
+    newFormData.set("37", formData.nationality);
+
+    if (formData.state === "") {
+      setError("يجب أن تحدد المحافظة التي تسكن بها");
+      handleScrollToEnd();
+      return;
+    }
+    newFormData.set("16", formData.state);
+
     if (formData.height === "" || !heightIsValid) {
       setError("يجب أن تحدد طولك!");
       handleScrollToEnd();
@@ -243,6 +261,8 @@ const MenQuestionsForm = (props) => {
       return;
     }
     newFormData.set("idNumber", formData.idNumber);
+
+    
 
     for (let pair of newFormData.entries()) {
       console.log(`${pair[0]} : ${pair[1]}`);
@@ -415,7 +435,28 @@ const MenQuestionsForm = (props) => {
                 required
               />
             </div>
-            <div className={classes.inputContainer}></div>
+            <div className={classes.inputContainer}>
+              {showStateQuestion && (
+                <>
+                  <label className={classes.inputLabel}>
+                    المحافظة أو المدينة التي تعيش بها*
+                  </label>
+                  <select
+                    name="state"
+                    value={formData.state}
+                    onChange={handleInputChange}
+                    className={classes["dropdown"]}
+                    required={true}
+                  >
+                    <option value="">اختر حالتك</option>
+                    <option value="أعزب">أعزب</option>
+                    <option value="متزوج">متزوج</option>
+                    <option value="مطلق">مطلق</option>
+                    <option value="أرمل">أرمل</option>
+                  </select>
+                </>
+              )}
+            </div>
           </div>
           {showChildQuestions && (
             <div className={classes.girow3}>

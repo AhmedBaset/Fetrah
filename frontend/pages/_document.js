@@ -6,7 +6,11 @@ class MyDocument extends Document {
       <Html lang="ar">
         <Head>
           <mate charSet="UTF-8" />
-
+          <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.rtl.min.css"
+            rel="stylesheet"
+            crossOrigin="anonymous"
+          />
           <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.rtl.min.css"
