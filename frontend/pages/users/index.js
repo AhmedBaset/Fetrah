@@ -1,14 +1,12 @@
 import Layout from "../../components/Layout";
 import Head from "next/head";
-import Link from "next/link";
-import { withRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getUsers } from "../../actions/user";
 import { API, DOMAIN, APP_NAME, FB_APP_ID } from "../../config";
-import { NavItem, NavLink } from "reactstrap";
 import ManUserCard from "../../components/search/ManUserCard";
 import classes from "../../components/search/ManUserCard.module.css";
 import Image from "next/image";
+import { isAuth } from "../../actions/auth";
 
 const head = () => {
   const title = `islamic mirrage | ${APP_NAME}`;
@@ -47,7 +45,15 @@ const UsersPage = ({ users, totalUsers, usersLimit, usersSkip, router }) => {
   const [limit, setLimit] = useState(usersLimit);
   const [skip, setSkip] = useState(usersSkip);
   const [size, setSize] = useState(totalUsers);
-  const [loadedUsers, setLoadedUsers] = useState([]);
+  const [loadedUsers, setLoadedUsers] = useState(users);
+  const userSignedIn = isAuth();
+
+  useEffect(() => {
+    if (userSignedIn) {
+      users = users.filter((user) => user.username !== userSignedIn.username);
+      setLoadedUsers(users);
+    }
+  }, []);
 
   const loadMore = () => {
     let toSkip = skip + limit;
@@ -55,7 +61,8 @@ const UsersPage = ({ users, totalUsers, usersLimit, usersSkip, router }) => {
       if (data.error) {
         console.log(data.error);
       } else {
-        setLoadedBlogs([...loadedUsers, ...data.users]);
+        const loadedUsersList = [...loadedUsers, ...data.users];
+        setLoadedBlogs(loadedUsersList);
         setSize(data.size);
         setSkip(toSkip);
       }
@@ -74,7 +81,7 @@ const UsersPage = ({ users, totalUsers, usersLimit, usersSkip, router }) => {
   };
 
   const showAllUsers = () => {
-    return users.map((user, i) => {
+    return loadedUsers.map((user, i) => {
       return (
         <div key={i} className={classes.userCard}>
           <ManUserCard user={user} />
@@ -100,7 +107,13 @@ const UsersPage = ({ users, totalUsers, usersLimit, usersSkip, router }) => {
           </div>
           <div className={classes["search-result"]}>
             <ul>
-              <Image className={classes['searchImg']} src={"/images/search_icon.svg"} width={30} height={30} alt={""}/>
+              <Image
+                className={classes["searchImg"]}
+                src={"/images/search_icon.svg"}
+                width={30}
+                height={30}
+                alt={""}
+              />
               <li>
                 <select
                   className={classes["dropdown"]}
@@ -142,7 +155,7 @@ const UsersPage = ({ users, totalUsers, usersLimit, usersSkip, router }) => {
                   // className={classes["dropdown"]}
                   required={true}
                 >
-                  <option value="">بلد الإقامة</option>
+                  <option value="">الإقامة</option>
                   <option value="أعزب">مصر</option>
                   <option value="متزوج">سوريا</option>
                   <option value="مطلق">العراق</option>

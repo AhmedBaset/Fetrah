@@ -8,6 +8,8 @@ import {
   checkInFavourites,
 } from "../../actions/user";
 import { isAuth, getCookie } from "../../actions/auth";
+import Layout from "../../components/Layout";
+import UserInfo from "../../components/user/UserInfo";
 
 const UserDetails = ({ router }) => {
   const username = router.query.slug;
@@ -116,17 +118,17 @@ const UserDetails = ({ router }) => {
   if (!user) {
     return (
       <>
-        <h1>Loading...</h1>
+        <div style={{height:"100vh",display: "flex", justifyContent:"center", alignItems:"center"}}>
+          <h1>جاري التحميل...</h1>
+        </div>
       </>
     );
   }
   return (
     <>
-      <h1>User {user && user.username}</h1>
-      <div>
-        <button onClick={handleAddRemoveFromFavourite}>Add to favourite</button>
-        {showAcceptanceBtn()}
-      </div>
+      <Layout>
+        <UserInfo user={user} />
+      </Layout>
     </>
   );
 };

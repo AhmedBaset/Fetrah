@@ -17,6 +17,7 @@ const formRoutes = require("./routes/form");
 const app = express();
 
 //db
+mongoose.set('strictQuery', false);
 mongoose
   .connect(process.env.DATABASE, { useNewUrlParser: true })
   .then(() => console.log("connected"))

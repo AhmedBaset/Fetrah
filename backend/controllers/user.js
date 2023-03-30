@@ -23,7 +23,10 @@ exports.checkInFavourites = (req, res) => {
             error: errorHandler(err),
           });
         } else {
+          console.log(user.favourites);
+          console.log(result);
           const inFavourites = user.favourites.includes(result);
+
           return res.json({ inFavourites });
         }
       });
@@ -98,6 +101,7 @@ exports.sendAcceptanceRequest = (req, res) => {
   const recieverUsername = req.body.reciever;
   let sender;
   let reciever;
+  const REQUEST_TIME = "1d";
   User.findOne({ username: senderUsername })
     .populate("sentRequests")
     .exec((err, senderUser) => {
@@ -208,7 +212,7 @@ exports.sendAcceptanceRequest = (req, res) => {
                   );
                   //If token still valid this means time is not finished yet, and user has to wait before sending new request
                 } else {
-                  return res.json({ message: "you can't send request now" });
+                  return res.json({ message: "لا يمكنك ارسال طلب جديد قبل انتهاء مدة طلبك السابق" });
                 }
               }
             );
@@ -243,7 +247,7 @@ exports.sendAcceptanceRequest = (req, res) => {
                 { senderUsername, recieverUsername },
                 process.env.JWT_ACCEPTANCE_REQUEST,
                 {
-                  expiresIn: "10s",
+                  expiresIn: REQUEST_TIME,
                 }
               );
               request.sender = sender;
@@ -308,7 +312,7 @@ exports.sendAcceptanceRequest = (req, res) => {
               { senderUsername, recieverUsername },
               process.env.JWT_ACCEPTANCE_REQUEST,
               {
-                expiresIn: "10s",
+                expiresIn: REQUEST_TIME,
               }
             );
             request.sender = sender;
@@ -370,7 +374,7 @@ exports.getUsers = (req, res) => {
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
-    .select('username gender questions')
+    .select("username gender questions")
     .exec((err, data) => {
       if (err) {
         return res.json({ error: errorHandler(err) });

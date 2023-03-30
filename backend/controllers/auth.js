@@ -98,6 +98,7 @@ exports.signup = (req, res) => {
 
         user.save((err, user) => {
           if (err) {
+            console.log(err);
             return res.status(401).json({
               error: errorHandler(err),
             });
