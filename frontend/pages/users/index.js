@@ -193,21 +193,24 @@ const UsersPage = ({ users, totalUsers, usersLimit, usersSkip, router }) => {
   );
 };
 
-UsersPage.getInitialProps = () => {
+export async function getServerSideProps(context) {
   let skip = 0;
   let limit = 2;
+
   return getUsers(skip, limit).then((data) => {
     if (data.error) {
       console.log(data.error);
     } else {
       return {
-        users: data.users,
-        totalUsers: data.size,
-        usersLimit: limit,
-        usersSkip: skip,
+        props: {
+          users: data.users,
+          totalUsers: data.size,
+          usersLimit: limit,
+          usersSkip: skip,
+        },
       };
     }
   });
-};
+}
 
 export default UsersPage;

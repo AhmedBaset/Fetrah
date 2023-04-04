@@ -26,9 +26,11 @@
     "quill-image-resize-module-react": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-modal": "^3.16.1",
     "react-quill": "^2.0.0",
     "react-toastify": "^9.1.2",
     "reactstrap": "^9.1.5",
-    "sass": "^1.58.3"
+    "sass": "^1.58.3",
+    "socket.io-client": "^4.6.1"
   }
 }

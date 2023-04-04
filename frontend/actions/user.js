@@ -1,12 +1,66 @@
 import fetch from "isomorphic-fetch";
 import { API } from "../config";
 
+export const fetchRequest = (requestId) => {
+  const data = {
+    requestId,
+  };
+  return fetch(`${API}/api/get-request`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
 export const checkInFavourites = (sender, userToCheck, token) => {
   const data = {
     sender,
     userToCheck,
   };
   return fetch(`${API}/api/user/in-favourite`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const acceptRequest = (requestId, token) => {
+  const data = {
+    requestId,
+  };
+  return fetch(`${API}/api/user/accept-request`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const rejectRequest = (requestId, token) => {
+  const data = {
+    requestId,
+  };
+  return fetch(`${API}/api/user/reject-request`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

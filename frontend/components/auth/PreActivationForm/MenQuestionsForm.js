@@ -156,7 +156,7 @@ const MenQuestionsForm = (props) => {
       handleScrollToEnd();
       return;
     }
-    newFormData.set("37", formData.nationality);
+    newFormData.set("36", formData.nationality);
 
     if (formData.state === "") {
       setError("يجب أن تحدد المحافظة التي تسكن بها");

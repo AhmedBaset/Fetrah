@@ -20,6 +20,9 @@ const {
   addFavourite,
   removeFavourite,
   checkInFavourites,
+  acceptRequest,
+  rejectRequest,
+  fetchRequest
 } = require("../controllers/user");
 
 router.get("/user/profile", requireSignIn, authMiddleware, read);
@@ -33,9 +36,12 @@ router.put(
 router.get("/user/photo/:username", photo);
 router.post("/users", getUsers);
 router.post("/user/acceptance-request",requireSignIn, authMiddleware, logUserBehavior, sendAcceptanceRequest);
+router.post("/user/accept-request",requireSignIn, authMiddleware, logUserBehavior, acceptRequest);
+router.post("/user/reject-request",requireSignIn, authMiddleware, logUserBehavior, rejectRequest);
 router.post("/user/in-favourite",requireSignIn, authMiddleware, checkInFavourites);
 router.post("/user/add-favourite",requireSignIn, authMiddleware, logUserBehavior, addFavourite);
 router.post("/user/remove-favourite",requireSignIn, authMiddleware, logUserBehavior, removeFavourite);
+router.post("/get-request", fetchRequest);
 //Admin operations
 router.get(
   "/users/need-confirmation",

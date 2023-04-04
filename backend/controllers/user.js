@@ -8,6 +8,22 @@ const questions = require("../questions.json");
 const jwt = require("jsonwebtoken");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
+exports.fetchRequest = (req, res) => {
+  const requestId = req.body.requestId;
+  Request.findById(requestId)
+    .populate("sender")
+    .populate("reciever")
+    .populate("privateRoom")
+    .exec((err, data) => {
+      if (err) {
+        return res.status(400).json({
+          error: errorHandler(err),
+        });
+      }
+      return res.json({ data });
+    });
+};
+
 exports.checkInFavourites = (req, res) => {
   const senderUsername = req.body.sender;
   const userToCheck = req.body.reciever;
@@ -23,8 +39,6 @@ exports.checkInFavourites = (req, res) => {
             error: errorHandler(err),
           });
         } else {
-          console.log(user.favourites);
-          console.log(result);
           const inFavourites = user.favourites.includes(result);
 
           return res.json({ inFavourites });
@@ -153,7 +167,9 @@ exports.sendAcceptanceRequest = (req, res) => {
                       reciever = recieverUser;
 
                       if (sender.gender === reciever.gender) {
-                        return res.json({ message: "اتق الله" });
+                        return res.json({
+                          message: "اتق الله ولا تتشبه بقوم لوط",
+                        });
                       }
 
                       const request = new Request();
@@ -212,7 +228,10 @@ exports.sendAcceptanceRequest = (req, res) => {
                   );
                   //If token still valid this means time is not finished yet, and user has to wait before sending new request
                 } else {
-                  return res.json({ message: "لا يمكنك ارسال طلب جديد قبل انتهاء مدة طلبك السابق" });
+                  return res.json({
+                    message:
+                      "لا يمكنك ارسال طلب جديد قبل انتهاء مدة طلبك السابق",
+                  });
                 }
               }
             );
@@ -364,6 +383,50 @@ exports.sendAcceptanceRequest = (req, res) => {
     });
 };
 
+exports.acceptRequest = (req, res) => {
+  const requestId = req.body.requestId;
+
+  Request.updateOne(
+    { _id: requestId },
+    {
+      status: "2",
+    },
+    { new: true }
+  ).exec((err, data) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler(err),
+      });
+    } else {
+      return res.json({
+        message: "تم قبول الطلب بنجاح ... ستنتقل الان لمرحلة الأسئلة",
+      });
+    }
+  });
+};
+
+exports.rejectRequest = (req, res) => {
+  const requestId = req.body.requestId;
+  Request.updateOne(
+    { _id: requestId },
+    {
+      status: "3",
+    },
+    { new: true }
+  ).exec((err, data) => {
+    if (err) {
+      // console.log(err);
+      return res.status(400).json({
+        error: errorHandler(err),
+      });
+    } else {
+      return res.json({
+        message: "تم رفض الطلب ... وفقكم الله لمن هو خير",
+      });
+    }
+  });
+};
+
 exports.getUsers = (req, res) => {
   let limit = req.body.limit ? parseInt(req.body.limit) : 10;
   let skip = req.body.skip ? parseInt(req.body.skip) : 0;
@@ -419,6 +482,7 @@ exports.rejectUser = (req, res) => {
   let user;
 
   User.findOne({ username }).exec((err, userFromDB) => {
+    console.log("Hello " + err);
     if (err || !userFromDB) {
       return res.status(400).json({
         error: "User is not found",
@@ -439,7 +503,6 @@ exports.rejectUser = (req, res) => {
 };
 
 exports.confirmUser = (req, res) => {
-  console.log(req.body);
   let username = req.body.username;
   let user;
 
@@ -468,8 +531,9 @@ exports.publicProfile = (req, res) => {
   let user;
   let blogs;
   User.findOne({ username })
-    .select("username _id questions sentRequests")
-    .populate("sentRequests", "reciever")
+    .select("username _id questions gender sentRequests recievedRequests")
+    .populate("recievedRequests", "sender status")
+    .populate("sentRequests", "reciever status")
     .populate()
     .exec((err, userFromDB) => {
       if (err || !userFromDB) {

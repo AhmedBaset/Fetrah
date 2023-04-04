@@ -71,8 +71,7 @@
   background-color: #f1f0f0;
 }
 
-
-.other-info{
+.other-info {
   margin-left: 5rem;
   margin-right: 5rem;
   direction: rtl;
@@ -112,7 +111,7 @@
     border-radius: 50%;
   }
 
-  .icon{
+  .icon {
     width: 7rem;
   }
 
@@ -126,10 +125,10 @@
     align-items: center;
   }
 
-  .info-text-container h3{
+  .info-text-container h3 {
     line-height: 2rem;
     font-size: 18px;
-  } 
+  }
 
   .options-container {
     height: 50%;
@@ -140,7 +139,7 @@
     margin-bottom: 4rem;
   }
 
-  .other-info{
+  .other-info {
     margin-left: 1rem;
     margin-right: 1rem;
     direction: rtl;
@@ -154,13 +153,50 @@
     font-size: 16px;
     width: 100%;
   }
-  
+
   .info-title {
     font-size: 28px;
     margin-bottom: 2rem;
     font-weight: bold;
     text-align: center;
   }
+}
 
-  
+.custom-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.custom-modal h2 {
+  margin-top: 0;
+}
+
+.custom-modal input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.custom-modal button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: var(--main-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-modal button:hover {
+  background-color: var(--second-color);
 }

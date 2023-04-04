@@ -26,6 +26,10 @@ const requestSchema = mongoose.Schema(
     token: {
       type: String,
     },
+    privateRoom: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "PrivateRoom",
+    },
   },
   { timestamps: true }
 );

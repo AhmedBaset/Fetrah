@@ -5,7 +5,9 @@ import Router from "next/router";
 import NProgress from "nprogress"; //nprogress module
 import "../styles/nprogress.css";
 import "../styles/style.css";
+import Modal from 'react-modal';
 
+Modal.setAppElement('#__next');
 //Binding events.
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());

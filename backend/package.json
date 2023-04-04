@@ -28,6 +28,7 @@
     "react-render-html": "^0.6.0",
     "short-id": "^0.1.0-1",
     "slugify": "^1.6.5",
+    "socket.io": "^4.6.1",
     "string-strip-html": "^8.3.0"
   }
 }
