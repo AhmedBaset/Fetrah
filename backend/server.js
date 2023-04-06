@@ -68,10 +68,15 @@ socketIO.on("connection", (socket) => {
   });
 
   // When a client sends a private message
-  socket.on("privateMessage", async ({ roomId, senderUserName, message }) => {
-    await AddNewMessagesInRoom(roomId, senderUserName, message);
-    socket.to(roomId).emit("privateMessage", { message, senderUserName });
-  });
+  socket.on(
+    "privateMessage",
+    async ({ roomId, senderUserName, message, responseTo }) => {
+      await AddNewMessagesInRoom(roomId, senderUserName, message, responseTo);
+      socket
+        .to(roomId)
+        .emit("privateMessage", { message, senderUserName, responseTo });
+    }
+  );
 
   // When a client disconnects
   socket.on("disconnect", () => {
@@ -142,5 +147,7 @@ app.use("/api", tagRoutes);
 app.use("/api", formRoutes);
 
 const port = process.env.PORT || 8000;
+
+http.timeout = 60000;
 
 http.listen(port, () => console.log(`Listening on port ${port}`));

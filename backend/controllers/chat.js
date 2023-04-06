@@ -1,11 +1,25 @@
 const { PrivateRoom, ChatMessage } = require("../models/chat");
-
+const Request = require("../models/request");
 // Create a new private room
 exports.createPrivateRoom = async (roomId, clients) => {
   try {
     const newPrivateRoom = new PrivateRoom({ roomId, clients });
+    const request = Request.findOneAndUpdate(
+      { _id: roomId },
+      {
+        privateRoom: newPrivateRoom,
+      },
+      { new: true }
+    ).exec((err, data) => {
+      if (err) {
+        console.log("Error");
+        console.log(err);
+      } else {
+        console.log(data);
+      }
+    });
     const savedPrivateRoom = await newPrivateRoom.save();
-    console.log(`Private room ${savedPrivateRoom._id} created`);
+    console.log(`Private room ${newPrivateRoom._id} created`);
     return savedPrivateRoom;
   } catch (err) {
     console.error(`Error creating private room: ${err}`);
@@ -55,9 +69,14 @@ exports.updatePrivateRoomById = async (id, update) => {
 };
 
 // Update a private room by its ID
-exports.AddNewMessagesInRoom = async (id, senderUserName, message) => {
+exports.AddNewMessagesInRoom = async (
+  id,
+  senderUserName,
+  message,
+  responseTo
+) => {
   try {
-    const newMessage = new ChatMessage({ senderUserName, message });
+    const newMessage = new ChatMessage({ senderUserName, message, responseTo });
     const updatedPrivateRoom = await PrivateRoom.findOneAndUpdate(
       { roomId: id },
       {

@@ -9,7 +9,7 @@ const chatMessageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  responseOnMessage: {
+  responseTo: {
     type: String,
   },
   timestamp: {
