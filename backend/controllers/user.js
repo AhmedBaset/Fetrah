@@ -1,12 +1,83 @@
 const User = require("../models/user");
 const Blog = require("../models/blog");
 const Request = require("../models/request");
+const { PrivateRoom, RoomStatus } = require("../models/chat");
 const _ = require("lodash");
 const formidable = require("formidable");
 const fs = require("fs");
 const questions = require("../questions.json");
 const jwt = require("jsonwebtoken");
 const { errorHandler } = require("../helpers/dbErrorHandler");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
+
+exports.setUserRoomStatus = (req, res) => {
+  const roomId = req.body.roomId;
+  const status = req.body.status;
+  const gender = req.body.gender;
+  const rejectionReason = req.body.rejectionReason;
+
+  PrivateRoom.findOne({ roomId }).exec(async (err, data) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      });
+    } else {
+      if (gender === "man") {
+        data.roomStatus.manStatus = status;
+      } else {
+        data.roomStatus.womanStatus = status;
+      }
+      if (status === "2") {
+        console.log(rejectionReason);
+
+        data.roomStatus.rejectionReason = rejectionReason;
+
+        const update = { status: 3 };
+        Request.findByIdAndUpdate(new ObjectId(data.roomId), update, {
+          new: true,
+        }).exec((err, data) => {
+          if (err) {
+            return res.status(400).json({
+              error: err,
+            });
+          }
+        });
+      } else if (status === "1") {
+        if (
+          data.roomStatus.manStatus === "1" &&
+          data.roomStatus.womanStatus === "1"
+        ) {
+          //both man and woman agreed then update request status to Finished
+          const update = { status: 5 };
+          Request.findByIdAndUpdate(new ObjectId(data.roomId), update, {
+            new: true,
+          }).exec(async (err, data) => {
+            if (err) {
+              return res.status(400).json({
+                error: err,
+              });
+            }
+            User.findByIdAndUpdate(
+              data.sender,
+              { userStatus: 1 },
+              { new: true }
+            ).exec((err, data) => {});
+            User.findByIdAndUpdate(
+              data.reciever,
+              { userStatus: 1 },
+              { new: true }
+            ).exec((err, data) => {});
+          });
+          return res.json({ message: "تم القبول", data });
+        }
+      }
+
+      await data.save();
+      return res.json({ message: "في انتظار الطرف الاخر", data });
+    }
+  });
+};
 
 exports.fetchRequest = (req, res) => {
   const requestId = req.body.requestId;

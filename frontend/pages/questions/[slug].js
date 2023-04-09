@@ -6,9 +6,14 @@ import { useState, useEffect, useRef } from "react";
 import { isAuth } from "../../actions/auth";
 import { useRouter } from "next/router";
 import { FaPaperPlane } from "react-icons/fa";
-import { fetchRequest, getQuestions } from "../../actions/user";
+import {
+  fetchRequest,
+  getQuestions,
+  setUserRoomStatus,
+} from "../../actions/user";
 import Layout from "../../components/Layout";
 import Image from "next/image";
+import Modal from "react-modal";
 import {
   DIVORCED_MAN_EXCLUDED_QUESTIONS,
   DIVORCED_WOMAN_EXCLUDED_QUESTIONS,
@@ -20,41 +25,69 @@ import {
 import { toast } from "react-toastify";
 import MenWelcomeMessages from "../../components/chat/MenWelcomeMessages";
 import WomenWelcomeMessages from "../../components/chat/WomenWelcomeMessages";
+import RejectionModal from "../../components/chat/RejectionModal";
 
 const QuestionsPage = ({ request, sender, receiver, questions }) => {
   const router = useRouter();
   const signedInUser = isAuth();
 
-  // console.log(questions.length);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRejectionReasonModalOpen, setIsRejectionReasonModalOpen] =
+    useState(false);
   const [selectedQuestions, setSelectedQuestions] = useState([]);
+  const [canSendMessages, setCanSendMessages] = useState(true);
+  const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const [isRejectionModalOpen, setIsRejectionModalOpen] = useState(false);
+  const [roomId, setRoomId] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const messagesEndRef = useRef(null);
+  const [responseValues, setResponseValues] = useState(
+    Array.from({ length: 100 }, () => ({ response: "", responseTo: "" }))
+  );
+  const [signedInUserProfile, setSignedInUserProfile] = useState();
+  const [filteredQuestions, setFilteredQuestions] = useState();
 
   const handleOpenModal = () => {
-    setIsModalOpen(true);
+    if (canSendMessages) {
+      setIsModalOpen(true);
+    } else {
+      toast.info("لا يمكنك ارسال رسائل أخرى بعد أن ضغط على زر الموافقة");
+    }
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
-  const handleResponseSubmit = (e) => {
-    e.preventDefault();
+  const handleOpenRejectionReasonModal = () => {
+    setIsRejectionReasonModalOpen(true);
+  };
 
+  const handleCloseRejectionReasonModal = () => {
+    setIsRejectionReasonModalOpen(false);
+  };
+
+  const handleResponseSubmit = (index) => {
     socket.emit("privateMessage", {
       roomId,
-      message: responseValue.response.trim(),
+      message: responseValues[index].response.trim(),
       senderUserName: sender,
-      responseTo: responseValue.responseTo,
+      responseTo: responseValues[index].responseTo,
     });
     setMessages((messages) => [
       ...messages,
       {
-        message: responseValue.response.trim(),
+        message: responseValues[index].response.trim(),
         senderUserName: sender,
-        responseTo: responseValue.responseTo,
+        responseTo: responseValues[index].responseTo,
       },
     ]);
-    setResponseValue({ response: "", responseTo: "" });
+    setResponseValues((prevValues) => {
+      const newValues = [...prevValues];
+      newValues[index] = { response: "", responseTo: "" };
+      return newValues;
+    });
   };
 
   const handleSubmitQuestions = (selectedQuestions) => {
@@ -93,10 +126,37 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
     handleCloseModal();
   };
 
+  const handleSubmitRejectionReason = (selectedReason) => {
+    if (selectedReason.length === 0) {
+      toast.warning("قم باختيار سبب واحد على الأقل");
+      return;
+    }
+    const REJECTION_STATUS_CODE = "2";
+    setUserRoomStatus(
+      roomId,
+      REJECTION_STATUS_CODE,
+      signedInUserProfile.gender,
+      selectedReason
+    ).then((err, data) => {
+      toast.info("لقد قمت بانهاء التواصل مع الطرف الأخر .. رزقكم الله من فضله");
+      socket.emit("userRejection", {
+        roomId,
+        username: signedInUserProfile.username,
+        rejectionReason: selectedReason,
+      });
+      router.push("/users");
+    });
+    setIsRejectionReasonModalOpen(false);
+  };
+
   if (typeof window !== "undefined") {
     // Code that uses the router module
     if (request === null) {
       //no request with this ID
+      router.push("/");
+    }
+
+    if (request.status !== 2) {
       router.push("/");
     }
 
@@ -111,16 +171,6 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
     }
   }
 
-  const [roomId, setRoomId] = useState(null);
-  const [partnerName, setPartnerName] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [inputValue, setInputValue] = useState("");
-  const [responseValue, setResponseValue] = useState({
-    response: "",
-    responseTo: "",
-  });
-  const messagesEndRef = useRef(null);
-
   useEffect(() => {
     // When the component mounts, ask the server to join a private room
     socket.emit("joinPrivateRoom", request._id, sender);
@@ -129,12 +179,6 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
     socket.on("privateRoomJoined", (roomId, previousMessages) => {
       setRoomId(roomId);
       setMessages(previousMessages);
-      // console.log(previousMessages);
-    });
-
-    // When the server notifies the client that their partner has joined the room
-    socket.on("partnerJoined", (roomId) => {
-      setPartnerName(roomId.replace(sender, "").replace("_", ""));
     });
 
     // When the server sends a private message
@@ -148,11 +192,16 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
       }
     );
 
-    // When the server notifies the client that their partner has left the room
-    socket.on("partnerLeft", () => {
-      // setPartnerName(null);
-      // setMessages([]);
-      // setRoomId(null);
+    socket.on("userAcceptance", ({ username }) => {
+      toast.info(`User ${username} accepted request`);
+    });
+
+    socket.on("userRejection", ({ username, rejectionReason }) => {
+      toast.info(`لقد اعتذر الطرف الأخر عن الاستمرار بسبب ${rejectionReason}`, {
+        onClose: () => {
+          router.push("/users");
+        },
+      });
     });
 
     // Clean up event listeners when the component unmounts
@@ -161,6 +210,8 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
       socket.off("partnerJoined");
       socket.off("privateMessage");
       socket.off("partnerLeft");
+      socket.off("userAcceptance");
+      socket.off("userRejection");
     };
   }, [request, sender]);
 
@@ -187,9 +238,13 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
     }
   };
 
-  if (!roomId) {
-    return <div>جاري الدخول على صفحة الأسئلة...</div>;
-  }
+  const handleResponseChange = (index, value) => {
+    setResponseValues((prevValues) => {
+      const newValues = [...prevValues];
+      newValues[index] = value;
+      return newValues;
+    });
+  };
 
   const messageItem = (
     key,
@@ -249,23 +304,31 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
             minute: "numeric",
           })}
         </span>
+
         {type === "received" && !responseTo && (
           <>
             <hr />
             <form
-              onSubmit={handleResponseSubmit}
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleResponseSubmit(key);
+              }}
               className={classes["response-form"]}
             >
               <div>
                 <textarea
                   className={classes["response-input"]}
                   type="text"
-                  value={responseValue.response}
                   onChange={(e) =>
-                    setResponseValue({
+                    handleResponseChange(key, {
                       response: e.target.value,
                       responseTo: text,
                     })
+                  }
+                  value={
+                    parseInt(key) > responseValues.length
+                      ? ""
+                      : responseValues[key].response
                   }
                   placeholder="اكتب ردك هنا"
                 />
@@ -316,22 +379,136 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
     return questionsIdsList;
   };
 
-  const signedInUserProfile =
-    signedInUser.username === request.sender.username
-      ? request.sender
-      : request.reciever;
+  useEffect(() => {
+    const tempUser =
+      signedInUser.username === request.sender.username
+        ? request.sender
+        : request.reciever;
+    setSignedInUserProfile(tempUser);
 
-  let filteredQuestions = questions.filter(
-    (item) => !(item.id in signedInUserProfile.questions)
-  );
-  const excludedQuestions = getExcludedQuestions(signedInUserProfile);
-  filteredQuestions = filteredQuestions.filter((item) => {
-    return !excludedQuestions.includes(item.id);
-  });
+    let filteredQuestionsTemp = questions.filter(
+      (item) => !(item.id in tempUser.questions)
+    );
+    const excludedQuestions = getExcludedQuestions(tempUser);
+    filteredQuestionsTemp = filteredQuestionsTemp.filter((item) => {
+      return !excludedQuestions.includes(item.id);
+    });
+
+    setFilteredQuestions(filteredQuestionsTemp);
+  }, []);
+
+  const handleRejectionModal = () => {
+    setIsRejectionModalOpen(true);
+  };
+
+  const handleCancelRejectionModal = () => {
+    setIsRejectionModalOpen(false);
+  };
+
+  const handleConfirmInRejectionModal = () => {
+    //show another modal with rejection reason
+    handleOpenRejectionReasonModal();
+    setIsRejectionModalOpen(false);
+  };
+
+  const handleConfirmationModal = () => {
+    setConfirmationModalOpen(true);
+  };
+
+  const handleCancelConfirmationModal = () => {
+    setConfirmationModalOpen(false);
+  };
+
+  const handleConfirmInConfirmationModal = () => {
+    // update the private room status of this user to be accepted
+    const ACCEPTED_STATUS_CODE = "1";
+    setUserRoomStatus(
+      roomId,
+      ACCEPTED_STATUS_CODE,
+      signedInUserProfile.gender
+    ).then((data, err) => {
+      socket.emit("userAcceptance", {
+        roomId,
+        username: signedInUserProfile.username,
+      });
+      console.log(data);
+      if (data.message === "تم القبول") {
+        router.push(`/user/${request._id}`);
+      } else {
+        toast.info(
+          "لقد قمت بالموافقة على الانتقال لخطوة الرؤية الشرعية ويجب أن تنتظر حتى يوافق الطرف الأخر"
+        );
+        setCanSendMessages(false);
+      }
+    });
+    setConfirmationModalOpen(false);
+  };
+
+  const ConfirmationModal = ({ isOpen, message, onConfirm, onCancel }) => {
+    return (
+      <Modal className={classes["ConfirmationModal"]} isOpen={isOpen}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <p>{message}</p>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-evenly",
+              alignItems: "space-evenly",
+            }}
+          >
+            <button onClick={onConfirm}>نعم</button>
+            <button onClick={onCancel}>الغاء</button>
+          </div>
+        </div>
+      </Modal>
+    );
+  };
+
+  if (!roomId) {
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <h3>جاري التحميل</h3>
+      </div>
+    );
+  }
 
   return (
     <Layout>
       <div className={classes["home__container"]}>
+        <RejectionModal
+          isOpen={isRejectionReasonModalOpen}
+          onRequestClose={handleCloseRejectionReasonModal}
+          onSubmit={handleSubmitRejectionReason}
+        />
+        <ConfirmationModal
+          isOpen={isRejectionModalOpen}
+          message="هل تريد حقا أن تنهي التواصل مع الطرف الأخر ؟"
+          onConfirm={handleConfirmInRejectionModal}
+          onCancel={handleCancelRejectionModal}
+        />
+        <ConfirmationModal
+          isOpen={isConfirmationModalOpen}
+          message="ضغطك على هذا الزر بمثابة اعلان موافقة مبدئية منك وأنك تريد رقم ولي أمر العروسة حتى تتواصل معه لتحديد موعد الرؤية الشرعية"
+          onConfirm={handleConfirmInConfirmationModal}
+          onCancel={handleCancelConfirmationModal}
+        />
         <QuestionModal
           questions={filteredQuestions}
           isOpen={isModalOpen}
@@ -357,30 +534,20 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
             </li>
           </ul>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: "1rem",
-            }}
-          >
-            <button onClick={(e) => {}} className={classes["actionButton"]}>
-              أريد الانتقال للمرحلة التالية
+          <div className={classes["actionsContainer"]}>
+            <button
+              onClick={handleConfirmationModal}
+              className={classes["actionButton"]}
+            >
+              طلب رؤية شرعية
             </button>
             <br />
-            <button onClick={(e) => {}} className={classes["actionButton"]}>
-              للأسف أرفض الاستمرار
+            <button
+              onClick={handleRejectionModal}
+              className={classes["actionButton"]}
+            >
+              أرفض الاستمرار
             </button>
-            {/* <p style={{ textDecoration: "none", fontWeight: "bold" }}>
-              هذه بعض النصائج نوجهها لكم
-            </p>
-            <div>
-              <p>kwdpmm 1</p>
-              <p>kwdpmm 1</p>
-              <p>kwdpmm 1</p>
-            </div> */}
           </div>
         </div>
         <div className={classes["chat__side"]}>

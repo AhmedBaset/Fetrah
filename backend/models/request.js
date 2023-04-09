@@ -6,7 +6,7 @@ const REQUEST_STATUS = {
   ACCEPTED: 2,
   REJECTED: 3,
   TIMEOVER: 4,
-  CANCELED: 5,
+  FINISHED: 5,
 };
 
 const requestSchema = mongoose.Schema(

@@ -1,9 +1,10 @@
-const { PrivateRoom, ChatMessage } = require("../models/chat");
+const { PrivateRoom, ChatMessage, RoomStatus } = require("../models/chat");
 const Request = require("../models/request");
 // Create a new private room
 exports.createPrivateRoom = async (roomId, clients) => {
   try {
-    const newPrivateRoom = new PrivateRoom({ roomId, clients });
+    const roomStatus = new RoomStatus();
+    const newPrivateRoom = new PrivateRoom({ roomId, clients, roomStatus });
     const request = Request.findOneAndUpdate(
       { _id: roomId },
       {
@@ -41,6 +42,26 @@ exports.readPrivateRoomById = async (id) => {
     }
   } catch (err) {
     console.error(`Error reading private room: ${err}`);
+  }
+};
+
+exports.updateRoomStatus = async (roomId, gender, status) => {
+  try {
+    PrivateRoom.findOne({ roomId }).exec(async (err, data) => {
+      if (err) {
+        return null;
+      } else {
+        if (gender === "man") {
+          data.roomStatus.manStatus = status;
+        } else {
+          data.roomStatus.womanStatus = status;
+        }
+        await data.save();
+        return data;
+      }
+    });
+  } catch (err) {
+    return null;
   }
 };
 

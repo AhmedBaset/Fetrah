@@ -77,8 +77,21 @@ const UserInfo = (props) => {
         const lastSender = lastRecievedRequest.sender;
         if (lastSender === senderUser._id && lastRecievedRequest.status === 0) {
           setUserStatus("في انتظار الرد");
-        } else {
+        } else if (
+          lastSender === senderUser._id &&
+          lastRecievedRequest.status === 2
+        ) {
           setUserStatus("مرحلة الأسئلة");
+        } else if (
+          lastSender === senderUser._id &&
+          lastRecievedRequest.status === 3
+        ) {
+          setUserStatus("تم الرفض");
+        } else if (
+          lastSender === senderUser._id &&
+          lastRecievedRequest.status === 5
+        ) {
+          setUserStatus("تم القبول");
         }
         setRequestId(lastRecievedRequest._id);
       }
@@ -88,8 +101,21 @@ const UserInfo = (props) => {
         const lastReciever = lastSentRequests.reciever;
         if (lastReciever === senderUser._id && lastSentRequests.status === 0) {
           setUserStatus("قبول الطلب");
-        } else {
+        } else if (
+          lastReciever === senderUser._id &&
+          lastSentRequests.status === 2
+        ) {
           setUserStatus("مرحلة الأسئلة");
+        } else if (
+          lastReciever === senderUser._id &&
+          lastSentRequests.status === 3
+        ) {
+          setUserStatus("تم الرفض");
+        } else if (
+          lastReciever === senderUser._id &&
+          lastSentRequests.status === 5
+        ) {
+          setUserStatus("تم القبول");
         }
         setRequestId(lastSentRequests._id);
       }
@@ -325,6 +351,11 @@ const UserInfo = (props) => {
               ) : (
                 <button
                   onClick={(e) => {
+                    if (user.userStatus === 1) {
+                      toast.error(
+                        "للأسف لا يمكنك ارسال طلب قبول لهذا الشخص لانه على تواصل الان بشخص أخر"
+                      );
+                    }
                     if (userStatus === "ارسال طلب قبول") {
                       handleSendAcceptance(e);
                     } else if (userStatus === "قبول الطلب") {
@@ -335,7 +366,15 @@ const UserInfo = (props) => {
                         ` يجب عليك انتظار الرد من الطرف الأخر خلال 24 ساعة`
                       );
                     } else if (userStatus === "مرحلة الأسئلة") {
-                      router.push(`/questions/${requestId}-${senderUser.username}-${user.username}`);
+                      router.push(
+                        `/questions/${requestId}-${senderUser.username}-${user.username}`
+                      );
+                    } else if (userStatus === "تم الرفض") {
+                      toast.info(
+                        "لا يمكنك ارسال طلب لهذا الشخص بعد أن تم الرفض بينكما"
+                      );
+                    } else if (userStatus === "تم القبول") {
+                      router.push(`/user/${requestId}`);
                     }
                   }}
                   className={`${classes["submit"]}`}

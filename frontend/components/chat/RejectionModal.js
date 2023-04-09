@@ -3,7 +3,15 @@ import Modal from "react-modal";
 import classes from "./Chat.module.css";
 import { toast } from "react-toastify";
 
-const QuestionModal = ({ questions, isOpen, onRequestClose, onSubmit }) => {
+const RejectionModal = ({ isOpen, onRequestClose, onSubmit }) => {
+  const reasons = [
+    { id: 0, text: "استخرت الله ولم أجد نفسي مرتاحا للأمر" },
+    { id: 1, text: "اسلوب الكلام لم يعجبني" },
+    { id: 2, text: "الطرف الأخر لا يرد على أسئلتي" },
+    { id: 3, text: "المسافات بعيدة بيننا" },
+    { id: 4, text: "مستوى التدين غير مناسب لي" },
+    { id: 7, text: "ليس هناك توافق في الأفكار" },
+  ];
   const [selectedQuestionIds, setSelectedQuestionIds] = useState([]);
 
   const handleSelectQuestion = (questionId, isSelected) => {
@@ -11,7 +19,7 @@ const QuestionModal = ({ questions, isOpen, onRequestClose, onSubmit }) => {
       if (selectedQuestionIds.length < 1) {
         setSelectedQuestionIds([...selectedQuestionIds, questionId]);
       } else {
-        toast.warning("يمكنك اختيار سؤال واحد فقط في المرة الواحدة");
+        toast.warning("يمكنك اختيار سبب واحد فقط");
       }
     } else {
       setSelectedQuestionIds(
@@ -39,7 +47,7 @@ const QuestionModal = ({ questions, isOpen, onRequestClose, onSubmit }) => {
   };
 
   const handleSubmit = () => {
-    onSubmit(selectedQuestionIds);
+    onSubmit(reasons[selectedQuestionIds].text);
     setSelectedQuestionIds([]);
   };
 
@@ -51,32 +59,34 @@ const QuestionModal = ({ questions, isOpen, onRequestClose, onSubmit }) => {
       onRequestClose={onRequestClose}
     >
       <h2 className={classes["questionsModalTitle"]}>
-        حدد السؤال الذي تريد ارساله للطرف الأخر
+        ما هو سبب رفضك للطرف للاستمرار ؟
       </h2>
-      <h2 className={classes["questionsModalHint"]}>سؤال واحد في كل مرة</h2>
+      <h2 className={classes["questionsModalHint"]}>
+        لا تبخل علينا بالسبب الحقيقي
+      </h2>
       <div className={classes["questionsContainer"]}>
         <div className={classes["questionsListContainer"]}>
           <ul>
-            {questions.map((question) => (
-              <div key={question.id}>
+            {reasons.map((reason) => (
+              <div key={reason.id}>
                 <input
                   type="checkbox"
-                  id={`question${question.id}`}
+                  id={`question${reason.id}`}
                   className={classes["question-checkbox"]}
-                  checked={selectedQuestionIds.includes(question.id)}
+                  checked={selectedQuestionIds.includes(reason.id)}
                   onChange={(e) => {
-                    handleSelectQuestion(question.id, e.target.checked);
+                    handleSelectQuestion(reason.id, e.target.checked);
                   }}
                 />
                 <label
-                  htmlFor={`question${question.id}`}
+                  htmlFor={`question${reason.id}`}
                   className={`${classes["question-chip"]} ${
-                    selectedQuestionIds.includes(question.id)
+                    selectedQuestionIds.includes(reason.id)
                       ? classes["selected"]
                       : ""
                   }`}
                 >
-                  {question.text}
+                  {reason.text}
                 </label>
               </div>
             ))}
@@ -98,4 +108,4 @@ const QuestionModal = ({ questions, isOpen, onRequestClose, onSubmit }) => {
   );
 };
 
-export default QuestionModal;
+export default RejectionModal;

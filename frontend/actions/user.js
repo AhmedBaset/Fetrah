@@ -1,6 +1,27 @@
 import fetch from "isomorphic-fetch";
 import { API } from "../config";
 
+export const setUserRoomStatus = (roomId, status, gender, rejectionReason) => {
+  const data = {
+    roomId,
+    status,
+    gender,
+    rejectionReason,
+  };
+  return fetch(`${API}/api/set-user-room-status`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
 export const fetchRequest = (requestId) => {
   const data = {
     requestId,

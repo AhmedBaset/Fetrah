@@ -7,6 +7,11 @@ const CONFIRMATIONS_STATUS = {
   REJECTED: 2,
 };
 
+const USER_STATUS = {
+  NORMAL: 0,
+  RELATED_WITH_SOMEONE: 1,
+};
+
 const userSchema = mongoose.Schema(
   {
     gender: {
@@ -102,6 +107,11 @@ const userSchema = mongoose.Schema(
     ],
 
     favourites: [{ type: mongoose.ObjectId, ref: "User", required: false }],
+
+    userStatus: {
+      type: Number,
+      default: USER_STATUS.NORMAL,
+    },
   },
   { timestamps: true, collection: "usersinfo" }
 );
