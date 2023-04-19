@@ -114,9 +114,7 @@ app.use(bodyParser.json({ limit: "8mb" }));
 app.use(cookieParser());
 
 //cors
-if (process.env.NODE_ENV === "development") {
-  app.use(cors({ origin: `${process.env.CLIENT_URL}` }));
-}
+app.use(cors({ origin: `${process.env.CLIENT_URL}` }));
 
 //routes middlewares
 app.use("/api", blogRoutes);
