@@ -28,7 +28,6 @@ const Index = () => {
       <section>
         <StepFive />
       </section>
-
     </Layout>
   );
 };
