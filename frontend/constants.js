@@ -36,7 +36,7 @@ export const MARRIED_WOMAN_EXCLUDED_QUESTIONS = ["15", "17", "12", "23", "35"];
 
 export const DIVORCED_WOMAN_EXCLUDED_QUESTIONS = ["15", "17", "12", "23"];
 
-export const STATES = {
+export  const STATES = {
   مصر: [
     "القاهرة",
     "الإسكندرية",
