@@ -1,13 +1,17 @@
+import { useRouter } from "next/router";
 import { userPublicProfile } from "../../actions/user";
 import Layout from "../../components/Layout";
 import UserInfo from "../../components/user/UserInfo";
 
 const UserDetails = ({ user }) => {
+  const router = useRouter();
+
+  if (!user && typeof window !== "undefined") {
+    router.replace("/users");
+  }
   return (
     <>
-      <Layout>
-        <UserInfo user={user} />
-      </Layout>
+      <Layout>{user && <UserInfo user={user} />}</Layout>
     </>
   );
 };

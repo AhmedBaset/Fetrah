@@ -54,18 +54,17 @@ const ActivateAccount = ({ router }) => {
   const showPreActivationForm = () => {
     return (
       <>{gender === "man" ? <MenQuestionsForm /> : <WomenQuestionsForm />}</>
-
     );
   };
 
   const showLoading = () => (loading ? <h2>Loading...</h2> : "");
-
+  const text = gender === "man" ? "قم" : "قومي";
   return (
     <Layout>
       <div className="container">
-        <h1 className="pb-2 mt-5 fw-bold">قم بتسجيل بياناتك</h1>
+        <h1 className="pb-2 mt-5 fw-bold">{text} بتسجيل بياناتك</h1>
         <h3 className="pb-4">
-          مرحبا يا {name}, قم بادخال بياناتك حتى يتم تفعيل حسابك
+          مرحبا يا {name}, {text} بادخال بياناتك حتى يتم تفعيل حسابك
         </h3>
         {showPreActivationForm()}
         {showLoading()}

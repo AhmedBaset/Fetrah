@@ -42,7 +42,7 @@ const SmallCard = ({ blog, parser }) => {
           className="float-start link-primary"
           href={`/`}
         >
-          {blog.postedBy.username}
+          {/* {blog.postedBy.username} */}
         </Link>
       </div>
     </div>

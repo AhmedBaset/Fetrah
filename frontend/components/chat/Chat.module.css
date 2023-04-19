@@ -149,7 +149,7 @@
 
 .input-container input {
   /* flex: 1; */
-  width: 95%;
+  width: 83%;
   direction: rtl;
   border: none;
   outline: none;
@@ -319,7 +319,7 @@
   cursor: pointer;
 }
 
-.questionsActionsContainer{
+.questionsActionsContainer {
   display: flex;
   justify-content: space-around;
   margin-top: 1.8rem;
@@ -331,4 +331,53 @@
   justify-content: center;
   align-items: center;
   margin-top: 1rem;
+}
+
+@media (max-width: 945px) {
+  .home__container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 0rem;
+    margin-right: 0rem;
+
+  }
+
+  .chat__side {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+ 
+  }
+
+  .info__side {
+    width: 100%;
+  }
+
+  .actionsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .actionButton {
+    background-color: var(--main-color);
+    color: #fff;
+    border: none;
+    width: 12rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 20px;
+    padding: 6px 10px;
+    font-size: 12px;
+    cursor: pointer;
+  }
 }

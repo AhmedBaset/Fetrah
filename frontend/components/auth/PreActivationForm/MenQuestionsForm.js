@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { withRouter } from "next/router";
 import { signup } from "../../../actions/auth";
 import jwt from "jsonwebtoken";
-
+import { STATES } from "../../../constants";
+import { toast } from "react-toastify";
 const MenQuestionsForm = (props) => {
   const router = props.router;
 
@@ -57,7 +58,8 @@ const MenQuestionsForm = (props) => {
 
   const certificateIsValid = formData.certificate.trim() !== "";
 
-  const showChildQuestions = formData.generalStatus !== "أعزب" && formData.generalStatus !== "";
+  const showChildQuestions =
+    formData.generalStatus !== "أعزب" && formData.generalStatus !== "";
   console.log(showChildQuestions);
   const showStateQuestion = formData.country !== "";
 
@@ -262,8 +264,6 @@ const MenQuestionsForm = (props) => {
     }
     newFormData.set("idNumber", formData.idNumber);
 
-    
-
     for (let pair of newFormData.entries()) {
       console.log(`${pair[0]} : ${pair[1]}`);
     }
@@ -299,7 +299,14 @@ const MenQuestionsForm = (props) => {
       ""
     );
 
-  const showMessage = () =>
+  const showMessage = () => {
+    if (message) { 
+      toast.success("سيتم تحويلك لصفحة تسجيل الدخول الان", {
+        onClose: () => {
+          router.push("/signin");
+        },
+      });
+    }
     message ? (
       <div className="alert alert-info" role="alert">
         <div className="text-center">{message}</div>
@@ -307,6 +314,7 @@ const MenQuestionsForm = (props) => {
     ) : (
       ""
     );
+  };
 
   const showError = () =>
     error ? (
@@ -448,11 +456,10 @@ const MenQuestionsForm = (props) => {
                     className={classes["dropdown"]}
                     required={true}
                   >
-                    <option value="">اختر حالتك</option>
-                    <option value="أعزب">أعزب</option>
-                    <option value="متزوج">متزوج</option>
-                    <option value="مطلق">مطلق</option>
-                    <option value="أرمل">أرمل</option>
+                    <option value="">اختر المحافظة</option>
+                    {STATES[formData.country].map((state) => {
+                      return <option value={state}>{state}</option>;
+                    })}
                   </select>
                 </>
               )}
@@ -806,7 +813,6 @@ const MenQuestionsForm = (props) => {
           {error && showError()}
           {message && showMessage()}
         </div>
-
         <br />
         <br />
         <br />

@@ -7,19 +7,24 @@ import classes from "./Signup.module.css";
 const SignupComponent = () => {
   const router = useRouter();
   const [countryCode, setCountryCode] = useState("");
-
+  const [currentUser, setCurrentUser] = useState();
   useEffect(() => {
-    if (isAuth()) {
-      router.replace("/");
-    }
+    const fetchUser = async () => {
+      const result = await isAuth();
+      setCurrentUser(result);
+      if (result) {
+        router.replace("/");
+      }
+    };
+    fetchUser();
   }, []);
 
   const [values, setValues] = useState({
     gender: "",
-    name: "Ahmed",
-    email: "libgdxengine@gmail.com",
-    phone: "01019867911",
-    password: "ahmed1998",
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
     error: "",
     loading: false,
     message: "",

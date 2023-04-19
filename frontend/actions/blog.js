@@ -6,11 +6,7 @@ import { isAuth, handleResponse } from "./auth";
 export const createBlog = (blog, token) => {
   let createBlogEndPoint;
 
-  if (isAuth() && isAuth().role === 1) {
-    createBlogEndPoint = `${API}/api/blog`;
-  } else if (isAuth() && isAuth().role === 0) {
-    createBlogEndPoint = `${API}/api/user/blog`;
-  }
+  createBlogEndPoint = `${API}/api/blog`;
 
   return fetch(createBlogEndPoint, {
     method: "POST",
@@ -76,7 +72,7 @@ export const list = (username) => {
 
   if (username) {
     listBlogsEndPoint = `${API}/api/${username}/blogs`;
-  } else{
+  } else {
     listBlogsEndPoint = `${API}/api/blogs`;
   }
   return fetch(`${listBlogsEndPoint}`, {
@@ -91,11 +87,7 @@ export const list = (username) => {
 export const removeBlog = (slug, token) => {
   let deleteBlogEndPoint;
 
-  if (isAuth() && isAuth().role === 1) {
-    deleteBlogEndPoint = `${API}/api/blog/${slug}`;
-  } else if (isAuth() && isAuth().role === 0) {
-    deleteBlogEndPoint = `${API}/api/user/blog/${slug}`;
-  }
+  deleteBlogEndPoint = `${API}/api/blog/${slug}`;
 
   return fetch(`${deleteBlogEndPoint}`, {
     method: "DELETE",
@@ -114,15 +106,7 @@ export const removeBlog = (slug, token) => {
 export const updateBlog = (blog, token, slug) => {
   let updateBlogEndPoint;
 
-  if (isAuth() && isAuth().role === 1) {
-    console.log('Here');
-    
-    updateBlogEndPoint = `${API}/api/blog/${slug}`;
-  } else if (isAuth() && isAuth().role === 0) {
-    console.log('THERE');
-    updateBlogEndPoint = `${API}/api/user/blog/${slug}`;
-  }
-
+  updateBlogEndPoint = `${API}/api/blog/${slug}`;
   return fetch(`${updateBlogEndPoint}`, {
     method: "PUT",
     headers: {

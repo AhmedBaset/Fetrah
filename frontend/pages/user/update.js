@@ -1,4 +1,6 @@
+import { userPublicProfile } from "../../actions/user";
 import Layout from "../../components/Layout";
+import { isAuth } from "../../actions/auth";
 import Private from "../../components/auth/Private";
 import ProfileUpdate from "../../components/auth/ProfileUpdate";
 import Link from "next/link";

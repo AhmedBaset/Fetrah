@@ -1,5 +1,6 @@
 import socketIO from "socket.io-client";
-const socket = socketIO.connect("http://localhost:8000");
+import { API } from "../../config";
+const socket = socketIO.connect(API);
 import classes from "../../components/chat/Chat.module.css";
 import QuestionModal from "../../components/chat/QuestionModal";
 import { useState, useEffect, useRef } from "react";
@@ -29,8 +30,25 @@ import RejectionModal from "../../components/chat/RejectionModal";
 
 const QuestionsPage = ({ request, sender, receiver, questions }) => {
   const router = useRouter();
-  const signedInUser = isAuth();
 
+  const [signedInUser, setSignedInUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const result = await isAuth();
+      if (result !== false) {
+        //User is not allowed to see this chat
+        if (result.username !== sender) {
+          router.push("/");
+        }
+      } else {
+        //User is not signed in
+        router.push("/signin");
+      }
+      setSignedInUser(result);
+    };
+    fetchUser();
+  }, []);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRejectionReasonModalOpen, setIsRejectionReasonModalOpen] =
     useState(false);
@@ -45,8 +63,8 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
   const [responseValues, setResponseValues] = useState(
     Array.from({ length: 100 }, () => ({ response: "", responseTo: "" }))
   );
-  const [signedInUserProfile, setSignedInUserProfile] = useState();
-  const [filteredQuestions, setFilteredQuestions] = useState();
+
+  const [filteredQuestions, setFilteredQuestions] = useState([]);
 
   const handleOpenModal = () => {
     if (canSendMessages) {
@@ -135,13 +153,15 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
     setUserRoomStatus(
       roomId,
       REJECTION_STATUS_CODE,
-      signedInUserProfile.gender,
+      signedInUser.gender,
       selectedReason
     ).then((err, data) => {
+      //convert userStatus = 0 in two users
+
       toast.info("لقد قمت بانهاء التواصل مع الطرف الأخر .. رزقكم الله من فضله");
       socket.emit("userRejection", {
         roomId,
-        username: signedInUserProfile.username,
+        username: signedInUser.username,
         rejectionReason: selectedReason,
       });
       router.push("/users");
@@ -157,17 +177,7 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
     }
 
     if (request.status !== 2) {
-      router.push("/");
-    }
-
-    if (signedInUser) {
-      //User is not allowed to see this chat
-      if (signedInUser.username !== sender) {
-        router.push("/");
-      }
-    } else {
-      //User is not signed in
-      router.push("/signin");
+      router.push(`/user/${request._id}`);
     }
   }
 
@@ -193,7 +203,9 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
     );
 
     socket.on("userAcceptance", ({ username }) => {
-      toast.info(`User ${username} accepted request`);
+      toast.info(
+        `لقد قام الطرف الاخر بالموافقة على الانتقال لمرحلة الرؤية الشرعية`
+      );
     });
 
     socket.on("userRejection", ({ username, rejectionReason }) => {
@@ -258,14 +270,11 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
     let postfix = "";
     if (responseTo) {
       prefix = "";
-      postfix =
-        signedInUserProfile.gender === "man" ? "رد العروسة" : "رد العريس";
+      postfix = signedInUser.gender === "man" ? "رد العروسة" : "رد العريس";
     } else {
       postfix = "";
       prefix =
-        signedInUserProfile.gender === "man"
-          ? "سؤال من العروسة"
-          : "سؤال من العريس";
+        signedInUser.gender === "man" ? "سؤال من العروسة" : "سؤال من العريس";
     }
     return (
       <div key={key} className={classes[`${type}`]}>
@@ -344,15 +353,15 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
   };
 
   const welcomeMessagesItem = () => {
-    return signedInUserProfile.gender === "man" ? (
+    return signedInUser.gender === "man" ? (
       <MenWelcomeMessages
         date={request.createdAt}
-        userId={signedInUserProfile.username === sender ? receiver : sender}
+        userId={signedInUser.username === sender ? receiver : sender}
       />
     ) : (
       <WomenWelcomeMessages
         date={request.createdAt}
-        userId={signedInUserProfile.username === sender ? receiver : sender}
+        userId={signedInUser.username === sender ? receiver : sender}
       />
     );
   };
@@ -380,22 +389,23 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
   };
 
   useEffect(() => {
-    const tempUser =
-      signedInUser.username === request.sender.username
-        ? request.sender
-        : request.reciever;
-    setSignedInUserProfile(tempUser);
+    if (signedInUser !== null) {
+      const tempUser =
+        signedInUser.username === request.sender.username
+          ? request.reciever
+          : request.sender;
 
-    let filteredQuestionsTemp = questions.filter(
-      (item) => !(item.id in tempUser.questions)
-    );
-    const excludedQuestions = getExcludedQuestions(tempUser);
-    filteredQuestionsTemp = filteredQuestionsTemp.filter((item) => {
-      return !excludedQuestions.includes(item.id);
-    });
+      let filteredQuestionsTemp = questions.filter(
+        (item) => !(item.id in tempUser.questions)
+      );
+      const excludedQuestions = getExcludedQuestions(tempUser);
+      filteredQuestionsTemp = filteredQuestionsTemp.filter((item) => {
+        return !excludedQuestions.includes(item.id.trim());
+      });
 
-    setFilteredQuestions(filteredQuestionsTemp);
-  }, []);
+      setFilteredQuestions(filteredQuestionsTemp);
+    }
+  }, [signedInUser, request, questions]);
 
   const handleRejectionModal = () => {
     setIsRejectionModalOpen(true);
@@ -422,25 +432,24 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
   const handleConfirmInConfirmationModal = () => {
     // update the private room status of this user to be accepted
     const ACCEPTED_STATUS_CODE = "1";
-    setUserRoomStatus(
-      roomId,
-      ACCEPTED_STATUS_CODE,
-      signedInUserProfile.gender
-    ).then((data, err) => {
-      socket.emit("userAcceptance", {
-        roomId,
-        username: signedInUserProfile.username,
-      });
-      console.log(data);
-      if (data.message === "تم القبول") {
-        router.push(`/user/${request._id}`);
-      } else {
-        toast.info(
-          "لقد قمت بالموافقة على الانتقال لخطوة الرؤية الشرعية ويجب أن تنتظر حتى يوافق الطرف الأخر"
-        );
-        setCanSendMessages(false);
+
+    setUserRoomStatus(roomId, ACCEPTED_STATUS_CODE, signedInUser.username).then(
+      (data, err) => {
+        socket.emit("userAcceptance", {
+          roomId,
+          username: signedInUser.username,
+        });
+
+        if (data.message === "تم القبول") {
+          router.push(`/user/${request._id}`);
+        } else {
+          toast.info(
+            "لقد قمت بالموافقة على الانتقال لخطوة الرؤية الشرعية ويجب أن تنتظر حتى يوافق الطرف الأخر"
+          );
+          setCanSendMessages(false);
+        }
       }
-    });
+    );
     setConfirmationModalOpen(false);
   };
 
@@ -472,7 +481,7 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
     );
   };
 
-  if (!roomId) {
+  if (!roomId || signedInUser === null) {
     return (
       <div
         style={{
@@ -526,8 +535,7 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
               />
               <div className={classes["contact-info"]}>
                 <h6 className={classes["contact-name"]}>
-                  {signedInUserProfile.gender === "man" ? "كريم" : "زهراء"}{" "}
-                  السيد
+                  {signedInUser.gender === "man" ? "كريم" : "زهراء"} السيد
                 </h6>
                 <p className={classes["contact-status"]}>متواجد حاليا</p>
               </div>

@@ -103,6 +103,8 @@ const BlogCreate = ({ router }) => {
 
   const publishBlog = (e) => {
     e.preventDefault();
+    console.log();
+    
     createBlog(formData, token).then((response) => {
       if (response.error) {
         setValues({ ...values, error: response.error });
@@ -218,7 +220,7 @@ const BlogCreate = ({ router }) => {
         </div>
         <div>
           <button className="btn btn-primary m-2" type="submit">
-            Publish
+            نشر المقالة
           </button>
         </div>
       </form>

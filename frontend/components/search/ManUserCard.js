@@ -21,13 +21,13 @@ const   ManUserCard = (props) => {
   return (
     <>
       <div className={classes.box}>
-        <img
+        {/* <img
           onClick={() => {
             console.log("Hello Image");
           }}
           src={bookmark}
           alt="bookmark"
-        />
+        /> */}
         <div
           onClick={() => {
             router.push(`/users/${user.username}`)

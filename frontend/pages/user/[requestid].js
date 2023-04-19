@@ -7,7 +7,23 @@ import classes from "../../components/user/UserFinally.module.css";
 import Image from "next/image";
 import Link from "next/link";
 const Finally = ({ request }) => {
-  const signedInUser = isAuth();
+  const [signedInUser, setSignedInUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const result = await isAuth();
+      setSignedInUser(result);
+      if (result) {
+        if (result.username === request.sender.username) {
+          setOtherUser(request.reciever);
+        } else if (result.username === request.reciever.username) {
+          setOtherUser(request.sender);
+        }
+      }
+    };
+    fetchUser();
+  }, [signedInUser, request]);
+
   const [otherUser, setOtherUser] = useState();
   const router = useRouter();
   if (typeof window !== "undefined") {
@@ -15,14 +31,6 @@ const Finally = ({ request }) => {
       router.replace("/users");
     }
   }
-
-  useEffect(() => {
-    if (signedInUser.username === request.sender.username) {
-      setOtherUser(request.reciever);
-    } else if (signedInUser.username === request.reciever.username) {
-      setOtherUser(request.sender);
-    }
-  }, [signedInUser]);
 
   if (!otherUser) {
     return (
@@ -93,8 +101,8 @@ const Finally = ({ request }) => {
           />
         </div>
         {otherUser.gender === "man" ? showManDetails() : showWomanDetails()}
-        <br/>
-        <br/>
+        <br />
+        <br />
         <h6>اذا كانت لديك أي مشكلة تواصل معنا عن طريق</h6>
         <Link href={"/support"}>صفحة الدعم</Link>
       </div>

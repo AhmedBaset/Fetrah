@@ -54,6 +54,7 @@ const QuestionModal = ({ questions, isOpen, onRequestClose, onSubmit }) => {
         حدد السؤال الذي تريد ارساله للطرف الأخر
       </h2>
       <h2 className={classes["questionsModalHint"]}>سؤال واحد في كل مرة</h2>
+
       <div className={classes["questionsContainer"]}>
         <div className={classes["questionsListContainer"]}>
           <ul>

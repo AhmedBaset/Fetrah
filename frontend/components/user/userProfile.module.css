@@ -1,0 +1,107 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5rem;
+  margin-right: 5rem;
+}
+
+.container__title {
+  margin-top: 3rem;
+}
+
+.container__text {
+  font-weight: normal;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.actionsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.submit {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  border: 0;
+  border-radius: 91px;
+  background: #a7727d;
+  width: 150px;
+  text-align: center;
+  height: 35px;
+  margin-top: 20px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.submit:hover {
+  background-color: #ba6d7b;
+}
+
+.questionsContainer {
+  display: flex;
+  direction: rtl;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 50rem;
+}
+
+.questionsMain {
+  margin-top: 3rem;
+  margin-left: 5rem;
+  margin-right: 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.form-group {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  direction: rtl;
+}
+
+.inputContainer {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+}
+
+.inputLabel {
+  width: 110%;
+  font-weight: normal;
+}
+
+.dropdown {
+  margin-top: 0.4rem;
+  padding: 1px;
+  font-size: 13px;
+  height: 1.8rem;
+  border: none;
+  border: 1px solid #a7727d;
+  border-radius: 8px 8px 8px 8px;
+  color: #000;
+  width: 100%;
+}
+
+.dropdown option {
+  direction: rtl;
+  padding: 10px;
+  font-size: 15px;
+  color: #333;
+}
+
+.textInput {
+  border-radius: 8px;
+  border: 1px solid #a7727d;
+  outline: 0;
+  margin-top: 0.4rem;
+  height: 1.8rem;
+  direction: rtl;
+  width: 100%;
+  padding: 8px;
+}

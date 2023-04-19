@@ -8,16 +8,21 @@ import classes from "./Signin.module.css";
 
 const SigninComponent = () => {
   const router = useRouter();
-
+  const [currentUser, setCurrentUser] = useState();
   useEffect(() => {
-    if (isAuth()) {
-      router.replace("/");
-    }
+    const fetchUser = async () => {
+      const result = await isAuth();
+      setCurrentUser(result);
+      if (result) {
+        router.replace("/");
+      }
+    };
+    fetchUser();
   }, []);
 
   const [values, setValues] = useState({
-    email: "ahmed@gmail.com",
-    password: "ahmed1998",
+    email: "",
+    password: "",
     error: "",
     loading: false,
     message: "",
@@ -76,7 +81,6 @@ const SigninComponent = () => {
     ) : (
       ""
     );
-
 
   const newSigninForm = () => {
     return (

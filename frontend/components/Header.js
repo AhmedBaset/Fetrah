@@ -25,7 +25,12 @@ const Header = (props) => {
   const container = useRef();
 
   useEffect(() => {
-    setIsAuthenticated(isAuth());
+    const fetchUser = async () => {
+      const result = await isAuth();
+
+      setIsAuthenticated(result);
+    };
+    fetchUser();
   }, []);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -35,17 +40,14 @@ const Header = (props) => {
   return (
     <>
       <Navbar style={{ backgroundColor: "#a7727d" }} navbar="true" {...props}>
-        <NavbarBrand
-          className="font-weight-bold logo"
-          href="/"
-        >
+        <NavbarBrand className="font-weight-bold logo" href="/">
           {APP_NAME}
         </NavbarBrand>
         <NavbarToggler navbar="true" onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav style={{ marginRight: "5rem" }} className="me-auto" navbar>
             <>
-              {isAuthenticated && isAuthenticated.role === 0 && (
+              {isAuthenticated && (
                 <div className="authContainer">
                   <div className="accountIcon">
                     <Image
@@ -75,17 +77,23 @@ const Header = (props) => {
                             <li
                               onClick={(e) => {
                                 e.preventDefault();
-                                router.push("/user");
+                                if (isAuthenticated.role === 1) {
+                                  router.push("/admin");
+                                } else if (isAuthenticated.role === 0) {
+                                  router.push("/user");
+                                }
                               }}
                             >
                               {" معلوماتي الشخصية"}
                             </li>
-                            <li>طلبات القبول</li>
                             <li
-                              onClick={null}
+                              onClick={() => {
+                                router.push("/requests");
+                              }}
                             >
-                              قائمة المحفوظات
+                              طلبات القبول
                             </li>
+                            <li onClick={null}>قائمة المحفوظات</li>
                             <li
                               onClick={() => {
                                 signout(() => {
@@ -146,7 +154,7 @@ const Header = (props) => {
                     marginLeft: "1.2rem",
                     textAlign: "center",
                   }}
-                  href="/blogs/"
+                  href="/"
                 >
                   الدعم
                 </NavLink>
@@ -161,20 +169,7 @@ const Header = (props) => {
                   }}
                   href="/blogs/"
                 >
-                  كيف تختار زوجك
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  style={{
-                    color: "white",
-                    fontSize: "18px",
-                    marginLeft: "1.2rem",
-                    textAlign: "center",
-                  }}
-                  href="/blogs/"
-                >
-                  التجارب الناجحة
+                  المقالات
                 </NavLink>
               </NavItem>
 

@@ -10,7 +10,6 @@ import classes from "../../styles/SingleBlog.module.css";
 import moment from "moment/moment";
 import SmallCard from "../../components/blog/SmallCard";
 
-
 const SingleBlog = ({ blog, query }) => {
   const [relatedBlogs, setRelatedBlogs] = useState([]);
 
@@ -79,23 +78,26 @@ const SingleBlog = ({ blog, query }) => {
   };
 
   const showRelatedBlogs = () => {
-    return relatedBlogs.map((blog, i) => {
-      return (
-        <div className="col-md-4" key={i}>
-          <article>
-            <SmallCard blog={blog} parser={htmlToReactParser} />
-          </article>
-        </div>
-      );
-    });
+    return (
+      <>
+        {relatedBlogs.length > 0 && (
+          <p style={{ fontSize: "30px" }}>مقالات ذات صلة</p>
+        )}
+        {relatedBlogs.map((blog, i) => {
+          return (
+            <div className="col-md-4" key={i}>
+              <article>
+                <SmallCard blog={blog} parser={htmlToReactParser} />
+              </article>
+            </div>
+          );
+        })}
+      </>
+    );
   };
 
-  const showComments = ()=> {
-    return (
-      <div>
-          Show Comments
-      </div>
-    )
+  const showComments = () => {
+    return <div>Show Comments</div>;
   };
 
   return (
@@ -123,8 +125,8 @@ const SingleBlog = ({ blog, query }) => {
                     {blog.title}
                   </h1>
                   <p className="lead mt-3 mark">
-                    Written by <Link href={`/profile/${blog.postedBy.username}`}>{blog.postedBy.username}</Link> | Published{" "}
-                    {moment(blog.updatedAt).fromNow()}
+                    {/* Written by <Link href={`/profile/${blog.postedBy.username}`}>{blog.postedBy.username}</Link> | Published{" "}
+                    {moment(blog.updatedAt).fromNow()} */}
                   </p>
                   <div className="pb-3">
                     {showBlogCategories(blog)}
@@ -142,15 +144,16 @@ const SingleBlog = ({ blog, query }) => {
               </section>
             </div>
 
+            <br />
+            <br />
+            <br />
+            <br />
             <div className="container pb-5">
-              <p>Realted blogs</p>
               <div className="row">{showRelatedBlogs()}</div>
               <br />
             </div>
 
-            <div className="container pb-5">
-              {showComments()}
-            </div>
+            <div className="container pb-5">{/* {showComments()} */}</div>
           </article>
         </main>
       </Layout>

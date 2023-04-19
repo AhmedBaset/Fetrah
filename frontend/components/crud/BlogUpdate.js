@@ -51,6 +51,8 @@ const BlogUpdate = ({ router }) => {
   const initBlog = () => {
     if (router.query.slug) {
       getSingleBlog(router.query.slug).then((data) => {
+        console.log(data);
+
         if (data.error) {
           console.log(data.error);
         } else {
@@ -207,13 +209,7 @@ const BlogUpdate = ({ router }) => {
           title: "",
           success: `Blog titled "${data.title}" is successfully updated`,
         });
-        if (isAuth() && isAuth().role === 1) {
-          // Router.replace(`/admin/crud/${router.query.slug}`);
-          Router.replace(`/admin`);
-        } else if (isAuth() && isAuth().role === 0) {
-          // Router.replace(`/user/crud/${router.query.slug}`);
-          Router.replace(`/user`);
-        }
+        Router.replace(`/user`);
       }
     });
   };

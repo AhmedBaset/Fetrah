@@ -1,11 +1,16 @@
 import fetch from "isomorphic-fetch";
 import { API } from "../config";
 
-export const setUserRoomStatus = (roomId, status, gender, rejectionReason) => {
+export const setUserRoomStatus = (
+  roomId,
+  status,
+  username,
+  rejectionReason
+) => {
   const data = {
     roomId,
     status,
-    gender,
+    username,
     rejectionReason,
   };
   return fetch(`${API}/api/set-user-room-status`, {
@@ -152,10 +157,23 @@ export const removeFromFavourite = (sender, userToRemove, token) => {
     .catch((err) => console.log(err));
 };
 
-export const getUsers = (skip, limit) => {
+export const getUsers = (
+  pageNumber,
+  pageSize,
+  gender,
+  status,
+  country,
+  nationality,
+  state
+) => {
   const data = {
-    limit,
-    skip,
+    pageSize,
+    pageNumber,
+    gender,
+    status,
+    country,
+    nationality,
+    state,
   };
   return fetch(`${API}/api/users`, {
     method: "POST",

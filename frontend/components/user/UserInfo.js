@@ -9,6 +9,7 @@ import {
   sendAcceptanceRequest,
   rejectRequest,
   acceptRequest,
+  userPublicProfile,
 } from "../../actions/user";
 import Modal from "react-modal";
 import { toast } from "react-toastify";
@@ -19,12 +20,35 @@ const socket = socketIO.connect("http://localhost:8000");
 const UserInfo = (props) => {
   const user = props.user;
   const router = useRouter();
+  const [senderUser, setSenderUser] = useState(null);
 
-  const senderUser = isAuth();
+  useEffect(() => {
+    const fetchUser = async () => {
+      const result = await isAuth();
+      const userProfile = await userPublicProfile(result.username);
+      setSenderUser(userProfile.user);
+    };
+    fetchUser();
+  }, []);
+
   const token = getCookie("token");
 
-  const userImage =
-    user.questions[23] === "ملتحي" ? "man_with_le7ya.svg" : "man_amls.svg";
+  let userImage = "";
+  if (user.gender === "man") {
+    userImage =
+      user.questions[23] === "ملتحي" ? "man_with_le7ya.svg" : "man_amls.svg";
+  } else {
+    if (
+      user.questions[12] === "منتقبة سواد" ||
+      user.questions[12] === "منتقبة نقاب ملون"
+    ) {
+      userImage = "woman_with_niqab.svg";
+    } else if (user.questions[12] === "مختمرة") {
+      userImage = "woman_with_khemar.svg";
+    } else {
+      userImage = "woman_with_hijab.svg";
+    }
+  }
   const userFace = user.questions[23] === "ملتحي" ? "ملتحي" : "";
 
   const userManOrWoman = user.gender === "man" ? "عريس" : "عروسة";
@@ -69,58 +93,58 @@ const UserInfo = (props) => {
   const [requestId, setRequestId] = useState("");
 
   useEffect(() => {
-    if (senderUser) {
-      const lastRecievedRequest =
-        user.recievedRequests[user.recievedRequests.length - 1];
-
-      if (lastRecievedRequest) {
-        const lastSender = lastRecievedRequest.sender;
-        if (lastSender === senderUser._id && lastRecievedRequest.status === 0) {
-          setUserStatus("في انتظار الرد");
-        } else if (
-          lastSender === senderUser._id &&
-          lastRecievedRequest.status === 2
-        ) {
-          setUserStatus("مرحلة الأسئلة");
-        } else if (
-          lastSender === senderUser._id &&
-          lastRecievedRequest.status === 3
-        ) {
-          setUserStatus("تم الرفض");
-        } else if (
-          lastSender === senderUser._id &&
-          lastRecievedRequest.status === 5
-        ) {
-          setUserStatus("تم القبول");
+    if (senderUser && user) {
+      let request = null;
+      const senderUserSentRequests = senderUser.sentRequests;
+      const senderUserReceivedRequests = senderUser.recievedRequests;
+      const otherUserSentRequests = user.sentRequests;
+      const otherUserReceivedRequests = user.recievedRequests;
+      if (senderUserSentRequests) {
+        request = senderUserSentRequests.find((req1) => {
+          return otherUserReceivedRequests.find((req2) => {
+            return req1._id === req2._id;
+          });
+        });
+        if (request) {
+          setRequestId(request._id);
+          const requestStatus = request.status;
+          if (requestStatus === 0) {
+            setUserStatus("في انتظار الرد");
+          } else if (requestStatus === 1) {
+          } else if (requestStatus === 2) {
+            setUserStatus("مرحلة الأسئلة");
+          } else if (requestStatus === 3) {
+            setUserStatus("تم الرفض");
+          } else if (requestStatus === 4) {
+            setUserStatus("ارسال طلب قبول");
+          } else if (requestStatus === 5) {
+          }
         }
-        setRequestId(lastRecievedRequest._id);
       }
-
-      const lastSentRequests = user.sentRequests[user.sentRequests.length - 1];
-      if (lastSentRequests) {
-        const lastReciever = lastSentRequests.reciever;
-        if (lastReciever === senderUser._id && lastSentRequests.status === 0) {
-          setUserStatus("قبول الطلب");
-        } else if (
-          lastReciever === senderUser._id &&
-          lastSentRequests.status === 2
-        ) {
-          setUserStatus("مرحلة الأسئلة");
-        } else if (
-          lastReciever === senderUser._id &&
-          lastSentRequests.status === 3
-        ) {
-          setUserStatus("تم الرفض");
-        } else if (
-          lastReciever === senderUser._id &&
-          lastSentRequests.status === 5
-        ) {
-          setUserStatus("تم القبول");
+      if (senderUserReceivedRequests) {
+        request = senderUserReceivedRequests.find((req1) => {
+          return otherUserSentRequests.find((req2) => {
+            return req1._id === req2._id;
+          });
+        });
+        if (request) {
+          setRequestId(request._id);
+          const requestStatus = request.status;
+          if (requestStatus === 0) {
+            setUserStatus("قبول الطلب");
+          } else if (requestStatus === 1) {
+          } else if (requestStatus === 2) {
+            setUserStatus("مرحلة الأسئلة");
+          } else if (requestStatus === 3) {
+            setUserStatus("تم الرفض");
+          } else if (requestStatus === 4) {
+            setUserStatus("ارسال طلب قبول");
+          } else if (requestStatus === 5) {
+          }
         }
-        setRequestId(lastSentRequests._id);
       }
     }
-  }, []);
+  }, [senderUser, user]);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   function handleModalOpen() {
@@ -165,6 +189,13 @@ const UserInfo = (props) => {
   const handleSendAcceptance = (e) => {
     e.preventDefault();
     if (senderUser) {
+      if (user.userStatus === 1) {
+        toast.error(
+          "للأسف لا يمكنك ارسال طلب قبول لهذا الشخص لانه على تواصل الان بشخص أخر"
+        );
+        return;
+      }
+      console.log(user);
       setLoadingSendingAccept(true);
       if (senderUser) {
         sendAcceptanceRequest(senderUser.username, user.username, token).then(
@@ -248,14 +279,240 @@ const UserInfo = (props) => {
 
   const handleAcceptRequest = (e) => {
     e.preventDefault();
+
     acceptRequest(requestId, token).then((data, err) => {
       if (err) {
         showErrorMessage(err);
       } else {
+        console.log(data);
         showSuccessMessage(data.message);
         setUserStatus("مرحلة الأسئلة");
       }
     });
+  };
+
+  const showAddToFavouriteBtn = () => {
+    return (
+      <div className={classes["option-container"]}>
+        <Image
+          className={classes["options-icon"]}
+          src={"/images/bookmark_icon.svg"}
+          width={30}
+          height={30}
+          alt={""}
+        />
+        {loadingFavourite ? (
+          <p>جاري التحميل</p>
+        ) : (
+          <button
+            onClick={handleAddRemoveFromFavourite}
+            className={`${classes["submit"]}`}
+          >
+            {!inFavourites && "اضافة للمحفوظات"}
+            {inFavourites && "ازالة المحفوظات"}
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  const showReportBtn = () => {
+    return (
+      <div className={classes["option-container"]}>
+        <Image
+          className={classes["options-icon"]}
+          src={"/images/report_icon.svg"}
+          width={30}
+          height={30}
+          alt={""}
+        />
+        <button onClick={handleModalOpen} className={`${classes["submit"]}`}>
+          تبليغ عن مخالفة
+        </button>
+      </div>
+    );
+  };
+
+  const showRejectBtn = () => {
+    return (
+      <div className={classes["option-container"]}>
+        <Image
+          className={classes["options-icon"]}
+          src={"/images/reject_icon.svg"}
+          width={28}
+          height={28}
+          alt={""}
+        />
+        {loadingFavourite ? (
+          <p>جاري التحميل</p>
+        ) : (
+          <button
+            onClick={handleRejectRequest}
+            className={`${classes["submit"]}`}
+          >
+            رفض الطلب
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  const showAcceptBtn = () => {
+    return (
+      <div className={classes["option-container"]}>
+        <Image
+          className={classes["options-icon"]}
+          src={"/images/like_icon.svg"}
+          width={28}
+          height={28}
+          alt={""}
+        />
+        {loadingFavourite ? (
+          <p>جاري التحميل</p>
+        ) : (
+          <button
+            onClick={handleAcceptRequest}
+            className={`${classes["submit"]}`}
+          >
+            قبول الطلب
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  const showSendAcceptBtn = () => {
+    return (
+      <div className={classes["option-container"]}>
+        <Image
+          className={classes["options-icon"]}
+          src={"/images/like_icon.svg"}
+          width={28}
+          height={28}
+          alt={""}
+        />
+        {loadingFavourite ? (
+          <p>جاري التحميل</p>
+        ) : (
+          <button
+            onClick={handleSendAcceptance}
+            className={`${classes["submit"]}`}
+          >
+            ارسال طلب قبول
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  const showWaitingReponseBtn = () => {
+    return (
+      <div className={classes["option-container"]}>
+        <Image
+          className={classes["options-icon"]}
+          src={"/images/like_icon.svg"}
+          width={28}
+          height={28}
+          alt={""}
+        />
+        {loadingFavourite ? (
+          <p>جاري التحميل</p>
+        ) : (
+          <button
+            onClick={() => {
+              showInfoMessage(
+                ` يجب عليك انتظار الرد من الطرف الأخر خلال 24 ساعة`
+              );
+            }}
+            className={`${classes["submit"]}`}
+          >
+            في انتظار الرد
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  const showQuestionsStageBtn = () => {
+    return (
+      <div className={classes["option-container"]}>
+        <Image
+          className={classes["options-icon"]}
+          src={"/images/like_icon.svg"}
+          width={28}
+          height={28}
+          alt={""}
+        />
+        {loadingFavourite ? (
+          <p>جاري التحميل</p>
+        ) : (
+          <button
+            onClick={() => {
+              router.push(
+                `/questions/${requestId}-${senderUser.username}-${user.username}`
+              );
+            }}
+            className={`${classes["submit"]}`}
+          >
+            مرحلة الأسئلة
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  const showYouAlreadyRejectedBtn = () => {
+    return (
+      <div className={classes["option-container"]}>
+        <Image
+          className={classes["options-icon"]}
+          src={"/images/like_icon.svg"}
+          width={28}
+          height={28}
+          alt={""}
+        />
+        {loadingFavourite ? (
+          <p>جاري التحميل</p>
+        ) : (
+          <button
+            onClick={() => {
+              toast.info(
+                "لا يمكنك ارسال طلب لهذا الشخص بعد أن تم الرفض بينكما"
+              );
+            }}
+            className={`${classes["submit"]}`}
+          >
+            تم الرفض
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  const showYouAlreadyAcceptedBtn = () => {
+    return (
+      <div className={classes["option-container"]}>
+        <Image
+          className={classes["options-icon"]}
+          src={"/images/like_icon.svg"}
+          width={28}
+          height={28}
+          alt={""}
+        />
+        {loadingFavourite ? (
+          <p>جاري التحميل</p>
+        ) : (
+          <button
+            onClick={() => {
+              router.push(`/user/${requestId}`);
+            }}
+            className={`${classes["submit"]}`}
+          >
+            تم القبول
+          </button>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -283,130 +540,67 @@ const UserInfo = (props) => {
 
       <div className={classes["fullContainer"]}>
         <div className={classes["info-head"]}>
-          <div className={classes["options-container"]}>
-            {userStatus === "قبول الطلب" ? (
-              <div className={classes["option-container"]}>
-                <Image
-                  className={classes["options-icon"]}
-                  src={"/images/reject_icon.svg"}
-                  width={28}
-                  height={28}
-                  alt={""}
-                />
-                {loadingFavourite ? (
-                  <p>جاري التحميل</p>
-                ) : (
-                  <button
-                    onClick={handleRejectRequest}
-                    className={`${classes["submit"]}`}
-                  >
-                    رفض الطلب
-                  </button>
+          {senderUser && senderUser.username !== user.username && (
+            <>
+              <div className={classes["options-container"]}>
+                {userStatus === "ارسال طلب قبول" && (
+                  <>
+                    {showAddToFavouriteBtn()}
+                    {showSendAcceptBtn()}
+                    {showReportBtn()}
+                  </>
+                )}
+
+                {userStatus === "في انتظار الرد" && (
+                  <>
+                    {showAddToFavouriteBtn()}
+                    {showWaitingReponseBtn()}
+                    {showReportBtn()}
+                  </>
+                )}
+
+                {userStatus === "قبول الطلب" && (
+                  <>
+                    {showRejectBtn()}
+                    {showAcceptBtn()}
+                    {showReportBtn()}
+                  </>
+                )}
+
+                {userStatus === "مرحلة الأسئلة" && (
+                  <>
+                    {showAddToFavouriteBtn()}
+                    {showQuestionsStageBtn()}
+                    {showReportBtn()}
+                  </>
+                )}
+
+                {userStatus === "تم الرفض" && (
+                  <>
+                    {showAddToFavouriteBtn()}
+                    {showYouAlreadyRejectedBtn()}
+                    {showReportBtn()}
+                  </>
+                )}
+
+                {userStatus === "تم القبول" && (
+                  <>
+                    {showAddToFavouriteBtn()}
+                    {showYouAlreadyAcceptedBtn()}
+                    {showReportBtn()}
+                  </>
                 )}
               </div>
-            ) : (
-              <div className={classes["option-container"]}>
-                <Image
-                  className={classes["options-icon"]}
-                  src={"/images/bookmark_icon.svg"}
-                  width={30}
-                  height={30}
-                  alt={""}
-                />
-                {loadingFavourite ? (
-                  <p>جاري التحميل</p>
-                ) : (
-                  <button
-                    onClick={handleAddRemoveFromFavourite}
-                    className={`${classes["submit"]}`}
-                  >
-                    {!inFavourites && "اضافة للمحفوظات"}
-                    {inFavourites && "ازالة المحفوظات"}
-                  </button>
-                )}
-              </div>
-            )}
-
-            <div className={classes["option-container"]}>
-              {userStatus === "مرحلة الأسئلة" ? (
-                <Image
-                  className={classes["options-icon"]}
-                  src={"/images/question_icon.svg"}
-                  width={30}
-                  height={30}
-                  alt={""}
-                />
-              ) : (
-                <Image
-                  className={classes["options-icon"]}
-                  src={"/images/like_icon.svg"}
-                  width={30}
-                  height={30}
-                  alt={""}
-                />
-              )}
-
-              {loadingSendingAccept ? (
-                <p>جاري التحميل</p>
-              ) : (
-                <button
-                  onClick={(e) => {
-                    if (user.userStatus === 1) {
-                      toast.error(
-                        "للأسف لا يمكنك ارسال طلب قبول لهذا الشخص لانه على تواصل الان بشخص أخر"
-                      );
-                    }
-                    if (userStatus === "ارسال طلب قبول") {
-                      handleSendAcceptance(e);
-                    } else if (userStatus === "قبول الطلب") {
-                      //acceptRequest here
-                      handleAcceptRequest(e);
-                    } else if (userStatus === "في انتظار الرد") {
-                      showInfoMessage(
-                        ` يجب عليك انتظار الرد من الطرف الأخر خلال 24 ساعة`
-                      );
-                    } else if (userStatus === "مرحلة الأسئلة") {
-                      router.push(
-                        `/questions/${requestId}-${senderUser.username}-${user.username}`
-                      );
-                    } else if (userStatus === "تم الرفض") {
-                      toast.info(
-                        "لا يمكنك ارسال طلب لهذا الشخص بعد أن تم الرفض بينكما"
-                      );
-                    } else if (userStatus === "تم القبول") {
-                      router.push(`/user/${requestId}`);
-                    }
-                  }}
-                  className={`${classes["submit"]}`}
-                >
-                  {userStatus}
-                </button>
-              )}
-            </div>
-
-            <div className={classes["option-container"]}>
-              <Image
-                className={classes["options-icon"]}
-                src={"/images/report_icon.svg"}
-                width={30}
-                height={30}
-                alt={""}
-              />
-              <button
-                onClick={handleModalOpen}
-                className={`${classes["submit"]}`}
-              >
-                تبليغ عن مخالفة
-              </button>
-            </div>
-          </div>
+            </>
+          )}
 
           <div className={classes["info-text-container"]}>
             <h3>
               {userManOrWoman} {userFace} - {age} سنة
             </h3>
             <h3>
-              الجنسية - {country} - تعيش في {whereYouLive} - {city}
+              الجنسية - {country} - {user.gender === "man" ? "يعيش" : "تعيش"} في{" "}
+              {whereYouLive} - {city}
             </h3>
             <h3>الحالة الاجتماعية - {generalStatus}</h3>
           </div>
@@ -415,8 +609,8 @@ const UserInfo = (props) => {
             <Image
               className={classes["icon"]}
               src={`/images/${userImage}`}
-              width={150}
-              height={150}
+              width={130}
+              height={130}
               alt={""}
               priority="true"
             />

@@ -316,7 +316,7 @@ exports.listByUser = (req, res) => {
         error: errorHandler(err),
       });
     }
-    
+
     let userId = user._id;
     Blog.find({ postedBy: userId })
       .populate("categories", "_id name slug")

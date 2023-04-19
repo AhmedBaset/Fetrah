@@ -1,33 +1,63 @@
 import moment from "moment/moment";
 import { API } from "../../config";
 import Link from "next/link";
+import classes from "./Card.module.css";
+import { useEffect, useState } from "react";
 // import Image from "next/image";
 
 const Card = ({ blog, parser }) => {
-  const blogExcerpt = parser.parse(blog.excerpt);
+  const [blogExcerpt, setBlogExcerpt] = useState();
+
+  useEffect(() => {
+    setBlogExcerpt(parser.parse(blog.excerpt));
+  }, []);
 
   const showBlogCategories = (blog) => {
-    return blog.categories.map((category, i)=>{
-        return (
-            <Link key={i} href={`/categories/${category.slug}`}>
-                <p className="btn btn-primary mr-1 ms-1 mt-1">{category.name}</p>
-            </Link>
-        )
-    })
+    return blog.categories.map((category, i) => {
+      return (
+        <Link key={i} href={`/categories/${category.slug}`}>
+          <p className="btn btn-primary mr-1 ms-1 mt-1">{category.name}</p>
+        </Link>
+      );
+    });
   };
 
-  const showBlogTags= (tag) => {
-    return blog.tags.map((tag, i)=>{
-        return (
-            <Link key={i} href={`/tags/${tag.slug}`}>
-                <p className="btn btn-outline-primary mr-1 ms-1 mt-1">{tag.name}</p>
-            </Link>
-        )
-    })
+  const showBlogTags = (tag) => {
+    return blog.tags.map((tag, i) => {
+      return (
+        <Link key={i} href={`/tags/${tag.slug}`}>
+          <p className="btn btn-outline-primary mr-1 ms-1 mt-1">{tag.name}</p>
+        </Link>
+      );
+    });
   };
-  console.log(blog.postedBy);
-  
-  
+
+  return (
+    <>
+      <Link
+        style={{
+          textDecoration: "none",
+        }}
+        href={`/blogs/${blog.slug}`}
+      >
+        <div className={classes["card"]}>
+          <img
+            className="img img-fluid"
+            // height="400"
+            // width="300"
+            // style={{ maxHeight: "150px", width: "auto" }}
+            alt=""
+            src={`${API}/api/blog/photo/${blog.slug}`}
+          />
+          <div className={classes["card-content"]}>
+            <h2 className={classes["article-title"]}>{blog.title}</h2>
+            <p className={classes["article-excerpt"]}>{blogExcerpt}</p>
+            <div className={classes["read-more-link"]}>قراءة المقال</div>
+          </div>
+        </div>
+      </Link>
+    </>
+  );
   return (
     <div className="lead pb-4">
       <header>
@@ -44,15 +74,22 @@ const Card = ({ blog, parser }) => {
       <section>
         {showBlogCategories(blog)}
         {showBlogTags(blog)}
-        <br/>
-        <br/>
+        <br />
+        <br />
       </section>
 
       <div className="row">
         <div className="col-md-4">
-            <section>
-                <img className="img img-fluid" height="400" width="300" style={{maxHeight: '150px', width: 'auto'}} alt="" src={`${API}/api/blog/photo/${blog.slug}`} />
-            </section>
+          <section>
+            <img
+              className="img img-fluid"
+              height="400"
+              width="300"
+              style={{ maxHeight: "150px", width: "auto" }}
+              alt=""
+              src={`${API}/api/blog/photo/${blog.slug}`}
+            />
+          </section>
         </div>
         <div className="col-md-8">
           <section>

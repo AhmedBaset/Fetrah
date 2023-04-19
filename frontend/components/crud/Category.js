@@ -110,7 +110,7 @@ const Category = () => {
             </div>
             <div>
                 <button type="submit" className="btn btn-primary m-2">
-                    Create
+                    اضافة قسم
                 </button>
             </div>
         </form>

@@ -5,6 +5,7 @@ import { getCookie, isAuth, updateUser } from "../../actions/auth";
 import { getProfile, update, getQuestions } from "../../actions/user";
 import { API } from "../../config";
 import ProfileUpdateQuestions from "./ProfileUpdateQuestions";
+import classes from "../user/userProfile.module.css";
 
 const ProfileUpdate = () => {
   const [values, setValues] = useState({
@@ -191,21 +192,9 @@ const ProfileUpdate = () => {
 
   return (
     <>
-      <div className="container">
-        <div className="row">
-          <div className="col-md-4">
-            <img
-              src={`${API}/api/user/photo/${username_for_photo}`}
-              className="img img-fluid img-thumbnail mb-3"
-              style={{ maxHeight: "auto", maxWidth: "100%" }}
-              alt="user profile"
-            />
-          </div>
-
-          <div className="col-md-8 mb-5">{profileUpdateForm()}</div>
-          <div className="col-md-8 mb-5">{ProfileUpdateQuestions()}</div>
+      <div className={classes["questionsMain"]}>
+        <ProfileUpdateQuestions username={username} />
         </div>
-      </div>
     </>
   );
 };

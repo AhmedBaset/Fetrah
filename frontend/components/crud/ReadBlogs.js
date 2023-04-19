@@ -8,6 +8,15 @@ const ReadBlogs = ({ username }) => {
   const [blogs, setBlogs] = useState([]);
   const [message, setMessage] = useState("");
   const token = getCookie("token");
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const result = await isAuth();
+      setUser(result);
+    };
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     loadBlogs();
@@ -43,39 +52,38 @@ const ReadBlogs = ({ username }) => {
 
   const showUpdateButton = (blog) => {
     let path = "";
-
-    if (isAuth() && isAuth().role === 0) {
-      //path for normal user
-      path = `/user/crud/${blog.slug}`;
-    } else if (isAuth() && isAuth().role === 1) {
-      //path for admin user
-      path = `/admin/crud/${blog.slug}`;
-    }
-    console.log(isAuth());
+    path = `/admin/crud/${blog.slug}`;
+    // if (user && user.role === 0) {
+    //   //path for normal user
+    //   path = `/user/crud/${blog.slug}`;
+    // } else if (user && user.role === 1) {
+    //   //path for admin user
+    //   path = `/admin/crud/${blog.slug}`;
+    // }
     return (
       <Link
         className="me-2 btn btn-sm btn-warning"
         style={{ textDecoration: "none" }}
         href={`${path}`}
       >
-        Update
+        تعديل
       </Link>
     );
   };
 
   const showLoadedBlogs = () => {
     return blogs.map((blog, i) => {
-      const info = `Written by ${blog.postedBy.name} | Published on ${" "}
-        ${moment(blog.updatedAt).fromNow()}`;
+      // const info = `Written by ${blog.postedBy.name} | Published on ${" "}
+      //   ${moment(blog.updatedAt).fromNow()}`;
       return (
         <div key={i} className="pb-5">
           <h3>{blog.title}</h3>
-          <p className="mark">{info}</p>
+          {/* <p className="mark">{info}</p> */}
           <button
             className="btn btn-sm btn-danger"
             onClick={() => deleteConfirm(blog.slug)}
           >
-            Delete
+            حذف
           </button>
           {showUpdateButton(blog)}
         </div>

@@ -79,7 +79,7 @@ const Blogs = ({
       size > 0 &&
       size >= limit && (
         <button onClick={loadMore} className="btn btn-outline-primary btn-lg">
-          Load more
+          تحميل المزيد
         </button>
       )
     );
@@ -132,14 +132,14 @@ const Blogs = ({
           <div className="container-head">
             <div className="col-md-12 pt-3">
               <h1 className="display-4 fw-bold text-center">
-                Fetrah for islamic mirrage
+                لزواج إسلامي صحيح
               </h1>
             </div>
             <section>
               <div className="pb-5 text-center">
                 {showAllCategories()}
                 <br />
-                {showAllTags()}
+                {/* {showAllTags()} */}
               </div>
             </section>
           </div>
@@ -154,7 +154,7 @@ const Blogs = ({
 
 Blogs.getInitialProps = () => {
   let skip = 0;
-  let limit = 2;
+  let limit = 9;
   return listBlogsWithCategoriesAndTags(skip, limit).then((data) => {
     if (data.error) {
       console.log(data.error);

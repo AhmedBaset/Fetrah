@@ -144,16 +144,22 @@ export const authenticate = (data, next) => {
 };
 
 export const isAuth = () => {
-  if (process.browser) {
-    const cookieChecked = getCookie("token");
-    if (cookieChecked) {
-      if (localStorage.getItem("user")) {
-        return JSON.parse(localStorage.getItem("user"));
+  return new Promise((resolve, reject) => {
+    if (process.browser) {
+      const cookieChecked = getCookie("token");
+      if (cookieChecked) {
+        if (localStorage.getItem("user")) {
+          resolve(JSON.parse(localStorage.getItem("user")));
+        } else {
+          resolve(false);
+        }
       } else {
-        return false;
+        resolve(false);
       }
+    } else {
+      resolve(false);
     }
-  }
+  });
 };
 
 export const updateUser = (user, next) => {

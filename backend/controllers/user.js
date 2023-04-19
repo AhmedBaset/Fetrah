@@ -11,10 +11,10 @@ const { errorHandler } = require("../helpers/dbErrorHandler");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
-exports.setUserRoomStatus = (req, res) => {
+exports.setUserRoomStatus = async (req, res) => {
   const roomId = req.body.roomId;
   const status = req.body.status;
-  const gender = req.body.gender;
+  const senderUser = await User.findOne({ username: req.body.username });
   const rejectionReason = req.body.rejectionReason;
 
   PrivateRoom.findOne({ roomId }).exec(async (err, data) => {
@@ -23,14 +23,15 @@ exports.setUserRoomStatus = (req, res) => {
         error: err,
       });
     } else {
-      if (gender === "man") {
-        data.roomStatus.manStatus = status;
-      } else {
-        data.roomStatus.womanStatus = status;
+      if (senderUser) {
+        if (senderUser.gender === "man") {
+          data.roomStatus.manStatus = status;
+        } else {
+          data.roomStatus.womanStatus = status;
+        }
       }
-      if (status === "2") {
-        console.log(rejectionReason);
 
+      if (status === "2") {
         data.roomStatus.rejectionReason = rejectionReason;
 
         const update = { status: 3 };
@@ -42,6 +43,16 @@ exports.setUserRoomStatus = (req, res) => {
               error: err,
             });
           }
+          User.findByIdAndUpdate(
+            data.sender,
+            { userStatus: 0 },
+            { new: true }
+          ).exec((err, data) => {});
+          User.findByIdAndUpdate(
+            data.reciever,
+            { userStatus: 0 },
+            { new: true }
+          ).exec((err, data) => {});
         });
       } else if (status === "1") {
         if (
@@ -309,8 +320,7 @@ exports.sendAcceptanceRequest = (req, res) => {
           }
         } else if (lastRequestStatus == 2) {
           return res.json({
-            message:
-              "You can't send request because you are already accepted by another one",
+            message: "لا يمكنك ارسال طلب جديد لانك بالفعل مرتبط بشخص أخر",
           });
         } else if (
           lastRequestStatus == 3 ||
@@ -457,23 +467,70 @@ exports.sendAcceptanceRequest = (req, res) => {
 exports.acceptRequest = (req, res) => {
   const requestId = req.body.requestId;
 
-  Request.updateOne(
-    { _id: requestId },
-    {
-      status: "2",
-    },
-    { new: true }
-  ).exec((err, data) => {
-    if (err) {
-      return res.status(400).json({
-        error: errorHandler(err),
-      });
-    } else {
-      return res.json({
-        message: "تم قبول الطلب بنجاح ... ستنتقل الان لمرحلة الأسئلة",
-      });
-    }
-  });
+  Request.findById({ _id: requestId })
+    .populate("sender")
+    .populate("reciever")
+    .exec(async (err, data) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).json({
+          error: errorHandler(err),
+        });
+      } else {
+        //get only pending request from sender and receiver and convert them to timeover status
+        //then accept the only one request for the sender and receiver
+        const requestsToUpdate = data.reciever.recievedRequests
+          .concat(data.reciever.sentRequests)
+          .concat(data.sender.recievedRequests);
+        const requestData = data;
+        User.updateOne(
+          { _id: requestData.sender._id },
+          {
+            userStatus: 1,
+          },
+          { new: true }
+        ).exec((err, data) => {
+          User.updateOne(
+            { _id: requestData.reciever._id },
+            {
+              userStatus: 1,
+            },
+            { new: true }
+          ).exec((err, data) => {});
+        });
+
+        Request.updateOne(
+          { _id: requestId },
+          {
+            status: "2",
+          },
+          { new: true }
+        ).exec((err, data) => {
+          if (err) {
+            return res.status(400).json({
+              error: errorHandler(err),
+            });
+          } else {
+            Request.updateMany(
+              {
+                _id: {
+                  $in: requestsToUpdate,
+                },
+                status: 0, // only update requests with status = 0
+              },
+              { $set: { status: 4 } },
+              { new: true }
+            )
+              .then((result) =>
+                res.json({
+                  message: "تم قبول الطلب بنجاح ... ستنتقل الان لمرحلة الأسئلة",
+                })
+              )
+              .catch((error) => console.error(error));
+          }
+        });
+      }
+    });
 };
 
 exports.rejectRequest = (req, res) => {
@@ -499,23 +556,53 @@ exports.rejectRequest = (req, res) => {
 };
 
 exports.getUsers = (req, res) => {
-  let limit = req.body.limit ? parseInt(req.body.limit) : 10;
-  let skip = req.body.skip ? parseInt(req.body.skip) : 0;
+  let pageSize = req.body.pageSize ? parseInt(req.body.pageSize) : 20;
+  let pageNumber = req.body.pageNumber ? parseInt(req.body.pageNumber) : 1;
+  let gender = req.body.gender;
+  let generalStatus = req.body.status;
+  let country = req.body.country;
+  let nationality = req.body.nationality;
+  let state = req.body.state;
 
+  const skip = (pageNumber - 1) * pageSize;
+  const limit = pageSize;
   let users;
 
-  User.find({})
+  let query = { role: 0, confirmed: 1 };
+  if (gender) {
+    query.gender = gender;
+  }
+
+  if (generalStatus) {
+    query["questions.0"] = generalStatus;
+  }
+
+  if (country) {
+    query["questions.1"] = country;
+  }
+
+  if (nationality) {
+    query["questions.36"] = nationality;
+  }
+
+  if (state) {
+    query["questions.16"] = state;
+  }
+
+  User.find(query)
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
     .select("username gender questions")
-    .exec((err, data) => {
+    .exec(async (err, data) => {
       if (err) {
         return res.json({ error: errorHandler(err) });
       }
 
       users = data;
-      return res.json({ users, size: users.length });
+      const totalSize = await User.countDocuments();
+
+      return res.json({ users, size: totalSize });
     });
 };
 
@@ -602,10 +689,19 @@ exports.publicProfile = (req, res) => {
   let user;
   let blogs;
   User.findOne({ username })
-    .select("username _id questions gender sentRequests recievedRequests")
-    .populate("recievedRequests", "sender status")
-    .populate("sentRequests", "reciever status")
-    .populate()
+    .select(
+      "username _id questions gender sentRequests recievedRequests userStatus"
+    )
+    .populate("recievedRequests", "sender status createdAt token")
+    .populate({
+      path: "recievedRequests",
+      populate: { path: "sender", select: "username" },
+    })
+    .populate("sentRequests", "reciever status createdAt token")
+    .populate({
+      path: "sentRequests",
+      populate: { path: "reciever", select: "username" },
+    })
     .exec((err, userFromDB) => {
       if (err || !userFromDB) {
         return res.status(400).json({
@@ -629,6 +725,11 @@ exports.publicProfile = (req, res) => {
             });
           }
           user.hashed_password = undefined;
+          user.phone = undefined;
+          user.name = undefined;
+          user.idPhoto1 = undefined;
+          user.idPhoto2 = undefined;
+          user.idNumber = undefined;
           res.json({
             user,
             blogs: data,

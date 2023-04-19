@@ -60,14 +60,14 @@ const ConfirmationsList = () => {
   };
 
   const Confirm = (username) => {
-    let answer = window.confirm("Are you sure you want to confirm this user ?");
+    let answer = window.confirm("هل انت متأكد أنك تريد تأكيد هذا الطلب");
     if (answer) {
       confirmUserAction(username);
     }
   };
 
   const Reject = (username) => {
-    let answer = window.confirm("Are you sure you want to reject this user ?");
+    let answer = window.confirm("هل أنت متأكد أنك تريد رفض هذا الطلب");
     if (answer) {
       rejectUserAction(username);
     }
@@ -75,13 +75,13 @@ const ConfirmationsList = () => {
 
   const userInfo = (user) => {
     const infoList = [];
+    console.log(questions);
     for (let x in user.questions) {
-      if (user.questions[x] !== "") {
+      if (user.questions[x].trim() !== "") {
         infoList.push(
-          <h4
-            className="container"
-            key={x}
-          >{`${questions[x]}  :  ${user.questions[x]}`}</h4>
+          <p className="container" key={x}>{`${questions[x.trim()]}   :  ${
+            user.questions[x]
+          }`}</p>
         );
       }
     }
@@ -95,21 +95,35 @@ const ConfirmationsList = () => {
         <div key={i} className="pb-5">
           <h3>{user.name}</h3>
           <div className="row">
-            <div className="col">
-              <Image
-                src={`${user.idPhoto1}`}
-                width={400}
-                height={200}
-                alt={""}
-              />
-              <Image
-              className="mt-2"
-                src={`${user.idPhoto2}`}
-                width={400}
-                height={200}
-                alt={""}
-              />
-            </div>
+            {user.idNumber && (
+              <>
+                <div className="col">
+                  {user.idNumber && (
+                    <>
+                      <h1 style={{ marginRight: "8rem" }}>{user.idNumber}</h1>
+                    </>
+                  )}
+                  {user.idPhoto1 && (
+                    <Image
+                      src={`${user.idPhoto1}`}
+                      width={400}
+                      height={200}
+                      alt={""}
+                    />
+                  )}
+                  {user.idPhoto1 && (
+                    <Image
+                      className="mt-2"
+                      src={`${user.idPhoto2}`}
+                      width={400}
+                      height={200}
+                      alt={""}
+                    />
+                  )}
+                </div>
+              </>
+            )}
+
             <div className="col">{userInfo(user)}</div>
           </div>
 
@@ -117,13 +131,13 @@ const ConfirmationsList = () => {
             className="btn btn-sm btn-danger"
             onClick={() => Reject(user.username)}
           >
-            Reject
+            رفض الطلب
           </button>
           <button
             className="btn btn-sm btn-primary m-4"
             onClick={() => Confirm(user.username)}
           >
-            Confirm
+            تأكيد الطلب
           </button>
           <hr />
         </div>
