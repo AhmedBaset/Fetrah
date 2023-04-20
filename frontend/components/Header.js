@@ -3,6 +3,9 @@ import { APP_NAME } from "../config";
 
 import { isAuth, signout } from "../actions/auth";
 import Search from "./blog/Search";
+// import socketIO from "socket.io-client";
+// import { API } from "../config";
+// const socket = socketIO.connect(API);
 
 import {
   Collapse,
@@ -154,7 +157,7 @@ const Header = (props) => {
                     marginLeft: "1.2rem",
                     textAlign: "center",
                   }}
-                  href="/"
+                  href="/contact"
                 >
                   الدعم
                 </NavLink>

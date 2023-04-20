@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
+
 let URL = "";
 if (process.env.NODE_ENV === "development") {
   URL = process.env.CLIENT_URL_DEVELOPMENT;
@@ -93,7 +94,6 @@ socketIO.on("connection", (socket) => {
   });
   // When a client disconnects
   socket.on("disconnect", () => {
-    console.log(`Client ${socket.id} disconnected`);
     // Remove the client from any private rooms they were in
     Object.entries(privateRooms).forEach(([roomId, roomClients]) => {
       if (roomClients.includes(socket.id)) {
@@ -120,7 +120,7 @@ app.use(cookieParser());
 
 if (process.env.NODE_ENV === "development") {
   app.use(cors({ origin: "http://localhost:3000" }));
-}else{
+} else {
   app.use(cors({ origin: process.env.CLIENT_URL_PRODUCTION }));
 }
 

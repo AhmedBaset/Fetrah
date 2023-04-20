@@ -9,6 +9,7 @@ const questions = require("../questions.json");
 const jwt = require("jsonwebtoken");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 const mongoose = require("mongoose");
+const { sendEmailWithNodemailer } = require("../helpers/email");
 const ObjectId = mongoose.Types.ObjectId;
 
 exports.setUserRoomStatus = async (req, res) => {
@@ -43,6 +44,20 @@ exports.setUserRoomStatus = async (req, res) => {
               error: err,
             });
           }
+
+          const emailData = {
+            from: process.env.EMAIL_FROM, // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
+            to: data.reciever.email, // WHO SHOULD BE RECEIVING THIS EMAIL? IT SHOULD BE YOUR GMAIL
+            subject: ` لقد تم الرد على طلب القبول الذي أرسلته - ${process.env.APP_NAME}`,
+            html: `
+                  <h4>لقد تلقيت هذا البريد من موقع لتسكنوا:</h4>
+                  <p>لقد قام المستخدم كود - ${data.sender.username} - </p>
+                  <p>بالاعتذار عن الاستمرار في طلب التواصل بسبب ${rejectionReason}</p>
+                  <hr />
+                  <p>https://letaskono.vercel.app/users/${data.reciever.username}</p>
+              `,
+          };
+          sendEmailWithNodemailer(req, res, emailData);
           User.findByIdAndUpdate(
             data.sender,
             { userStatus: 0 },
@@ -60,6 +75,7 @@ exports.setUserRoomStatus = async (req, res) => {
           data.roomStatus.womanStatus === "1"
         ) {
           //both man and woman agreed then update request status to Finished
+
           const update = { status: 5 };
           Request.findByIdAndUpdate(new ObjectId(data.roomId), update, {
             new: true,
@@ -69,6 +85,19 @@ exports.setUserRoomStatus = async (req, res) => {
                 error: err,
               });
             }
+            const emailData = {
+              from: process.env.EMAIL_FROM, // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
+              to: data.reciever.email, // WHO SHOULD BE RECEIVING THIS EMAIL? IT SHOULD BE YOUR GMAIL
+              subject: ` لقد تم الرد على طلب القبول الذي أرسلته - ${process.env.APP_NAME}`,
+              html: `
+                    <h4>لقد تلقيت هذا البريد من موقع لتسكنوا:</h4>
+                    <p>لقد قام المستخدم كود - ${data.sender.username} - </p>
+                    <p>بالموافقة على الانتقال لمرحلة الرؤية الشرعية ويمكنك العثور على بياناته من خلال هذا الرابط</p>
+                    <hr />
+                    <p>https://letaskono.vercel.app/user/${data.roomId}</p>
+                `,
+            };
+            sendEmailWithNodemailer(req, res, emailData);
             User.findByIdAndUpdate(
               data.sender,
               { userStatus: 1 },
@@ -80,6 +109,7 @@ exports.setUserRoomStatus = async (req, res) => {
               { new: true }
             ).exec((err, data) => {});
           });
+
           return res.json({ message: "تم القبول", data });
         }
       }
@@ -260,7 +290,7 @@ exports.sendAcceptanceRequest = (req, res) => {
                         { senderUsername, recieverUsername },
                         process.env.JWT_ACCEPTANCE_REQUEST,
                         {
-                          expiresIn: "10s",
+                          expiresIn: "1d",
                         }
                       );
                       request.sender = sender;
@@ -298,6 +328,19 @@ exports.sendAcceptanceRequest = (req, res) => {
                                   error: errorHandler(err),
                                 });
                               } else {
+                                const emailData = {
+                                  from: process.env.EMAIL_FROM, // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
+                                  to: reciever.email, // WHO SHOULD BE RECEIVING THIS EMAIL? IT SHOULD BE YOUR GMAIL
+                                  subject: ` لقد تلقيت طلب قبول مبدئي - ${process.env.APP_NAME}`,
+                                  html: `
+                                        <h4>لقد تلقيت هذا البريد من موقع لتسكنوا:</h4>
+                                        <p>لقد قام المستخدم كود - ${sender.username} - </p>
+                                        <p>بارسال طلب قبول مبدئي لك يمكنك الدخول على الموقع والرد على هذا الطلب بنفسك</p>     
+                                        <hr />
+                                        <p>https://letaskono.vercel.app/users/${sender.username}</p>
+                                    `,
+                                };
+                                sendEmailWithNodemailer(req, res, emailData);
                                 return res.json({
                                   message: "تم ارسال طلب القبول المبدئي بنجاح",
                                 });
@@ -383,6 +426,19 @@ exports.sendAcceptanceRequest = (req, res) => {
                           error: errorHandler(err),
                         });
                       } else {
+                        const emailData = {
+                          from: process.env.EMAIL_FROM, // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
+                          to: reciever.email, // WHO SHOULD BE RECEIVING THIS EMAIL? IT SHOULD BE YOUR GMAIL
+                          subject: ` لقد تلقيت طلب قبول مبدئي - ${process.env.APP_NAME}`,
+                          html: `
+                                <h4>لقد تلقيت هذا البريد من موقع لتسكنوا:</h4>
+                                <p>لقد قام المستخدم كود - ${sender.username} - </p>
+                                <p>بارسال طلب قبول مبدئي لك يمكنك الدخول على الموقع والرد على هذا الطلب بنفسك</p>     
+                                <hr />
+                                <p>https://letaskono.vercel.app/users/${sender.username}</p>
+                            `,
+                        };
+                        sendEmailWithNodemailer(req, res, emailData);
                         return res.json({
                           message: "تم ارسال طلب القبول المبدئي بنجاح",
                         });
@@ -450,6 +506,19 @@ exports.sendAcceptanceRequest = (req, res) => {
                         error: errorHandler(err),
                       });
                     } else {
+                      const emailData = {
+                        from: process.env.EMAIL_FROM, // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
+                        to: reciever.email, // WHO SHOULD BE RECEIVING THIS EMAIL? IT SHOULD BE YOUR GMAIL
+                        subject: ` لقد تلقيت طلب قبول مبدئي - ${process.env.APP_NAME}`,
+                        html: `
+                              <h4>لقد تلقيت هذا البريد من موقع لتسكنوا:</h4>
+                              <p>لقد قام المستخدم كود - ${sender.username} - </p>
+                              <p>بارسال طلب قبول مبدئي لك يمكنك الدخول على الموقع والرد على هذا الطلب بنفسك</p>     
+                              <hr />
+                              <p>https://letaskono.vercel.app/users/${sender.username}</p>
+                          `,
+                      };
+                      sendEmailWithNodemailer(req, res, emailData);
                       return res.json({
                         message: "تم ارسال طلب القبول المبدئي بنجاح",
                       });
@@ -482,6 +551,19 @@ exports.acceptRequest = (req, res) => {
         const requestsToUpdate = data.reciever.recievedRequests
           .concat(data.reciever.sentRequests)
           .concat(data.sender.recievedRequests);
+        const emailData = {
+          from: process.env.EMAIL_FROM, // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
+          to: data.reciever.email, // WHO SHOULD BE RECEIVING THIS EMAIL? IT SHOULD BE YOUR GMAIL
+          subject: ` لقد تم الرد على طلب القبول الذي أرسلته - ${process.env.APP_NAME}`,
+          html: `
+                <h4>لقد تلقيت هذا البريد من موقع لتسكنوا:</h4>
+                <p>لقد قام المستخدم كود - ${data.sender.username} - </p>
+                <p>بقبول طلب التواصل الذي أرسلته ويمكنكما الأن الدخول لمرحلة الأسئلة</p>
+                <hr />
+                <p>https://letaskono.vercel.app/users/${data.reciever.username}</p>
+            `,
+        };
+        sendEmailWithNodemailer(req, res, emailData);
         const requestData = data;
         User.updateOne(
           { _id: requestData.sender._id },
@@ -679,6 +761,19 @@ exports.confirmUser = (req, res) => {
           error: errorHandler(err),
         });
       }
+      const emailData = {
+        from: process.env.EMAIL_FROM, // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
+        to: user.email, // WHO SHOULD BE RECEIVING THIS EMAIL? IT SHOULD BE YOUR GMAIL
+        subject: ` لقد تم تفعيل حسابك - ${process.env.APP_NAME}`,
+        html: `
+            <h4>لقد تلقيت هذا البريد من موقع لتسكنوا:</h4>
+            <p>لقد تم الأن تفعيل حسابك في موقع لتسكنوا</p>     
+            <p>يمكنك الأن إرسال الطلبات واستقبالها</p>     
+            <hr />
+            <p>https://letaskono.vercel.app</p>
+        `,
+      };
+      sendEmailWithNodemailer(req, res, emailData);
       res.json({ message: `User ${user.username} confirmed` });
     });
   });

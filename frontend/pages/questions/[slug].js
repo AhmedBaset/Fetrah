@@ -184,7 +184,7 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
   useEffect(() => {
     // When the component mounts, ask the server to join a private room
     socket.emit("joinPrivateRoom", request._id, sender);
-
+    
     // When the server confirms that the client has joined a private room
     socket.on("privateRoomJoined", (roomId, previousMessages) => {
       setRoomId(roomId);

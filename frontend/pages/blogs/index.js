@@ -107,9 +107,7 @@ const Blogs = ({
 
   const showLoadedBlogs = () => {
     return loadedBlogs.map((blog, i) => (
-      <div key={i}>
-        <Card blog={blog} parser={htmlToReactParser} />
-      </div>
+      <Card key={i} blog={blog} parser={htmlToReactParser} />
     ));
   };
 

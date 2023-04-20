@@ -52,56 +52,11 @@ const Card = ({ blog, parser }) => {
         />
         <div className={classes["card-content"]}>
           <h2 className={classes["article-title"]}>{blog.title}</h2>
-          <p className={classes["article-excerpt"]}>{blogExcerpt}</p>
+          <div className={classes["article-excerpt"]}>{blogExcerpt}</div>
           <div className={classes["read-more-link"]}>قراءة المقال</div>
         </div>
       </div>
     </>
-  );
-  return (
-    <div className="lead pb-4">
-      <header>
-        <Link href={`/blogs/${blog.slug}`}>
-          <h2 className="pt-3 pb-3 fw-bold">{blog.title}</h2>
-        </Link>
-      </header>
-      <section>
-        <p className="mark ms-1 pt-2 pb-2">
-          {/* Written by <Link href={`/profile/${blog.postedBy.username}`}>{blog.postedBy.username}</Link> | Published{" "}
-          {moment(blog.updatedAt).fromNow()} */}
-        </p>
-      </section>
-      <section>
-        {showBlogCategories(blog)}
-        {showBlogTags(blog)}
-        <br />
-        <br />
-      </section>
-
-      <div className="row">
-        <div className="col-md-4">
-          <section>
-            <img
-              className="img img-fluid"
-              height="400"
-              width="300"
-              style={{ maxHeight: "150px", width: "auto" }}
-              alt=""
-              src={`${API}/api/blog/photo/${blog.slug}`}
-            />
-          </section>
-        </div>
-        <div className="col-md-8">
-          <section>
-            <div className="pb-3">{blogExcerpt}</div>
-
-            <Link href={`/blogs/${blog.slug}`}>
-              <p className="btn btn-primary mt-2">Read More...</p>
-            </Link>
-          </section>
-        </div>
-      </div>
-    </div>
   );
 };
 

@@ -1,7 +1,11 @@
 const { check } = require("express-validator");
 
 exports.contactFormValidator = [
-  check("name").not().isEmpty().withMessage("Name name is required"),
-  check("email").isEmail().withMessage("Email must be valid!"),
-  check("message").not().isEmpty().isLength({min: 20}).withMessage("Your message is too short"),
+  check("name").not().isEmpty().withMessage("يجب أن تكتب اسمك"),
+  check("email").isEmail().withMessage("يجب أن تدخل بريدك الإلكتروني الحقيقي"),
+  check("message")
+    .not()
+    .isEmpty()
+    .isLength({ min: 20 })
+    .withMessage("رسالتك أقصر من أن نرد عليها"),
 ];

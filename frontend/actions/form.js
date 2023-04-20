@@ -4,11 +4,7 @@ import { API } from "../config";
 export const emailContactForm = (data) => {
   let emailEndPoint;
 
-  if (data.authorEmail) {
-    emailEndPoint = `${API}/api/contact-blog-author`;
-  } else {
-    emailEndPoint = `${API}/api/contact`;
-  }
+  emailEndPoint = `${API}/api/contact`;
 
   return fetch(emailEndPoint, {
     method: "POST",

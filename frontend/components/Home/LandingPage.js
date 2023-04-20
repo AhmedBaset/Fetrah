@@ -1,5 +1,5 @@
 import classes from "./Landingpage.module.css";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 function LandingPage() {
   const router = useRouter();
@@ -18,8 +18,15 @@ function LandingPage() {
             ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ
           </h3>
           <div className={classes["divider"]} />
-          <p>الموقع الأول للزواج الإسلامي الذي يرضي الله عز وجل</p>
-          <button onClick={()=> {router.push('/users')}} className={classes["submit"]}>ابحث عن زوجك</button>
+          <p>طريقك للزواج الشرعي الصحيح</p>
+          <button
+            onClick={() => {
+              router.push("/users");
+            }}
+            className={classes["submit"]}
+          >
+            ابحث عن زوجك
+          </button>
         </div>
         <div className={classes["image"]}>
           <img src="/images/muslim.svg" alt="لتسكنوا" />

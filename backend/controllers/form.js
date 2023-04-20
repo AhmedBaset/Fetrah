@@ -15,11 +15,15 @@ exports.contactForm = (req, res) => {
         <p>Sender message: ${message}</p>
         <hr />
         <p>This email may contain sensitive information</p>
-        <p>https://onemancode.com</p>
+        <p></p>
     `,
   };
 
-  sendEmailWithNodemailer(req, res, emailData);
+  sendEmailWithNodemailer(req, res, emailData).then(() => {
+    return res.json({
+      success: true,
+    });
+  });
 };
 
 exports.contactBlogAuthorForm = (req, res) => {
@@ -41,5 +45,9 @@ exports.contactBlogAuthorForm = (req, res) => {
       `,
   };
 
-  sendEmailWithNodemailer(req, res, emailData);
+  sendEmailWithNodemailer(req, res, emailData).then(() => {
+    return res.json({
+      success: true,
+    });
+  });
 };

@@ -8,7 +8,7 @@ const ContactForm = ({ authorEmail }) => {
     name: "",
     email: "",
     sent: false,
-    buttonText: "Send Message",
+    buttonText: "أرسل الرسالة",
     success: false,
     error: false,
   });
@@ -17,7 +17,7 @@ const ContactForm = ({ authorEmail }) => {
 
   const clickSubmit = (e) => {
     e.preventDefault();
-    setValues({ ...values, buttonText: "Sending..." });
+    setValues({ ...values, buttonText: "جاري الإرسال..." });
     emailContactForm({ authorEmail, name, email, message }).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
@@ -28,7 +28,7 @@ const ContactForm = ({ authorEmail }) => {
           name: "",
           email: "",
           message: "",
-          buttonText: "Sent",
+          buttonText: "تم إرسال الرسالة",
           success: data.success,
         });
       }
@@ -46,9 +46,7 @@ const ContactForm = ({ authorEmail }) => {
   };
 
   const showSuccessMessage = () =>
-    success && (
-      <div className="alert alert-info">Thank you for contacting us.</div>
-    );
+    success && <div className="alert alert-info">شكرا لك على مراسلتنا</div>;
 
   const showErrorMessage = () => (
     <div
@@ -61,9 +59,13 @@ const ContactForm = ({ authorEmail }) => {
 
   const contactForm = () => {
     return (
-      <form onSubmit={clickSubmit} className="pb-5">
+      <form
+        onSubmit={clickSubmit}
+        style={{ direction: "rtl" }}
+        className="pb-5"
+      >
         <div className="form-group">
-          <label className="lead">Message</label>
+          <label className="lead">رسالتك </label>
           <textarea
             onChange={handleChange("message")}
             type="text"
@@ -75,7 +77,7 @@ const ContactForm = ({ authorEmail }) => {
         </div>
 
         <div className="form-group">
-          <label className="lead">Name</label>
+          <label className="lead">اسمك</label>
           <input
             type="text"
             onChange={handleChange("name")}
@@ -86,7 +88,7 @@ const ContactForm = ({ authorEmail }) => {
         </div>
 
         <div className="form-group">
-          <label className="lead">Email</label>
+          <label className="lead">البريد الالكتروني</label>
           <input
             type="email"
             onChange={handleChange("email")}
@@ -97,7 +99,7 @@ const ContactForm = ({ authorEmail }) => {
         </div>
 
         <div>
-          <button className="btn btn-primary">{buttonText}</button>
+          <button className="btn btn-primary mt-3">{buttonText}</button>
         </div>
       </form>
     );

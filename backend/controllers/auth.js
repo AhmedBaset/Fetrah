@@ -259,8 +259,8 @@ exports.forgotPassword = (req, res) => {
           <p>استعمل هذا الرابط لتعيين كلمة سر جديدة :</p>
           <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
           <hr />
-          <p>هذا الرابط صالح لمدة 30 دقيقة فقط</p>
-          <p>https://letaskono.com</p>
+          <p>هذا الرابط صالح لمدة محدودة فقط</p>
+          <p>https://letaskono.vercel.app</p>
       `,
     };
 
