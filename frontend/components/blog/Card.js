@@ -3,9 +3,11 @@ import { API } from "../../config";
 import Link from "next/link";
 import classes from "./Card.module.css";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 // import Image from "next/image";
 
 const Card = ({ blog, parser }) => {
+  const router = useRouter();
   const [blogExcerpt, setBlogExcerpt] = useState();
 
   useEffect(() => {
@@ -34,28 +36,26 @@ const Card = ({ blog, parser }) => {
 
   return (
     <>
-      <Link
-        style={{
-          textDecoration: "none",
+      <div
+        onClick={() => {
+          router.push(`/blogs/${blog.slug}`);
         }}
-        href={`/blogs/${blog.slug}`}
+        className={classes["card"]}
       >
-        <div className={classes["card"]}>
-          <img
-            className="img img-fluid"
-            // height="400"
-            // width="300"
-            // style={{ maxHeight: "150px", width: "auto" }}
-            alt=""
-            src={`${API}/api/blog/photo/${blog.slug}`}
-          />
-          <div className={classes["card-content"]}>
-            <h2 className={classes["article-title"]}>{blog.title}</h2>
-            <p className={classes["article-excerpt"]}>{blogExcerpt}</p>
-            <div className={classes["read-more-link"]}>قراءة المقال</div>
-          </div>
+        <img
+          className="img img-fluid"
+          // height="400"
+          // width="300"
+          // style={{ maxHeight: "150px", width: "auto" }}
+          alt=""
+          src={`${API}/api/blog/photo/${blog.slug}`}
+        />
+        <div className={classes["card-content"]}>
+          <h2 className={classes["article-title"]}>{blog.title}</h2>
+          <p className={classes["article-excerpt"]}>{blogExcerpt}</p>
+          <div className={classes["read-more-link"]}>قراءة المقال</div>
         </div>
-      </Link>
+      </div>
     </>
   );
   return (

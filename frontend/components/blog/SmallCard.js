@@ -36,7 +36,7 @@ const SmallCard = ({ blog, parser }) => {
         </section>
       </div>
       <div className="card-body">
-        Posted {moment(blog.updatedAt).fromNow()} by{" "}
+        {/* Posted {moment(blog.updatedAt).fromNow()} by{" "} */}
         <Link
           style={{ textDecoration: "none" }}
           className="float-start link-primary"

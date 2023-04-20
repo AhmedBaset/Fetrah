@@ -8,7 +8,7 @@ const ReactDOMServer = require("react-dom/server");
 const HtmlToReactParser = require("html-to-react").Parser;
 import Card from "../../components/blog/Card";
 import { API, DOMAIN, APP_NAME, FB_APP_ID } from "../../config";
-
+import classes from "../../components/blog/Card.module.css";
 const Blogs = ({
   blogs,
   categories,
@@ -21,36 +21,30 @@ const Blogs = ({
   const htmlToReactParser = new HtmlToReactParser();
 
   const head = () => {
-    const title = `islamic mirrage | ${APP_NAME}`;
+    const title = `مقالات توعوية حول الزواج | ${APP_NAME}`;
     return (
       <Head>
         <title>{title}</title>
         <meta
           name="description"
-          content="this is static content for all blogs | hard coded content"
+          content="تعلم كيف تختار زوجتك وما هي أسئلة فترة الخطوبة"
         />
         <link rel="canonical" href={`${DOMAIN}${router.pathname}`} />
-        <meta
-          property="og:title"
-          content={`Latest mirrage website | ${APP_NAME}`}
-        />
+        <meta property="og:title" content={`تزوج لتسكن | ${APP_NAME}`} />
         <meta
           name="og:description"
-          content="this is static content for all blogs | hard coded content"
+          content="الزواج سنة النبي صلى الله عليه وسلم"
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${DOMAIN}${router.pathname}`} />
         <meta property="og:site_name" content={`${APP_NAME}`} />
 
-        <meta
-          property="og:image"
-          content={`${DOMAIN}/images/website_logo.jpg`}
-        />
+        <meta property="og:image" content={`${DOMAIN}/images/logo.png`} />
         <meta
           property="og:image:secure_url"
-          content={`${DOMAIN}/static/images/datasci.jpg`}
+          content={`${DOMAIN}/static/images/logo.png`}
         />
-        <meta property="og:image:type" content={`image/jpg`} />
+        <meta property="og:image:type" content={`image/png`} />
         <meta property="fb:app_id" content={`${FB_APP_ID}`} />
       </Head>
     );
@@ -87,12 +81,7 @@ const Blogs = ({
 
   const showAllBlogs = () => {
     return blogs.map((blog, i) => {
-      return (
-        <article key={i}>
-          <Card blog={blog} parser={htmlToReactParser} />
-          <br />
-        </article>
-      );
+      return <Card key={i} blog={blog} parser={htmlToReactParser} />;
     });
   };
 
@@ -118,35 +107,31 @@ const Blogs = ({
 
   const showLoadedBlogs = () => {
     return loadedBlogs.map((blog, i) => (
-      <article key={i}>
+      <div key={i}>
         <Card blog={blog} parser={htmlToReactParser} />
-      </article>
+      </div>
     ));
   };
 
+  const title = `لِزَوَاجٍ إِسْلَامِيٍ صَحِيح`;
   return (
     <>
       {head()}
       <Layout>
-        <main>
-          <div className="container-head">
-            <div className="col-md-12 pt-3">
-              <h1 className="display-4 fw-bold text-center">
-                لزواج إسلامي صحيح
-              </h1>
+        <div className={classes["container"]}>
+          <br />
+          <h1>{title}</h1>
+          <br />
+          <div className={classes["row_container"]}>{showAllCategories()}</div>
+          <br />
+          <div className={classes["blogs_container"]}>
+            {showAllBlogs()}
+            <div>
+              <div className="container-fluid">{showLoadedBlogs()}</div>
+              <div className="text-center pt-5 pb-5">{loadMoreButton()}</div>
             </div>
-            <section>
-              <div className="pb-5 text-center">
-                {showAllCategories()}
-                <br />
-                {/* {showAllTags()} */}
-              </div>
-            </section>
           </div>
-          <div className="container-fluid">{showAllBlogs()}</div>
-          <div className="container-fluid">{showLoadedBlogs()}</div>
-          <div className="text-center pt-5 pb-5">{loadMoreButton()}</div>
-        </main>
+        </div>
       </Layout>
     </>
   );

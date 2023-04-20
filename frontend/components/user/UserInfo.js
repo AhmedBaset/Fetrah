@@ -391,7 +391,7 @@ const UserInfo = (props) => {
           height={28}
           alt={""}
         />
-        {loadingFavourite ? (
+        {loadingSendingAccept ? (
           <p>جاري التحميل</p>
         ) : (
           <button

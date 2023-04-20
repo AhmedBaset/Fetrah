@@ -5,7 +5,12 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
-
+let URL = "";
+if (process.env.NODE_ENV === "development") {
+  URL = process.env.CLIENT_URL_DEVELOPMENT;
+} else {
+  URL = process.env.CLIENT_URL_PRODUCTION;
+}
 //bring routes
 const blogRoutes = require("./routes/blog");
 const authRoutes = require("./routes/auth");
@@ -27,7 +32,7 @@ const http = require("http").Server(app);
 
 const socketIO = require("socket.io")(http, {
   cors: {
-    origin: process.env.CLIENT_URL,
+    origin: URL,
   },
 });
 
@@ -110,11 +115,14 @@ mongoose
 
 //middlewares
 app.use(morgan("dev"));
-app.use(bodyParser.json({ limit: "20mb" }));
+app.use(bodyParser.json({ limit: "25mb" }));
 app.use(cookieParser());
 
-//cors
-app.use(cors({ origin: `${process.env.CLIENT_URL}` }));
+if (process.env.NODE_ENV === "development") {
+  app.use(cors({ origin: "http://localhost:3000" }));
+}else{
+  app.use(cors({ origin: process.env.CLIENT_URL_PRODUCTION }));
+}
 
 //routes middlewares
 app.use("/api", blogRoutes);

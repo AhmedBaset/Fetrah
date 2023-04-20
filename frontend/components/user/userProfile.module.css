@@ -105,3 +105,29 @@
   width: 100%;
   padding: 8px;
 }
+
+@media (max-width: 945px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .questionsMain {
+    margin-top: 3rem;
+    margin-left: 0rem;
+    margin-right: 0rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+
+  .questionsContainer {
+    display: flex;
+    direction: rtl;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
