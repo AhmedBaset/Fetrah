@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Blog = require("../models/blog");
 const Request = require("../models/request");
+const Report = require("../models/report");
 const { PrivateRoom, RoomStatus } = require("../models/chat");
 const _ = require("lodash");
 const formidable = require("formidable");
@@ -713,6 +714,26 @@ exports.getUsersThatNeedConfirmations = (req, res) => {
       }
       res.json({
         users,
+      });
+    });
+};
+
+exports.getUsersReports = (req, res) => {
+  let limit = req.body.limit ? parseInt(req.body.limit) : 10;
+  let skip = req.body.skip ? parseInt(req.body.skip) : 0;
+
+  Report.find({ confirmed: 0 })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .exec((err, reports) => {
+      if (err || !reports) {
+        return res.status(400).json({
+          error: "No reports found",
+        });
+      }
+      res.json({
+        reports,
       });
     });
 };

@@ -45,7 +45,7 @@ exports.preSignup = (req, res) => {
       html: `
           <h4>لقد تلقيت هذا البريد لانك قمت بالتسجيل في موقع لتسكنوا:</h4>
           <p>من فضلك قم بالدخول على هذا الرابط لتقوم بملء استمارتك:</p>
-          <p>${process.env.CLIENT_URL}/auth/account/activate/${token}</p>
+          <p>${process.env.CLIENT_URL_PRODUCTION}/auth/account/activate/${token}</p>
           <hr />
           <p>هذا الرابط صالح لمدة 30 دقيقة فقط</p>
           <p>https://letaskono.com</p>
@@ -80,7 +80,7 @@ exports.signup = (req, res) => {
         const { name, email, password, phone, gender } = jwt.decode(token);
 
         let username = shortId.generate();
-        let profile = `${process.env.CLIENT_URL}/profile/${username}`;
+        let profile = `${process.env.CLIENT_URL_PRODUCTION}/profile/${username}`;
 
         const user = new User({
           name,
@@ -257,7 +257,7 @@ exports.forgotPassword = (req, res) => {
       html: `
           <h4>لقد تلقيت هذا البريد من موقع لتسكنوا:</h4>
           <p>استعمل هذا الرابط لتعيين كلمة سر جديدة :</p>
-          <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+          <p>${process.env.CLIENT_URL_PRODUCTION}/auth/password/reset/${token}</p>
           <hr />
           <p>هذا الرابط صالح لمدة محدودة فقط</p>
           <p>https://letaskono.vercel.app</p>

@@ -24,6 +24,7 @@ const {
   rejectRequest,
   fetchRequest,
   setUserRoomStatus,
+  getUsersReports
 } = require("../controllers/user");
 
 router.get("/user/profile", requireSignIn, authMiddleware, read);
@@ -80,6 +81,12 @@ router.get(
   requireSignIn,
   adminMiddleware,
   getUsersThatNeedConfirmations
+);
+router.get(
+  "/users/reports",
+  requireSignIn,
+  adminMiddleware,
+  getUsersReports
 );
 router.put("/confirm", requireSignIn, adminMiddleware, confirmUser);
 router.put("/reject", requireSignIn, adminMiddleware, rejectUser);

@@ -33,19 +33,22 @@ const SigninComponent = () => {
     event.preventDefault();
     setValues({ ...values, loading: true, error: false });
     const user = { email, password };
-    signin(user).then((data) => {
+    signin(user).then(async (data) => {
       if (data.error) {
         setValues({ ...values, error: data.error, loading: false });
       } else {
         // save user token to cookie
         // save user info to local storage
         // authenticate user
+
         authenticate(data, () => {
-          if (isAuth() && isAuth.role === 1) {
-            router.replace("/admin");
-          } else {
-            router.replace("/user");
-          }
+          isAuth().then((result) => {
+            if (result && result.role === 1) {
+              router.replace("/admin");
+            } else {
+              router.replace("/user");
+            }
+          });
         });
       }
     });

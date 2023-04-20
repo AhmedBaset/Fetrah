@@ -189,6 +189,12 @@ const UserInfo = (props) => {
   const handleSendAcceptance = (e) => {
     e.preventDefault();
     if (senderUser) {
+      if (senderUser.confirmed === 0) {
+        toast.error(
+          "لا يمكنك ارسال طلب قبول الأن ...يجب عليك أن تنتظر حتى يتم تفعيل حسابك"
+        );
+        return;
+      }
       if (user.userStatus === 1) {
         toast.error(
           "للأسف لا يمكنك ارسال طلب قبول لهذا الشخص لانه على تواصل الان بشخص أخر"

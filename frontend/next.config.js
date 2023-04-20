@@ -9,8 +9,4 @@ module.exports = {
     FB_APP_ID: "6217301571635680",
     DISQUS_SHORTNAME: "myblog-7ud2avldy6",
   },
-  // experimental: {
-  //   //largePageDataBytes: 128 * 1000, // 128KB by default
-  //   largePageDataBytes: 128 * 100000,
-  // },
 };

@@ -248,6 +248,20 @@ export const getUsersThatNeedConfirmations = (token) => {
     .catch((err) => console.log(err));
 };
 
+export const getUsersReports = (token) => {
+  return fetch(`${API}/api/users/reports`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
 export const userPublicProfile = (username) => {
   return fetch(`${API}/api/user/${username}`, {
     method: "GET",
