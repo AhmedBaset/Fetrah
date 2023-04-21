@@ -157,7 +157,7 @@ const Header = (props) => {
                     marginLeft: "1.2rem",
                     textAlign: "center",
                   }}
-                  href="/contact"
+                  href="/"
                 >
                   الدعم
                 </NavLink>

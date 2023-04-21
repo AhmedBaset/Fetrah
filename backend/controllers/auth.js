@@ -34,7 +34,7 @@ exports.preSignup = (req, res) => {
       { name, email, password, phone, gender },
       process.env.JWT_ACCOUNT_ACTIVATION,
       {
-        expiresIn: "30m",
+        expiresIn: "2d",
       }
     );
 
@@ -47,8 +47,7 @@ exports.preSignup = (req, res) => {
           <p>من فضلك قم بالدخول على هذا الرابط لتقوم بملء استمارتك:</p>
           <p>${process.env.CLIENT_URL_PRODUCTION}/auth/account/activate/${token}</p>
           <hr />
-          <p>هذا الرابط صالح لمدة 30 دقيقة فقط</p>
-          <p>https://letaskono.com</p>
+          <p>https://letaskono.vercel.app.com</p>
       `,
     };
 
