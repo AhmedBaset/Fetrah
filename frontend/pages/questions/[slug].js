@@ -86,7 +86,26 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
     setIsRejectionReasonModalOpen(false);
   };
 
+  const hasPhoneNumber = (str) => {
+    const phoneNumberRegex =
+      /(\d{1,2}[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?\d{3}[-.\s]?\d{4}/;
+    return phoneNumberRegex.test(str);
+  };
+  const hasWebsiteLink = (str) => {
+    const websiteLinkRegex = /(https?|ftp):\/\/[^\s/$.?#].[^\s]*/;
+    return websiteLinkRegex.test(str);
+  };
+
   const handleResponseSubmit = (index) => {
+    const messageToSend = responseValues[index].response.trim();
+    if (hasPhoneNumber(messageToSend)) {
+      toast.warning("يمنع منعا باتا ارسال أرقام الهواتف");
+      return;
+    }
+    if (hasWebsiteLink(messageToSend)) {
+      toast.warning("يمنع منعا باتا إرسال روابط خارج الموقع");
+      return;
+    }
     socket.emit("privateMessage", {
       roomId,
       message: responseValues[index].response.trim(),
@@ -184,7 +203,7 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
   useEffect(() => {
     // When the component mounts, ask the server to join a private room
     socket.emit("joinPrivateRoom", request._id, sender);
-    
+
     // When the server confirms that the client has joined a private room
     socket.on("privateRoomJoined", (roomId, previousMessages) => {
       setRoomId(roomId);

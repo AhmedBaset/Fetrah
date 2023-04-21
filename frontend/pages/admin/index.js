@@ -52,6 +52,14 @@ const AdminIndex = () => {
                   تعديل أو حذف المقالات
                 </Link>
               </li>
+              <li className="list-group-item">
+                <Link
+                  style={{ textDecoration: "none" }}
+                  href="/admin/crud/reports"
+                >
+                  البلاغات
+                </Link>
+              </li>
             </ul>
           </div>
           <div className="col-md-8"></div>
