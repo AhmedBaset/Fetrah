@@ -49,7 +49,7 @@ const UserInfo = (props) => {
       userImage = "woman_with_hijab.svg";
     }
   }
-  const userFace = user.questions[23] === "ملتحي" ? "ملتحي" : ""; 
+  const userFace = user.questions[23] === "ملتحي" ? "ملتحي" : "";
 
   const userManOrWoman = user.gender === "man" ? "عريس" : "عروسة";
   const generalStatus = user.questions[0];
@@ -60,6 +60,7 @@ const UserInfo = (props) => {
   const wieght = user.questions[5];
   const age = user.questions[6];
   const skinColor = user.questions[7];
+  const job = user.questions[8];
   const certificate = user.questions[9];
   const aboutYou = user.questions[10];
   const aboutYourPartner = user.questions[11];
@@ -632,6 +633,7 @@ const UserInfo = (props) => {
         {height && <p>الطول - {height}</p>}
         {wieght && <p>الوزن - {wieght}</p>}
         {skinColor && <p>لون البشرة - {skinColor}</p>}
+        {job && <p> الوظيفة - {job}</p>}
         {sick && <p>هل تعاني من أي أمراض أو اعاقات - {sick}</p>}
         {fobia && <p>هل تعاني من الخوف المفرط تجاه بعض الأشياء؟ - {fobia}</p>}
         {certificate && <p>الشهادة - {certificate}</p>}
