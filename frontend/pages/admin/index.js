@@ -23,6 +23,14 @@ const AdminIndex = () => {
               <li className="list-group-item">
                 <Link
                   style={{ textDecoration: "none" }}
+                  href="/admin/crud/rejected-confirmation-requests"
+                >
+                  طلبات التسجيل المرفوضة
+                </Link>
+              </li>
+              <li className="list-group-item">
+                <Link
+                  style={{ textDecoration: "none" }}
                   href="/admin/crud/category-tag"
                 >
                   ادارة الأقسام

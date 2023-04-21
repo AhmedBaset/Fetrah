@@ -3,12 +3,20 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import classes from "./ManUserCard.module.css";
 
-const   ManUserCard = (props) => {
+const ManUserCard = (props) => {
   const user = props.user;
   const router = useRouter();
 
   const gender = "عريس";
-  const le7ya = user.questions[23] == "ملتحي" ? "ملتحي" : "أملس";
+  let le7ya = "";
+  if (user.questions[23] == "ملتحي") {
+    le7ya = "ملتحي";
+  } else if (user.questions[23] == "لحية خفيفة") {
+    le7ya = "";
+  } else {
+    le7ya = "أملس";
+  }
+
   const age = user.questions[6];
   const country = user.questions[1];
   const state = user.questions[16];
@@ -30,7 +38,7 @@ const   ManUserCard = (props) => {
         /> */}
         <div
           onClick={() => {
-            router.push(`/users/${user.username}`)
+            router.push(`/users/${user.username}`);
           }}
         >
           <div className={classes.image}>

@@ -49,7 +49,7 @@ const UserInfo = (props) => {
       userImage = "woman_with_hijab.svg";
     }
   }
-  const userFace = user.questions[23] === "ملتحي" ? "ملتحي" : "";
+  const userFace = user.questions[23] === "ملتحي" ? "ملتحي" : ""; 
 
   const userManOrWoman = user.gender === "man" ? "عريس" : "عروسة";
   const generalStatus = user.questions[0];
