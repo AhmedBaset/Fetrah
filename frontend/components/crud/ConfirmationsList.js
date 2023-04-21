@@ -37,6 +37,24 @@ const ConfirmationsList = () => {
     });
   };
 
+  const downloadImage = (base64String, fileName) => {
+    const byteString = atob(base64String.split(",")[1]);
+    const mimeString = base64String.split(",")[0].split(":")[1].split(";")[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([ab], { type: mimeString });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const confirmUserAction = (username) => {
     confirmUser(username, token).then((data) => {
       if (data.error) {
@@ -135,9 +153,20 @@ const ConfirmationsList = () => {
           </button>
           <button
             className="btn btn-sm btn-primary m-4"
-            onClick={() => Confirm(user.username)}
+            onClick={() => {
+              Confirm(user.username);
+            }}
           >
             تأكيد الطلب
+          </button>
+          <button
+            className="btn btn-sm btn-primary m-4"
+            onClick={() => {
+              downloadImage(user.idPhoto1, `${user.idNumber}`);
+              downloadImage(user.idPhoto2, `${user.idNumber}`);
+            }}
+          >
+            تحميل الصور
           </button>
           <hr />
         </div>

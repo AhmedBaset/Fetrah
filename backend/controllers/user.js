@@ -676,8 +676,9 @@ exports.getUsers = (req, res) => {
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
-    .select("username gender questions")
+
     .exec(async (err, data) => {
+      console.log(err);
       if (err) {
         return res.json({ error: errorHandler(err) });
       }
@@ -702,12 +703,15 @@ exports.getUsersThatNeedConfirmations = (req, res) => {
   let limit = req.body.limit ? parseInt(req.body.limit) : 10;
   let skip = req.body.skip ? parseInt(req.body.skip) : 0;
 
-  User.find({ confirmed: 0 })
+  User.find({ idPhoto1: { $ne: "" } })
     .sort({ createdAt: -1 })
+    .allowDiskUse(true)
     .skip(skip)
-    .limit(limit)
+    .limit(1)
     .exec((err, users) => {
       if (err || !users) {
+        console.log(err);
+
         return res.status(400).json({
           error: "No users found",
         });
@@ -723,6 +727,7 @@ exports.getUsersReports = (req, res) => {
   let skip = req.body.skip ? parseInt(req.body.skip) : 0;
 
   Report.find({ confirmed: 0 })
+
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
@@ -743,7 +748,6 @@ exports.rejectUser = (req, res) => {
   let user;
 
   User.findOne({ username }).exec((err, userFromDB) => {
-    console.log("Hello " + err);
     if (err || !userFromDB) {
       return res.status(400).json({
         error: "User is not found",
@@ -751,6 +755,8 @@ exports.rejectUser = (req, res) => {
     }
     user = userFromDB;
     user.confirmed = 2;
+    user.idPhoto1 = "";
+    user.idPhoto2 = "";
     user.save((err, result) => {
       if (err) {
         console.log("profile udpate error", err);
@@ -775,6 +781,8 @@ exports.confirmUser = (req, res) => {
     }
     user = userFromDB;
     user.confirmed = 1;
+    user.idPhoto1 = "";
+    user.idPhoto2 = "";
     user.save((err, result) => {
       if (err) {
         console.log("profile udpate error", err);
@@ -795,7 +803,7 @@ exports.confirmUser = (req, res) => {
         `,
       };
       sendEmailWithNodemailer(req, res, emailData);
-      res.json({ message: `User ${user.username} confirmed` });
+      res.json({ message: `لقد تم تفعيل حساب المستخدم ${user.name}` });
     });
   });
 };
@@ -806,7 +814,7 @@ exports.publicProfile = (req, res) => {
   let blogs;
   User.findOne({ username })
     .select(
-      "username _id questions gender sentRequests recievedRequests userStatus"
+      "username _id questions gender sentRequests recievedRequests userStatus confirmed"
     )
     .populate("recievedRequests", "sender status createdAt token")
     .populate({
