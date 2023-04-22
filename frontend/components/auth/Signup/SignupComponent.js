@@ -212,6 +212,8 @@ const SignupComponent = () => {
                   <option value="965">(965+) الكويت</option>
                   <option value="973">(973+) البحرين</option>
                   <option value="974">(974+) قطر</option>
+                  <option value="90">(+90) تركيا</option>
+                 
                 </select>
                 <input
                   type="tel"
