@@ -676,7 +676,6 @@ exports.getUsers = (req, res) => {
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
-
     .exec(async (err, data) => {
       console.log(err);
       if (err) {
@@ -684,7 +683,7 @@ exports.getUsers = (req, res) => {
       }
 
       users = data;
-      const totalSize = await User.countDocuments();
+      const totalSize = await User.countDocuments(query);
 
       return res.json({ users, size: totalSize });
     });
