@@ -38,7 +38,7 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
       const result = await isAuth();
       if (result !== false) {
         //User is not allowed to see this chat
-        if (result.username !== sender) {
+        if (result.username !== sender && result.role === 0) {
           router.push("/");
         }
       } else {
@@ -255,18 +255,18 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (inputValue.trim() !== "") {
-      socket.emit("privateMessage", {
-        roomId,
-        message: inputValue,
-        senderUserName: sender,
-      });
-      setMessages((messages) => [
-        ...messages,
-        { message: inputValue, senderUserName: sender },
-      ]);
-      setInputValue("");
-    }
+    // if (inputValue.trim() !== "") {
+    //   socket.emit("privateMessage", {
+    //     roomId,
+    //     message: inputValue,
+    //     senderUserName: sender,
+    //   });
+    //   setMessages((messages) => [
+    //     ...messages,
+    //     { message: inputValue, senderUserName: sender },
+    //   ]);
+    //   setInputValue("");
+    // }
   };
 
   const handleResponseChange = (index, value) => {
