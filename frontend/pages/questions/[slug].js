@@ -11,6 +11,7 @@ import {
   fetchRequest,
   getQuestions,
   setUserRoomStatus,
+  userPublicProfile,
 } from "../../actions/user";
 import Layout from "../../components/Layout";
 import Image from "next/image";
@@ -36,6 +37,7 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const result = await isAuth();
+      const user = await userPublicProfile(result.username);
       if (result !== false) {
         //User is not allowed to see this chat
         if (result.username !== sender && result.role === 0) {
@@ -45,7 +47,7 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
         //User is not signed in
         router.push("/signin");
       }
-      setSignedInUser(result);
+      setSignedInUser(user.user);
     };
     fetchUser();
   }, []);
@@ -98,6 +100,10 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
 
   const handleResponseSubmit = (index) => {
     const messageToSend = responseValues[index].response.trim();
+    if (messageToSend.length === 0) {
+      toast.warning("لا يمكنك ارسال رسالة فارغة");
+      return;
+    }
     if (hasPhoneNumber(messageToSend)) {
       toast.warning("يمنع منعا باتا ارسال أرقام الهواتف");
       return;
@@ -255,18 +261,18 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // if (inputValue.trim() !== "") {
-    //   socket.emit("privateMessage", {
-    //     roomId,
-    //     message: inputValue,
-    //     senderUserName: sender,
-    //   });
-    //   setMessages((messages) => [
-    //     ...messages,
-    //     { message: inputValue, senderUserName: sender },
-    //   ]);
-    //   setInputValue("");
-    // }
+    if (inputValue.trim() !== "") {
+      socket.emit("privateMessage", {
+        roomId,
+        message: inputValue,
+        senderUserName: sender,
+      });
+      setMessages((messages) => [
+        ...messages,
+        { message: inputValue, senderUserName: sender },
+      ]);
+      setInputValue("");
+    }
   };
 
   const handleResponseChange = (index, value) => {

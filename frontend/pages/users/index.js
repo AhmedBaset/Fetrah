@@ -213,6 +213,7 @@ const UsersPage = ({ users, totalUsers, numberOfPages, currentPageNumber }) => {
                   <option value="الكويت">الكويت</option>
                   <option value="البحرين">البحرين</option>
                   <option value="قطر">قطر</option>
+                  <option value="تركيا">تركيا</option>
                 </select>
               </li>
               <li>
@@ -242,6 +243,7 @@ const UsersPage = ({ users, totalUsers, numberOfPages, currentPageNumber }) => {
                   <option value="الكويت">الكويت</option>
                   <option value="البحرين">البحرين</option>
                   <option value="قطر">قطر</option>
+                  <option value="تركيا">تركيا</option>
                 </select>
               </li>
               <li>
