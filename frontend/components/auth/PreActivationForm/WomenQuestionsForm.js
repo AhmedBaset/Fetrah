@@ -558,36 +558,55 @@ const WomenQuestionsForm = (props) => {
           <div className={classes.pirow1}>
             <div className={classes.inputContainer}>
               <label className={classes.inputLabel}>العمر*</label>
-              <input
-                type="Number"
+              <select
                 name="age"
                 value={formData.age}
                 onChange={handleInputChange}
-                className={classes["textInput"]}
-                required
-              />
+                className={classes["dropdown"]}
+                required={true}
+              >
+                <option value="">اختر</option>
+                {[...Array(94)].map((_, index) => (
+                  <option key={index} value={index + 7}>
+                    {index + 7}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className={classes.inputContainer}>
               <label className={classes.inputLabel}>الطول*</label>
-              <input
-                type="Number"
+
+              <select
                 name="height"
                 value={formData.height}
                 onChange={handleInputChange}
-                className={classes["textInput"]}
-                required
-              />
+                className={classes["dropdown"]}
+                required={true}
+              >
+                <option value="">اختر</option>
+                {[...Array(94)].map((_, index) => (
+                  <option key={index} value={index + 7}>
+                    {index + 7}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className={classes.inputContainer}>
               <label className={classes.inputLabel}>الوزن*</label>
-              <input
-                type="Number"
+              <select
                 name="weight"
                 value={formData.weight}
                 onChange={handleInputChange}
-                className={classes["textInput"]}
-                required
-              />
+                className={classes["dropdown"]}
+                required={true}
+              >
+                <option value="">اختر</option>
+                {[...Array(94)].map((_, index) => (
+                  <option key={index} value={index + 7}>
+                    {index + 7}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
           <div className={classes.pirow2}>
