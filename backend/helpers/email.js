@@ -9,8 +9,8 @@ exports.sendEmailWithNodemailer = (req, res, emailData) => {
 
     auth: {
       user: "letaskono.app@gmail.com", // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
-      // pass: "fuajanriezwwcvhn", // MAKE SURE THIS PASSWORD IS YOUR GMAIL APP PASSWORD WHICH YOU GENERATED EARLIER
-      pass: "hlasxfgsjfaftjww",
+      pass: "fuajanriezwwcvhn", // MAKE SURE THIS PASSWORD IS YOUR GMAIL APP PASSWORD WHICH YOU GENERATED EARLIER
+      // pass: "hlasxfgsjfaftjww",
     },
     tls: {
       ciphers: "SSLv3",
@@ -36,8 +36,8 @@ exports.sendEmailForgotPassword = (req, res, emailData) => {
     requireTLS: true,
     auth: {
       user: "letaskono.app@gmail.com", // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
-      // pass: "fuajanriezwwcvhn", // MAKE SURE THIS PASSWORD IS YOUR GMAIL APP PASSWORD WHICH YOU GENERATED EARLIER
-      pass: "hlasxfgsjfaftjww",
+      pass: "fuajanriezwwcvhn", // MAKE SURE THIS PASSWORD IS YOUR GMAIL APP PASSWORD WHICH YOU GENERATED EARLIER
+      // pass: "hlasxfgsjfaftjww",
     },
     tls: {
       ciphers: "SSLv3",
@@ -62,8 +62,8 @@ exports.sendEmailAccountActivation = (req, res, emailData) => {
     requireTLS: true,
     auth: {
       user: "letaskono.app@gmail.com", // MAKE SURE THIS EMAIL IS YOUR GMAIL FOR WHICH YOU GENERATED APP PASSWORD
-      // pass: "fuajanriezwwcvhn", // MAKE SURE THIS PASSWORD IS YOUR GMAIL APP PASSWORD WHICH YOU GENERATED EARLIER
-      pass: "hlasxfgsjfaftjww",
+      pass: "fuajanriezwwcvhn", // MAKE SURE THIS PASSWORD IS YOUR GMAIL APP PASSWORD WHICH YOU GENERATED EARLIER
+      // pass: "hlasxfgsjfaftjww",
     },
     tls: {
       ciphers: "SSLv3",

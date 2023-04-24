@@ -630,121 +630,82 @@ const WomenQuestionsForm = (props) => {
             </div>
           </div>
         </div>
-        <div className={classes.religionInfoContainer}>
-          <h4 className={classes.title}>معلومات عن دينك</h4>
-          <div className={classes.rirow1}>
+        <div className={classes.personalInfoContainer}>
+          <h4 className={classes.title}>المعلومات الشخصية</h4>
+          <div className={classes.pirow1}>
             <div className={classes.inputContainer}>
-              <label className={classes.inputLabel}>
-                ما مدى التزامك بالصلاة؟*
-              </label>
+              <label className={classes.inputLabel}>العمر*</label>
               <select
-                name="pray"
-                value={formData.pray}
+                name="age"
+                value={formData.age}
                 onChange={handleInputChange}
                 className={classes["dropdown"]}
                 required={true}
               >
                 <option value="">اختر</option>
-                <option value="أصلي جميع الصلوات في وقتها في البيت">
-                  أصلي جميع الصلوات في وقتها في البيت
-                </option>
-                <option value="أصلي جميع الصلوات ولكن قد أفوت بعض الصلوات عن وقتها">
-                  أصلي جميع الصلوات ولكن قد أفوت بعض الصلوات عن وقتها
-                </option>
-                <option value="متقطعة في الصلاة">متقطعة في الصلاة</option>
-                <option value="لا أصلي">لا أصلي معظم الوقت</option>
+                {[...Array(94)].map((_, index) => (
+                  <option key={index} value={index + 7}>
+                    {index + 7}
+                  </option>
+                ))}
               </select>
             </div>
             <div className={classes.inputContainer}>
-              <label className={classes.inputLabel}>ما نوع حجابك</label>
+              <label className={classes.inputLabel}>الطول*</label>
+
               <select
-                name="hijab"
-                value={formData.hijab}
+                name="height"
+                value={formData.height}
                 onChange={handleInputChange}
                 className={classes["dropdown"]}
                 required={true}
               >
                 <option value="">اختر</option>
-                <option value="منتقبة سواد">منتقبة سواد</option>
-                <option value="منتقبة نقاب ملون">منتقبة نقاب ملون</option>
-                <option value="مختمرة">مختمرة</option>
-                <option value="طرح وفساتين">طرح وفساتين</option>
-                <option value="طرح وبناطيل">طرح وبناطيل</option>
-                <option value="غير محجبة">غير محجبة</option>
+                {[...Array(194)].map((_, index) => (
+                  <option key={index} value={index + 7}>
+                    {index + 7}
+                  </option>
+                ))}
               </select>
             </div>
             <div className={classes.inputContainer}>
-              <label className={classes.inputLabel}>
-                عدد الأجزاء التي تحفظينها من القرآن*
-              </label>
+              <label className={classes.inputLabel}>الوزن*</label>
               <select
-                name="quran"
-                value={formData.quran}
+                name="weight"
+                value={formData.weight}
                 onChange={handleInputChange}
                 className={classes["dropdown"]}
                 required={true}
               >
                 <option value="">اختر</option>
-                <option value="جزء واحد">جزء واحد - 1</option>
-                <option value="جزءان">جزءان - 2</option>
-                <option value="ثلاثة أجزاء">ثلاثة أجزاء - 3</option>
-                <option value="أربعة أجزاء">أربعة أجزاء - 4</option>
-                <option value="خمسة أجزاء">خمسة أجزاء - 5</option>
-                <option value="ستة أجزاء">ستة أجزاء - 6</option>
-                <option value="سبعة أجزاء">سبعة أجزاء - 7</option>
-                <option value="ثمانية أجزاء">ثمانية أجزاء - 8</option>
-                <option value="تسعة أجزاء">تسعة أجزاء - 9</option>
-                <option value="عشرة أجزاء">عشرة أجزاء - 10</option>
-                <option value="أحد عشر جزءا">أحد عشر جزءا - 11</option>
-                <option value="اثنا عشر جزءا">اثنا عشر جزءا - 12</option>
-                <option value="ثلاثة عشر جزءا">ثلاثة عشر جزءا - 13</option>
-                <option value="أربعة عشر جزءا">أربعة عشر جزءا - 14</option>
-                <option value="خمسة عشر جزءا">خمسة عشر جزءا - 15</option>
-                <option value="ستة عشر جزءا">ستة عشر جزءا - 16</option>
-                <option value="سبعة عشر جزءا">سبعة عشر جزءا - 17</option>
-                <option value="ثمانية عشر جزءا">ثمانية عشر جزءا - 18</option>
-                <option value="تسعة عشر جزءا">تسعة عشر جزءا - 19</option>
-                <option value="عشرون جزءا">عشرون جزءا - 20</option>
-                <option value="واحد وعشرون جزءا">واحد وعشرون جزءا - 21</option>
-                <option value="ثنان وعشرون جزءا">اثنان وعشرون جزءا - 22</option>
-                <option value="ثلاثة وعشرون جزءا">
-                  ثلاثة وعشرون جزءا - 23
-                </option>
-                <option value="أربعة وعشرون جزءا">
-                  أربعة وعشرون جزءا - 24
-                </option>
-                <option value="خمسة وعشرون جزءا">خمسة وعشرون جزءا - 25</option>
-                <option value="ستة وعشرون جزءا">ستة وعشرون جزءا - 26</option>
-                <option value="سبعة وعشرون جزءا">سبعة وعشرون جزءا - 27</option>
-                <option value="ثمانية وعشرون جزءا">
-                  ثمانية وعشرون جزءا - 28
-                </option>
-                <option value="تسعة وعشرون جزءا">تسعة وعشرون جزءا - 29</option>
-                <option value="ختمت القرآن">ختمت القرآن - 30</option>
+                {[...Array(130)].map((_, index) => (
+                  <option key={index} value={index + 7}>
+                    {index + 7}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
-          {showNiqabQuestion && (
-            <div className={classes.rirow1}>
-              <div className={classes.inputContainer}>
-                <label className={classes.inputLabel}>
-                  *هل لديك استعداد أو رغبة في لبس النقاب؟
-                </label>
-                <select
-                  name="wantNiqab"
-                  value={formData.wantNiqab}
-                  onChange={handleInputChange}
-                  className={classes["dropdown"]}
-                  required={true}
-                >
-                  <option value="">اختر</option>
-                  <option value="نعم أتمنى">نعم أتمنى</option>
-                  <option value="ربما">ربما</option>
-                  <option value="لا">لا أريد</option>
-                </select>
-              </div>
+          <div className={classes.pirow2}>
+            <div className={classes.inputContainer}>
+              <label className={classes.inputLabel}>لون البشرة*</label>
+              <select
+                name="skinColor"
+                value={formData.skinColor}
+                onChange={handleInputChange}
+                className={classes["dropdown"]}
+                required={true}
+              >
+                <option value="">اختر</option>
+                <option value="بيضاء جدا">بيضاء جدا</option>
+                <option value="بيضاء">بيضاء</option>
+                <option value="متوسطة">متوسطة</option>
+                <option value="قمحية">قمحية</option>
+                <option value="داكنة">داكنة</option>
+                <option value="داكنة جدا">داكنة</option>
+              </select>
             </div>
-          )}
+          </div>
         </div>
         <div className={classes.marryInfoContainer}>
           <h4 className={classes.title}>معلومات تخص الزواج</h4>

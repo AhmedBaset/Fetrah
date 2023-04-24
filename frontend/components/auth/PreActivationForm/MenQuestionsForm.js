@@ -560,7 +560,7 @@ const MenQuestionsForm = (props) => {
                 required={true}
               >
                 <option value="">اختر</option>
-                {[...Array(94)].map((_, index) => (
+                {[...Array(194)].map((_, index) => (
                   <option key={index} value={index + 7}>
                     {index + 7}
                   </option>
@@ -577,7 +577,7 @@ const MenQuestionsForm = (props) => {
                 required={true}
               >
                 <option value="">اختر</option>
-                {[...Array(94)].map((_, index) => (
+                {[...Array(130)].map((_, index) => (
                   <option key={index} value={index + 7}>
                     {index + 7}
                   </option>
