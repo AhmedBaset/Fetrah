@@ -40,6 +40,8 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
 
       if (result !== false) {
         const user = await userPublicProfile(result.username);
+
+        setSignedInUser(user.user);
         //User is not allowed to see this chat
         if (user.username !== sender && user.role === 0) {
           router.push("/");
@@ -48,7 +50,6 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
         //User is not signed in
         router.push("/signin");
       }
-      setSignedInUser(user.user);
     };
     fetchUser();
   }, []);
