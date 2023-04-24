@@ -19,6 +19,7 @@ import {
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
+import { userPublicProfile } from "../actions/user";
 
 const Header = (props) => {
   const router = useRouter();
@@ -30,8 +31,8 @@ const Header = (props) => {
   useEffect(() => {
     const fetchUser = async () => {
       const result = await isAuth();
-
-      setIsAuthenticated(result);
+      const data = await userPublicProfile(result.username);
+      setIsAuthenticated(data.user);
     };
     fetchUser();
   }, []);

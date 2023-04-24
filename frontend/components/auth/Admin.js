@@ -11,13 +11,16 @@ const Admin = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const result = await isAuth();
-      const data = await userPublicProfile(result.username);
-      const user = data.user;
-      setSenderUser(user);
-      if (!result) {
+      if (result) {
+        userPublicProfile(result.username).then((data) => {
+          const user = data.user;
+          setSenderUser(user);
+          if (user.role !== 1) {
+            router.push("/");
+          }
+        });
+      } else {
         router.push("/signin");
-      } else if (user.role !== 1) {
-        router.push("/");
       }
     };
     fetchUser();
