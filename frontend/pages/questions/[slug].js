@@ -37,10 +37,11 @@ const QuestionsPage = ({ request, sender, receiver, questions }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const result = await isAuth();
-      const user = await userPublicProfile(result.username);
+
       if (result !== false) {
+        const user = await userPublicProfile(result.username);
         //User is not allowed to see this chat
-        if (result.username !== sender && result.role === 0) {
+        if (user.username !== sender && user.role === 0) {
           router.push("/");
         }
       } else {
