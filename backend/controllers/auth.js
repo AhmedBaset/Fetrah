@@ -141,7 +141,7 @@ exports.signin = (req, res) => {
     const { _id, username, name, email, role } = user;
     return res.json({
       token,
-      user: { _id, username, name, email, role },
+      user: { _id, username, name, email },
     });
   });
 };
@@ -246,7 +246,7 @@ exports.forgotPassword = (req, res) => {
     }
 
     const token = jwt.sign({ _id: user._id }, process.env.JWT_RESET_PASSWORD, {
-      expiresIn: "30m",
+      expiresIn: "2d",
     });
     //email
     const emailData = {

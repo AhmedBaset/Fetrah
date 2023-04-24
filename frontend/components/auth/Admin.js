@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { isAuth } from "../../actions/auth";
 import { useState } from "react";
+import { userPublicProfile } from "../../actions/user";
 
 const Admin = ({ children }) => {
   const router = useRouter();
@@ -10,10 +11,12 @@ const Admin = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const result = await isAuth();
-      setSenderUser(result);
+      const data = await userPublicProfile(result.username);
+      const user = data.user;
+      setSenderUser(user);
       if (!result) {
         router.push("/signin");
-      } else if (result.role !== 1) {
+      } else if (user.role !== 1) {
         router.push("/");
       }
     };

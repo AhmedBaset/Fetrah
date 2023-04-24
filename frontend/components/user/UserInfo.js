@@ -602,6 +602,7 @@ const UserInfo = (props) => {
           )}
 
           <div className={classes["info-text-container"]}>
+            <h3>{senderUser.username}</h3>
             <h3>
               {userManOrWoman} {userFace} - {age} سنة
             </h3>

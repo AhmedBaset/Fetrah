@@ -813,7 +813,7 @@ exports.publicProfile = (req, res) => {
   let blogs;
   User.findOne({ username })
     .select(
-      "username _id questions gender sentRequests recievedRequests userStatus confirmed"
+      "username _id questions gender sentRequests recievedRequests userStatus confirmed role"
     )
     .populate("recievedRequests", "sender status createdAt token")
     .populate({

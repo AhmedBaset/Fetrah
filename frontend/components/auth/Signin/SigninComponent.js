@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import classes from "./Signin.module.css";
+import { userPublicProfile } from "../../../actions/user";
 
 const SigninComponent = () => {
   const router = useRouter();
@@ -42,11 +43,16 @@ const SigninComponent = () => {
         // authenticate user
 
         authenticate(data, () => {
-          isAuth().then((result) => {
-            if (result && result.role === 1) {
-              router.replace("/admin");
-            } else {
-              router.replace("/user");
+          isAuth().then(async (result) => {
+            if (result) {
+              const data = await userPublicProfile(result.username);
+              const user = data.user;
+              console.log(user);
+              if (user.role === 1) {
+                router.replace("/admin");
+              } else {
+                router.replace("/user");
+              }
             }
           });
         });
