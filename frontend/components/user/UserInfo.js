@@ -602,7 +602,7 @@ const UserInfo = (props) => {
           )}
 
           <div className={classes["info-text-container"]}>
-            <h3>{user.username}</h3>
+            <h3>كود {user.username}</h3>
             <h3>
               {userManOrWoman} {userFace} - {age} سنة
             </h3>
