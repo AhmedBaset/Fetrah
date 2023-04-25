@@ -727,26 +727,6 @@ const WomenQuestionsForm = (props) => {
               </select>
             </div>
           </div>
-          <div className={classes.pirow2}>
-            <div className={classes.inputContainer}>
-              <label className={classes.inputLabel}>لون البشرة*</label>
-              <select
-                name="skinColor"
-                value={formData.skinColor}
-                onChange={handleInputChange}
-                className={classes["dropdown"]}
-                required={true}
-              >
-                <option value="">اختر</option>
-                <option value="بيضاء جدا">بيضاء جدا</option>
-                <option value="بيضاء">بيضاء</option>
-                <option value="متوسطة">متوسطة</option>
-                <option value="قمحية">قمحية</option>
-                <option value="داكنة">داكنة</option>
-                <option value="داكنة جدا">داكنة</option>
-              </select>
-            </div>
-          </div>
         </div>
 
         <div className={classes.marryInfoContainer}>
