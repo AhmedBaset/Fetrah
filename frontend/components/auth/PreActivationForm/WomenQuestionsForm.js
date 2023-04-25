@@ -631,6 +631,124 @@ const WomenQuestionsForm = (props) => {
             </div>
           </div>
         </div>
+
+        <div className={classes.religionInfoContainer}>
+          <h4 className={classes.title}>معلومات عن تدينك</h4>
+          <div className={classes.pirow1}>
+            <div className={classes.inputContainer}>
+              <label className={classes.inputLabel}>مدى الالتزام بالصلاة</label>
+              <select
+                name="pray"
+                value={formData.pray}
+                onChange={handleInputChange}
+                className={classes["dropdown"]}
+                required={true}
+              >
+                <option value="">اختاري</option>
+                <option value="أصلي جميع الصلوات في وقتها في المنزل">
+                  أصلي جميع الصلوات في وقتها في المنزل
+                </option>
+                <option value="أصلي جميع الصلوات ولكن قد أفوت بعض الصلوات عن وقتها">
+                  أصلي جميع الصلوات ولكن قد أفوت بعض الصلوات عن وقتها
+                </option>
+                <option value="متقطعة في الصلاة">متقطعة في الصلاة</option>
+                <option value="لا أصلي والعياذ بالله">
+                  لا أصلي والعياذ بالله
+                </option>
+              </select>
+            </div>
+            <div className={classes.inputContainer}>
+              <label className={classes.inputLabel}>نوع الحجاب</label>
+
+              <select
+                name="hijab"
+                value={formData.hijab}
+                onChange={handleInputChange}
+                className={classes["dropdown"]}
+                required={true}
+              >
+                <option value="">اختاري</option>
+                <option value="منتقبة سواد">منتقبة سواد</option>
+                <option value="منتقبة نقاب ملون">منتقبة نقاب ملون</option>
+                <option value="مختمرة">مختمرة</option>
+                <option value="طرح وفساتين">طرح وفساتين</option>
+                <option value="طرح وبناطيل">طرح وبناطيل</option>
+              </select>
+            </div>
+
+            <div className={classes.inputContainer}>
+              <label className={classes.inputLabel}>
+                عدد الأجزاء التي تحفظينها من القرآن*
+              </label>
+              <select
+                name="quran"
+                value={formData.quran}
+                onChange={handleInputChange}
+                className={classes["dropdown"]}
+                required={true}
+              >
+                <option value="">اختر</option>
+                <option value="جزء واحد">جزء واحد - 1</option>
+                <option value="جزءان">جزءان - 2</option>
+                <option value="ثلاثة أجزاء">ثلاثة أجزاء - 3</option>
+                <option value="أربعة أجزاء">أربعة أجزاء - 4</option>
+                <option value="خمسة أجزاء">خمسة أجزاء - 5</option>
+                <option value="ستة أجزاء">ستة أجزاء - 6</option>
+                <option value="سبعة أجزاء">سبعة أجزاء - 7</option>
+                <option value="ثمانية أجزاء">ثمانية أجزاء - 8</option>
+                <option value="تسعة أجزاء">تسعة أجزاء - 9</option>
+                <option value="عشرة أجزاء">عشرة أجزاء - 10</option>
+                <option value="أحد عشر جزءا">أحد عشر جزءا - 11</option>
+                <option value="اثنا عشر جزءا">اثنا عشر جزءا - 12</option>
+                <option value="ثلاثة عشر جزءا">ثلاثة عشر جزءا - 13</option>
+                <option value="أربعة عشر جزءا">أربعة عشر جزءا - 14</option>
+                <option value="خمسة عشر جزءا">خمسة عشر جزءا - 15</option>
+                <option value="ستة عشر جزءا">ستة عشر جزءا - 16</option>
+                <option value="سبعة عشر جزءا">سبعة عشر جزءا - 17</option>
+                <option value="ثمانية عشر جزءا">ثمانية عشر جزءا - 18</option>
+                <option value="تسعة عشر جزءا">تسعة عشر جزءا - 19</option>
+                <option value="عشرون جزءا">عشرون جزءا - 20</option>
+                <option value="واحد وعشرون جزءا">واحد وعشرون جزءا - 21</option>
+                <option value="ثنان وعشرون جزءا">اثنان وعشرون جزءا - 22</option>
+                <option value="ثلاثة وعشرون جزءا">
+                  ثلاثة وعشرون جزءا - 23
+                </option>
+                <option value="أربعة وعشرون جزءا">
+                  أربعة وعشرون جزءا - 24
+                </option>
+                <option value="خمسة وعشرون جزءا">خمسة وعشرون جزءا - 25</option>
+                <option value="ستة وعشرون جزءا">ستة وعشرون جزءا - 26</option>
+                <option value="سبعة وعشرون جزءا">سبعة وعشرون جزءا - 27</option>
+                <option value="ثمانية وعشرون جزءا">
+                  ثمانية وعشرون جزءا - 28
+                </option>
+                <option value="تسعة وعشرون جزءا">تسعة وعشرون جزءا - 29</option>
+                <option value="ختمت القرآن">ختمت القرآن - 30</option>
+              </select>
+            </div>
+          </div>
+          <div className={classes.pirow2}>
+            <div className={classes.inputContainer}>
+              <label className={classes.inputLabel}>لون البشرة*</label>
+              <select
+                name="skinColor"
+                value={formData.skinColor}
+                onChange={handleInputChange}
+                className={classes["dropdown"]}
+                required={true}
+              >
+                <option value="">اختر</option>
+                <option value="بيضاء جدا">بيضاء جدا</option>
+                <option value="بيضاء">بيضاء</option>
+                <option value="متوسطة">متوسطة</option>
+                <option value="قمحية">قمحية</option>
+                <option value="داكنة">داكنة</option>
+                <option value="داكنة جدا">داكنة</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <div className={classes.marryInfoContainer}>
           <h4 className={classes.title}>معلومات تخص الزواج</h4>
           <div className={classes.mirow1}>
