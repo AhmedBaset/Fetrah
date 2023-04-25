@@ -1,8 +1,8 @@
-import classes from "./StepTwo.module.css";
+import classes from "./Step.module.css";
 
 function StepTwo() {
   return (
-    <div className={classes["step-two"]}>
+    <section className={classes["step-diff"]}>
       <div className={classes["container"]}>
         <div className={classes["text"]}>
           <h1>الخطوة الثانية </h1>
@@ -21,7 +21,7 @@ function StepTwo() {
           <img src={`/images/step-two.png`} alt="الخطوة الثانية" />
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 export default StepTwo;

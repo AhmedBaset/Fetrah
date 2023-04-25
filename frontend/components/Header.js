@@ -32,7 +32,7 @@ const Header = (props) => {
     const fetchUser = async () => {
       const result = await isAuth();
       const data = await userPublicProfile(result.username);
-      setIsAuthenticated(data.user);
+      setIsAuthenticated(data?.user);
     };
     fetchUser();
   }, []);

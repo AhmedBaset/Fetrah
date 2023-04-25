@@ -1,10 +1,11 @@
-import classes from "./Landingpage.module.css";
+
+import classes from "./Step.module.css";
 import { useRouter } from "next/router";
 
 function LandingPage() {
   const router = useRouter();
   return (
-    <div className={classes["header"]}>
+    <header className={classes["header"]}>
       <div className={classes["container"]}>
         <div className={classes["text"]}>
           <p>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
@@ -32,7 +33,7 @@ function LandingPage() {
           <img src="/images/muslim.svg" alt="لتسكنوا" />
         </div>
       </div>
-    </div>
+    </header>
   );
 }
 

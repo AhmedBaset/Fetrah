@@ -1,10 +1,10 @@
-import classes from "./StepOne.module.css";
+import classes from "./Step.module.css";
 
 function StepThree() {
   return (
-    <div className={classes["step-one"]}>
-      <div className={classes["parent"]}>
-        <div className={classes["child"]}>
+    <section className={classes["step"]}>
+      <div className={classes["container"]}>
+        <div className={classes["text"]}>
           <h1>الخطوة الثالثة </h1>
           <p>أرسل طلب القبول وانتظر رد الطرف الأخر</p>
           <p>
@@ -21,7 +21,7 @@ function StepThree() {
           <img src={`/images/step-three.png`} alt="الخطوة الثانية" />
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 export default StepThree;

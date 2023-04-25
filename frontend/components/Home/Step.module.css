@@ -1,0 +1,88 @@
+.step, .step-diff {
+  transform: skew(0deg, -5deg);
+}
+
+.step {
+  background-color: hsl(338, 100%, 97%);
+}
+.step-diff {
+  background-color: hsl(200, 100%, 97%);
+}
+.header {
+  background-color: hsl(340, 85%, 24%);
+  color: white;
+  margin-bottom: -5rem;
+}
+
+.container {
+  transform: skew(0deg, 5deg);
+  min-height: 100vh;
+  width: 90%;
+  max-width: 50rem;
+  margin-inline: auto;
+  padding-block: 4rem;
+  gap: 2.5rem;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    padding-block: 6rem;
+  }
+}
+
+.header .container {
+  transform: none;
+  min-height: calc(100vh + 1rem);
+}
+
+.image, .text, .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.image img {
+  max-width: min(100%, 70vw);
+}
+
+.text {
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.text h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+}
+.text {
+  flex: 1 1 70%;
+}
+.text h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.8;
+}
+.text p {
+  opacity: 0.8;
+}
+
+.submit {
+  background-color: hsl(341, 100%, 94%);
+  padding: 0.75rem 2rem;
+  border-radius: 10vmin;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: .3s ease-in-out;
+}
+.submit:hover {
+  background-color: hsl(341, 100%, 85%);
+}
+
+@media screen and (max-width: 767px) {
+  .container {
+    flex-direction: column;
+  }
+}

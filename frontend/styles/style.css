@@ -1,34 +1,34 @@
 * {
-  font-family: "Noto Kufi Arabic", sans-serif;
-  box-sizing: border-box;
+	font-family: "Noto Kufi Arabic", sans-serif;
+	box-sizing: border-box;
 }
 
 body {
-  background: #f8ead8;
+	background: #f8ead8;
 }
 
 * {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 :root {
-  --main-color: #a7727d;
-  --second-color: #eddbc7;
-  --thired-color: #f8ead8;
-  --fourth-color: #f9f5e7;
-  --fifth-color: #0cbc8b;
-  --main-transition: 03s;
-  --main-padding-top: 100px;
-  --main-padding-bottom: 100px;
-  --section-background: #ececec;
-  --facebook-color: #139ef8;
-  --youtube-color: #ff0000;
-  --twitter-color: #1da1f2;
-  --linkedin-color: #1a0dab;
+	--main-color: #a7727d;
+	--second-color: #eddbc7;
+	--thired-color: #f8ead8;
+	--fourth-color: #f9f5e7;
+	--fifth-color: #0cbc8b;
+	--main-transition: 03s;
+	--main-padding-top: 100px;
+	--main-padding-bottom: 100px;
+	--section-background: #ececec;
+	--facebook-color: #139ef8;
+	--youtube-color: #ff0000;
+	--twitter-color: #1da1f2;
+	--linkedin-color: #1a0dab;
 }
 html {
-  scroll-behavior: smooth;
+	scroll-behavior: smooth;
 }
 
 p,
@@ -39,154 +39,163 @@ h4,
 h5,
 h6,
 ul {
-  direction: rtl;
+	direction: rtl;
 }
 
+nav {
+	z-index: 100;
+}
 .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
 
 .navbar-toggler {
-  border: 1px solid rgba(255, 255, 255);
+	border: 1px solid rgba(255, 255, 255);
 }
 
 .navLinkItem {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  background-color: white;
-  border-color: "#a7727d";
+	margin-left: 1rem;
+	margin-right: 1rem;
+	background-color: white;
+	border-color: "#a7727d";
 }
 
-.logo{
-  color: white;
-  font-size: 22px;
-  margin-left: 5rem;
+.logo {
+	color: white;
+	font-size: 22px;
+	margin-left: 5rem;
 }
 
-.logo:hover{
-  color: white;
+.logo:hover {
+	color: white;
 }
 
 .authContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .notificationIcon {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .accountIcon {
-  border-radius: 50%;
+	border-radius: 50%;
 }
 
 .roundedBtnLabel {
-  margin-left: 1rem;
-  margin-right: 0.5rem;
+	margin-left: 1rem;
+	margin-right: 0.5rem;
 }
 
 .accountRoundedBtn {
-  margin: 0 0.8rem 0 0.8rem;
-  border: 0;
-  border-radius: 91px;
-  background: #ffffff;
-  padding: 0rem 8px 0rem 3px;
-  text-align: center;
-  color: #000000;
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+	margin: 0 0.8rem 0 0.8rem;
+	border: 0;
+	border-radius: 91px;
+	background: #ffffff;
+	padding: 0rem 8px 0rem 3px;
+	text-align: center;
+	color: #000000;
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 }
 
 .roundedBtn {
-  margin: 0 0.8rem 0 0.8rem;
-  border: 0;
-  border-radius: 91px;
-  background: #ffffff;
-  padding: 0.2rem 8px 0.2rem 3px;
-  text-align: center;
-  color: #000000;
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+	margin: 0 0.8rem 0 0.8rem;
+	border: 0;
+	border-radius: 91px;
+	background: #ffffff;
+	padding: 0.2rem 8px 0.2rem 3px;
+	text-align: center;
+	color: #000000;
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 }
 
 .AccountItemContainer {
-  position: relative;
+	position: relative;
 }
 
 .accountMenu {
-  border: 0;
-  border-radius: 5px;
-  position: absolute;
-  top: 100%;
-  left: -10rem;
-  padding: 0;
-  margin: 0.5rem 0;
-  width: 20rem;
-  list-style: none;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
+	border: 0;
+	border-radius: 5px;
+	position: absolute;
+	top: 100%;
+	left: -10rem;
+	padding: 0;
+	margin: 0.5rem 0;
+	width: 20rem;
+	list-style: none;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
 .accountMenu li {
-  border: 0;
-  border-radius: 5px;
-  padding: 0px 12px;
-  cursor: pointer;
-  margin: 1rem;
-  text-align: center;
-  height: 2rem;
+	border: 0;
+	border-radius: 5px;
+	padding: 0px 12px;
+	cursor: pointer;
+	margin: 1rem;
+	text-align: center;
+	height: 2rem;
 }
 
 .accountMenu li:hover {
-  background-color: var(--main-color);
-  color: white;
-  padding: 0px 12px;
-  cursor: pointer;
-  margin: 1rem;
+	background-color: var(--main-color);
+	color: white;
+	padding: 0px 12px;
+	cursor: pointer;
+	margin: 1rem;
 }
 
 .AccountItemContainer:hover .accountMenu {
-  opacity: 1;
-  visibility: visible;
+	opacity: 1;
+	visibility: visible;
 }
 
 @media (max-width: 945px) {
-  .navLinkItem {
-    margin: 1rem;
-    text-align: center;
-  }
+	.navLinkItem {
+		margin: 1rem;
+		text-align: center;
+	}
 
-  .logo{
-    margin-left: 1rem;
-  }
+	.logo {
+		margin-left: 1rem;
+	}
 
-  .authContainer {
-    display: flex;
-    flex-direction: column;
-    height: 5rem;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-  }
-  .roundedBtn {
-    margin: 0;
-    margin-left: 1.5rem;
-  }
+	.authContainer {
+		display: flex;
+		flex-direction: column;
+		height: 5rem;
+		justify-content: space-between;
+		align-items: center;
+		text-align: center;
+	}
+	.roundedBtn {
+		margin: 0;
+		margin-left: 1.5rem;
+	}
 
-  .accountRoundedBtn {
-    margin: 0;
-    margin-left: 1.5rem;
-  }
+	.accountRoundedBtn {
+		margin: 0;
+		margin-left: 1.5rem;
+	}
+}
+
+.clearfix {
+	height: 15rem;
+	background: #fff0f5;
+	margin-top: -5rem;
 }
